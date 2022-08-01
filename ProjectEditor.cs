@@ -1117,7 +1117,7 @@ public class BooleanField : Field
 			editor.Overriding = overriding;
 		}
 	}
-
+	
 	public override Field Duplicate()
 	{
 		var field = new BooleanField(name);
@@ -1156,6 +1156,18 @@ public class ImageField : Field
 		}
 	}
 	
+	protected new ImageFieldEditor editor;
+	
+	public override bool HasEditor()
+	{
+		return (editor != null && Godot.Object.IsInstanceValid(editor));
+	}
+	
+	public override FieldEditor GetEditor()
+	{
+		return (HasEditor() ? editor : null);
+	}
+	
 	public ImageField(Glint.UniqueName name, Image data = null, DataEdited callback = null)
 	{
 		this.name = name;
@@ -1180,8 +1192,21 @@ public class ImageField : Field
 	{
 		RemoveEditor();
 		
-		var editor = ResourceLoader.Load<PackedScene>("res://StringFieldEditor.tscn");
-		return editor.Instance<StringFieldEditor>();
+		var editorScene = ResourceLoader.Load<PackedScene>("res://ImageFieldEditor.tscn");
+		var editorInstance = editorScene.Instance<ImageFieldEditor>();
+		editorInstance.Field = this;
+		editorInstance.Inherited = inherited;
+		
+		editor = editorInstance;
+		return editor;
+	}
+	
+	public override void UpdateEditor()
+	{
+		if (HasEditor())
+		{
+			editor.UpdateState();
+		}
 	}
 	
 	public override void SetEditorOverriding(bool overriding)
