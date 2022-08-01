@@ -578,20 +578,23 @@ public class Project
 	
 	public bool SaveAs()
 	{
-		var path = NativeFileDialog.SaveFileDialog("Save project as...", defaultPath + "project.carbon", new[] { "*.carbon" }, "Carbon Project");
-		if (path == "") return false;
+		var newPath = NativeFileDialog.SaveFileDialog("Save project as...", defaultPath + "project.carbon", new[] { "*.carbon" }, "Carbon Project");
+		if (newPath == null) return false;
+		if (newPath == "") return false;
+		
+		var baseDirectory = newPath.GetBaseDir();
 		
 		var dir = new Directory();
-		if (!dir.DirExists(path.GetBaseDir()))
+		if (!dir.DirExists(baseDirectory))
 		{
-			dir.MakeDirRecursive(path.GetBaseDir());
+			dir.MakeDirRecursive(baseDirectory);
 		}
 		
 		var file = new File();
-		file.Open(path, File.ModeFlags.Write);
+		file.Open(newPath, File.ModeFlags.Write);
 		file.Close();
 		
-		this.path = path;
+		path = newPath;
 		
 		return true;
 	}

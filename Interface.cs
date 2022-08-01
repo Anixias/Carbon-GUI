@@ -67,10 +67,8 @@ public class Interface : Control
 				projectEditor.Visible = true;
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+			
+			return false;
 		}
 		
 		public override void Exit()
