@@ -169,6 +169,16 @@ namespace NativeServices
         {
             return Marshal.PtrToStringUni(ptr);
         }
+		
+		private static string GetString(IntPtr ptr)
+		{
+			if (Environment.Is64BitProcess)
+			{
+				return StringFromUni(ptr);
+			}
+			
+			return StringFromAnsi(ptr);
+		}
         
         private static bool IsPointerValid(IntPtr ptr)
         {
@@ -272,7 +282,7 @@ namespace NativeServices
                 return null;
             }
             
-            var str = StringFromAnsi(ptr);
+            var str = GetString(ptr);
             return str;
         }
         
@@ -314,7 +324,7 @@ namespace NativeServices
                 return null;
             }
             
-            var str = StringFromAnsi(ptr);
+            var str = GetString(ptr);
             return str;
         }
         
@@ -356,7 +366,7 @@ namespace NativeServices
                 return null;
             }
             
-            var str = StringFromAnsi(ptr);
+            var str = GetString(ptr);
             return str.Split('|');
         }
         
@@ -392,7 +402,7 @@ namespace NativeServices
                 return null;
             }
             
-            var str = StringFromAnsi(ptr);
+            var str = GetString(ptr);
             return str;
         }
         
