@@ -53,8 +53,13 @@ public class Interface : Control
 		
 		public override void Enter()
 		{
-			projectEditor.SetProject(new Project());
-			projectEditor.Visible = true;
+			var project = new Project();
+			
+			if (project.SaveAs())
+			{
+				projectEditor.SetProject(project);
+				projectEditor.Visible = true;
+			}
 		}
 		
 		public override void Exit()
