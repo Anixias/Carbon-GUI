@@ -1,0 +1,162 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Assets/Icons/chevron-down.png" type="Texture" id=1]
+[ext_resource path="res://ListItem.tscn" type="PackedScene" id=2]
+[ext_resource path="res://TreeListItem.cs" type="Script" id=3]
+[ext_resource path="res://Assets/Icons/folder-open.png" type="Texture" id=4]
+[ext_resource path="res://Assets/Icons/folder-closed.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Icons/unlocked.png" type="Texture" id=6]
+
+[sub_resource type="StyleBoxFlat" id=2]
+draw_center = false
+border_width_top = 2
+border_color = Color( 0.109804, 1, 0.607843, 1 )
+expand_margin_top = 1.0
+
+[sub_resource type="StyleBoxFlat" id=3]
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.109804, 1, 0.607843, 1 )
+expand_margin_top = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id=4]
+draw_center = false
+border_width_bottom = 2
+border_color = Color( 0.109804, 1, 0.607843, 1 )
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id=1]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+
+[node name="TreeListItem" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -884.0
+margin_bottom = -575.0
+rect_min_size = Vector2( 0, 28 )
+size_flags_horizontal = 3
+custom_constants/margin_right = 0
+custom_constants/margin_top = 0
+custom_constants/margin_left = 0
+custom_constants/margin_bottom = 0
+script = ExtResource( 3 )
+Icon = ExtResource( 4 )
+IconCollapsed = ExtResource( 5 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 164.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 128, 28 )
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="Relationship" type="Control" parent="HBoxContainer"]
+margin_bottom = 28.0
+mouse_filter = 2
+
+[node name="Contents" type="MarginContainer" parent="HBoxContainer"]
+margin_right = 164.0
+margin_bottom = 28.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Contents"]
+margin_right = 164.0
+margin_bottom = 28.0
+mouse_filter = 2
+custom_constants/separation = 0
+
+[node name="DropArrowContainer" type="MarginContainer" parent="HBoxContainer/Contents/HBoxContainer"]
+margin_right = 12.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 12, 28 )
+mouse_filter = 1
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="DropArrow" type="TextureRect" parent="HBoxContainer/Contents/HBoxContainer/DropArrowContainer"]
+margin_left = 1.0
+margin_top = 9.0
+margin_right = 11.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 10, 10 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 1 )
+stretch_mode = 3
+
+[node name="ListItem" parent="HBoxContainer/Contents/HBoxContainer" instance=ExtResource( 2 )]
+margin_left = 12.0
+margin_right = 140.0
+rect_min_size = Vector2( 128, 28 )
+
+[node name="DragPanels" type="Control" parent="HBoxContainer/Contents/HBoxContainer/ListItem"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="DragAbovePanel" type="Panel" parent="HBoxContainer/Contents/HBoxContainer/ListItem/DragPanels"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+
+[node name="DragWithinPanel" type="Panel" parent="HBoxContainer/Contents/HBoxContainer/ListItem/DragPanels"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 3 )
+
+[node name="DragBelowPanel" type="Panel" parent="HBoxContainer/Contents/HBoxContainer/ListItem/DragPanels"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 4 )
+
+[node name="HasSelectedPanel" type="Panel" parent="HBoxContainer/Contents/HBoxContainer/ListItem"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 1 )
+
+[node name="LockContainer" type="MarginContainer" parent="HBoxContainer/Contents/HBoxContainer"]
+margin_left = 140.0
+margin_right = 164.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 24, 28 )
+mouse_filter = 1
+size_flags_horizontal = 4
+size_flags_vertical = 4
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="LockIcon" type="TextureRect" parent="HBoxContainer/Contents/HBoxContainer/LockContainer"]
+margin_left = 2.0
+margin_top = 4.0
+margin_right = 22.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 10, 10 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource( 6 )
+stretch_mode = 3

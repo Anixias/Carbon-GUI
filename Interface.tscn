@@ -1,0 +1,59 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Interface.tres" type="Theme" id=1]
+[ext_resource path="res://ProjectEditor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://SplashScreen.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Interface.cs" type="Script" id=4]
+[ext_resource path="res://MenuBar.cs" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.113725, 0.137255, 0.156863, 1 )
+
+[node name="Interface" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 4 )
+
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+custom_constants/margin_right = 9
+custom_constants/margin_top = 9
+custom_constants/margin_left = 9
+custom_constants/margin_bottom = 9
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+margin_left = 9.0
+margin_top = 9.0
+margin_right = 1015.0
+margin_bottom = 591.0
+mouse_filter = 2
+custom_constants/separation = 6
+
+[node name="MenuBar" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+margin_right = 1006.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 0, 24 )
+mouse_filter = 2
+custom_constants/separation = 12
+script = ExtResource( 5 )
+
+[node name="SplashScreen" parent="MarginContainer/VBoxContainer" instance=ExtResource( 3 )]
+
+[node name="ProjectEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource( 2 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 316.0
+margin_right = 1006.0
+margin_bottom = 836.0
+
+[connection signal="CloseProject" from="MarginContainer/VBoxContainer/MenuBar" to="." method="OnCloseProject"]
+[connection signal="NewProject" from="MarginContainer/VBoxContainer/MenuBar" to="." method="OnNewProject"]

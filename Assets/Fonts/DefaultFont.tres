@@ -1,0 +1,15 @@
+[gd_resource type="DynamicFont" load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Fonts/NotoSansSC-Regular.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://Assets/Fonts/NotoSans-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Assets/Fonts/NotoSansTC-Regular.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://Assets/Fonts/NotoSansJP-Regular.otf" type="DynamicFontData" id=4]
+[ext_resource path="res://Assets/Fonts/NotoSansKR-Regular.otf" type="DynamicFontData" id=5]
+
+[resource]
+size = 14
+font_data = ExtResource( 2 )
+fallback/0 = ExtResource( 4 )
+fallback/1 = ExtResource( 5 )
+fallback/2 = ExtResource( 1 )
+fallback/3 = ExtResource( 3 )

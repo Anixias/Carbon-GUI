@@ -1,0 +1,70 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Assets/Fonts/NotoSansJP-Regular.otf" type="DynamicFontData" id=1]
+[ext_resource path="res://Interface.tres" type="Theme" id=2]
+[ext_resource path="res://IconButton.cs" type="Script" id=3]
+[ext_resource path="res://Assets/Fonts/NotoSans-Regular.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Assets/Fonts/NotoSansKR-Regular.otf" type="DynamicFontData" id=5]
+[ext_resource path="res://Assets/Fonts/NotoSansTC-Regular.otf" type="DynamicFontData" id=6]
+[ext_resource path="res://Assets/Fonts/NotoSansSC-Regular.otf" type="DynamicFontData" id=7]
+
+[sub_resource type="DynamicFont" id=4]
+size = 14
+font_data = ExtResource( 4 )
+fallback/0 = ExtResource( 1 )
+fallback/1 = ExtResource( 5 )
+fallback/2 = ExtResource( 7 )
+fallback/3 = ExtResource( 6 )
+
+[node name="IconButton" type="Control"]
+rect_min_size = Vector2( 10, 24 )
+rect_clip_content = true
+theme = ExtResource( 2 )
+script = ExtResource( 3 )
+
+[node name="Button" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_default_cursor_shape = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 5
+custom_constants/margin_top = 2
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_left = 5.0
+margin_top = 2.0
+margin_right = 5.0
+margin_bottom = 22.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+modulate = Color( 0.88, 0.88, 0.88, 1 )
+margin_bottom = 20.0
+mouse_filter = 2
+size_flags_vertical = 3
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer"]
+modulate = Color( 0.88, 0.88, 0.88, 1 )
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = SubResource( 4 )
+align = 1
+valign = 1
+
+[connection signal="pressed" from="Button" to="." method="OnPressed"]

@@ -1,0 +1,696 @@
+[gd_scene load_steps=63 format=2]
+
+[ext_resource path="res://IconButton.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Assets/Icons/keyframes-add.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Icons/plus-folder.png" type="Texture" id=3]
+[ext_resource path="res://Interface.tres" type="Theme" id=4]
+[ext_resource path="res://ProjectEditor.cs" type="Script" id=5]
+[ext_resource path="res://Assets/Icons/plus-circle.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Fonts/NotoSans-Bold.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://Assets/Fonts/NotoSansTC-Bold.otf" type="DynamicFontData" id=8]
+[ext_resource path="res://Assets/Fonts/NotoSansJP-Bold.otf" type="DynamicFontData" id=9]
+[ext_resource path="res://Assets/Fonts/NotoSansKR-Bold.otf" type="DynamicFontData" id=10]
+[ext_resource path="res://Assets/Fonts/NotoSansSC-Bold.otf" type="DynamicFontData" id=11]
+[ext_resource path="res://TreeList.tscn" type="PackedScene" id=12]
+[ext_resource path="res://TextInputBox.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Assets/Icons/Icon-Search.png" type="Texture" id=14]
+[ext_resource path="res://Assets/Icons/x-close.png" type="Texture" id=15]
+[ext_resource path="res://Assets/Fonts/NotoSansJP-Regular.otf" type="DynamicFontData" id=16]
+[ext_resource path="res://Assets/Fonts/NotoSans-Regular.ttf" type="DynamicFontData" id=17]
+[ext_resource path="res://Assets/Fonts/NotoSansTC-Regular.otf" type="DynamicFontData" id=18]
+[ext_resource path="res://Assets/Fonts/NotoSansSC-Regular.otf" type="DynamicFontData" id=19]
+[ext_resource path="res://Assets/Fonts/NotoSansKR-Regular.otf" type="DynamicFontData" id=20]
+[ext_resource path="res://Assets/Icons/chevron-right.png" type="Texture" id=21]
+[ext_resource path="res://Assets/Icons/chevron-down.png" type="Texture" id=22]
+
+[sub_resource type="DynamicFont" id=4]
+size = 22
+font_data = ExtResource( 7 )
+fallback/0 = ExtResource( 9 )
+fallback/1 = ExtResource( 10 )
+fallback/2 = ExtResource( 11 )
+fallback/3 = ExtResource( 8 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=21]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id=22]
+
+[sub_resource type="StyleBoxFlat" id=23]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.180392, 0.219608, 0.25098, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=20]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=24]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.109804, 1, 0.607843, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=30]
+bg_color = Color( 1, 1, 1, 0.239216 )
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id=35]
+bg_color = Color( 1, 1, 1, 0.764706 )
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id=36]
+bg_color = Color( 1, 1, 1, 0.454902 )
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id=37]
+content_margin_top = 5.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+expand_margin_left = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxEmpty" id=39]
+
+[sub_resource type="StyleBoxFlat" id=47]
+bg_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+border_width_top = 11
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="StyleBoxFlat" id=8]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=13]
+
+[sub_resource type="StyleBoxEmpty" id=14]
+
+[sub_resource type="StyleBoxFlat" id=17]
+content_margin_top = 1.0
+draw_center = false
+border_width_bottom = 1
+border_color = Color( 0.109804, 1, 0.607843, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id=16]
+
+[sub_resource type="StyleBoxEmpty" id=18]
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.180392, 0.219608, 0.25098, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=25]
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+
+[sub_resource type="StyleBoxLine" id=41]
+color = Color( 0.878431, 0.878431, 0.878431, 0.392157 )
+grow_end = -6.0
+
+[sub_resource type="StyleBoxLine" id=42]
+color = Color( 0.878431, 0.878431, 0.878431, 0.392157 )
+grow_begin = -8.0
+
+[sub_resource type="StyleBoxFlat" id=19]
+content_margin_left = 9.0
+content_margin_right = 9.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.180392, 0.219608, 0.25098, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+shadow_color = Color( 0, 0, 0, 0.341176 )
+shadow_size = 2
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id=26]
+content_margin_left = 9.0
+content_margin_right = 9.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.180392, 0.219608, 0.25098, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+anti_aliasing = false
+
+[sub_resource type="StyleBoxLine" id=43]
+color = Color( 0.878431, 0.878431, 0.878431, 0.392157 )
+
+[sub_resource type="StyleBoxFlat" id=40]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.3234, 0.37653, 0.42, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 1, 1, 1, 1 )
+shadow_color = Color( 0, 0, 0, 0.341176 )
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id=27]
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=28]
+
+[sub_resource type="StyleBoxFlat" id=44]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.38, 0.2242, 0.2242, 1 )
+
+[sub_resource type="StyleBoxFlat" id=29]
+content_margin_top = 2.0
+bg_color = Color( 0.313726, 0.333333, 0.34902, 1 )
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color( 0.580392, 0.592157, 0.6, 1 )
+
+[sub_resource type="StyleBoxFlat" id=48]
+bg_color = Color( 1, 1, 1, 0.239216 )
+border_width_left = 2
+border_width_right = 2
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="StyleBoxFlat" id=49]
+bg_color = Color( 1, 1, 1, 0.764706 )
+border_width_left = 2
+border_width_right = 2
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="StyleBoxFlat" id=50]
+bg_color = Color( 1, 1, 1, 0.454902 )
+border_width_left = 2
+border_width_right = 2
+border_color = Color( 0.8, 0.8, 0.8, 0 )
+
+[sub_resource type="StyleBoxFlat" id=51]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+
+[sub_resource type="StyleBoxEmpty" id=52]
+
+[sub_resource type="DynamicFont" id=45]
+size = 14
+font_data = ExtResource( 17 )
+fallback/0 = ExtResource( 16 )
+fallback/1 = ExtResource( 20 )
+fallback/2 = ExtResource( 19 )
+fallback/3 = ExtResource( 18 )
+
+[sub_resource type="Theme" id=46]
+default_font = SubResource( 45 )
+Button/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
+Button/colors/font_color_disabled = Color( 0.901961, 0.901961, 0.901961, 0.2 )
+Button/colors/font_color_focus = Color( 0.94, 0.94, 0.94, 1 )
+Button/colors/font_color_hover = Color( 1, 1, 1, 1 )
+Button/colors/font_color_pressed = Color( 0.109804, 1, 0.607843, 1 )
+Button/constants/hseparation = 0
+Button/styles/disabled = SubResource( 21 )
+Button/styles/focus = SubResource( 22 )
+Button/styles/hover = SubResource( 23 )
+Button/styles/normal = SubResource( 20 )
+Button/styles/pressed = SubResource( 24 )
+HScrollBar/styles/grabber = SubResource( 30 )
+HScrollBar/styles/grabber_highlight = SubResource( 35 )
+HScrollBar/styles/grabber_pressed = SubResource( 36 )
+HScrollBar/styles/scroll = SubResource( 37 )
+HScrollBar/styles/scroll_focus = SubResource( 39 )
+HSeparator/styles/separator = SubResource( 47 )
+LineEdit/colors/font_color_uneditable = Color( 0.9, 0.9, 0.9, 0.2 )
+LineEdit/icons/clear = ExtResource( 15 )
+LineEdit/styles/focus = SubResource( 7 )
+LineEdit/styles/normal = SubResource( 8 )
+LineEdit/styles/read_only = SubResource( 9 )
+MenuButton/colors/font_color = Color( 1, 1, 1, 1 )
+MenuButton/colors/font_color_disabled = Color( 1, 1, 1, 0.301961 )
+MenuButton/colors/font_color_focus = Color( 1, 1, 1, 1 )
+MenuButton/colors/font_color_hover = Color( 1, 1, 1, 1 )
+MenuButton/colors/font_color_pressed = Color( 0.109804, 1, 0.607843, 1 )
+MenuButton/styles/disabled = SubResource( 13 )
+MenuButton/styles/focus = SubResource( 14 )
+MenuButton/styles/hover = SubResource( 17 )
+MenuButton/styles/normal = SubResource( 16 )
+MenuButton/styles/pressed = SubResource( 18 )
+Panel/styles/panel = SubResource( 2 )
+PopupMenu/colors/font_color = Color( 0.878431, 0.878431, 0.878431, 1 )
+PopupMenu/colors/font_color_accel = Color( 0.878431, 0.878431, 0.878431, 0.396078 )
+PopupMenu/colors/font_color_disabled = Color( 0.878431, 0.878431, 0.878431, 0.392157 )
+PopupMenu/colors/font_color_hover = Color( 1, 1, 1, 1 )
+PopupMenu/colors/font_color_separator = Color( 0.878431, 0.878431, 0.878431, 0.392157 )
+PopupMenu/styles/hover = SubResource( 25 )
+PopupMenu/styles/labeled_separator_left = SubResource( 41 )
+PopupMenu/styles/labeled_separator_right = SubResource( 42 )
+PopupMenu/styles/panel = SubResource( 19 )
+PopupMenu/styles/panel_disabled = SubResource( 26 )
+PopupMenu/styles/separator = SubResource( 43 )
+TooltipLabel/colors/font_color = Color( 1, 1, 1, 1 )
+TooltipPanel/styles/panel = SubResource( 40 )
+Tree/colors/drop_position_color = Color( 0.109804, 1, 0.607843, 1 )
+Tree/colors/guide_color = Color( 0.180392, 0.219608, 0.25098, 1 )
+Tree/colors/relationship_line_color = Color( 0.219608, 0.247059, 0.266667, 1 )
+Tree/constants/draw_guides = 0
+Tree/constants/draw_relationship_lines = 1
+Tree/constants/scroll_border = 33
+Tree/icons/arrow = ExtResource( 22 )
+Tree/icons/arrow_collapsed = ExtResource( 21 )
+Tree/styles/bg = SubResource( 27 )
+Tree/styles/bg_focus = SubResource( 28 )
+Tree/styles/button_pressed = SubResource( 44 )
+Tree/styles/selected = SubResource( 29 )
+Tree/styles/selected_focus = SubResource( 29 )
+VScrollBar/styles/grabber = SubResource( 48 )
+VScrollBar/styles/grabber_highlight = SubResource( 49 )
+VScrollBar/styles/grabber_pressed = SubResource( 50 )
+VScrollBar/styles/scroll = SubResource( 51 )
+VScrollBar/styles/scroll_focus = SubResource( 52 )
+
+[node name="ProjectEditor" type="HSplitContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 3
+theme = ExtResource( 4 )
+custom_constants/separation = 7
+script = ExtResource( 5 )
+
+[node name="VSplitContainer" type="VSplitContainer" parent="."]
+margin_right = 256.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+custom_constants/separation = 7
+
+[node name="ObjectPanel" type="Panel" parent="VSplitContainer"]
+margin_right = 256.0
+margin_bottom = 296.0
+rect_min_size = Vector2( 256, 256 )
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VSplitContainer/ObjectPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/ObjectPanel/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 251.0
+margin_bottom = 291.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer"]
+margin_right = 246.0
+margin_bottom = 31.0
+custom_fonts/font = SubResource( 4 )
+text = "Objects"
+align = 1
+valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer"]
+margin_top = 36.0
+margin_right = 246.0
+margin_bottom = 60.0
+
+[node name="AddType" parent="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 1 )]
+margin_right = 121.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 90, 24 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+Text = "Add type"
+Icon = ExtResource( 3 )
+TintIcon = true
+
+[node name="AddObject" parent="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 1 )]
+margin_left = 125.0
+margin_right = 246.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 102, 24 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+Text = "Add object"
+Icon = ExtResource( 6 )
+TintIcon = true
+
+[node name="Panel" type="Panel" parent="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer"]
+margin_top = 65.0
+margin_right = 246.0
+margin_bottom = 253.0
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 5 )
+
+[node name="TreeList" parent="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/Panel" instance=ExtResource( 12 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.0
+margin_bottom = 0.0
+
+[node name="Filter" parent="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer" instance=ExtResource( 13 )]
+margin_top = 258.0
+margin_right = 246.0
+margin_bottom = 286.0
+clear_button_enabled = true
+right_icon = ExtResource( 14 )
+placeholder_text = "Filter"
+
+[node name="CollectionPanel" type="Panel" parent="VSplitContainer"]
+margin_top = 304.0
+margin_right = 256.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 256, 256 )
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="VSplitContainer/CollectionPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VSplitContainer/CollectionPanel/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 251.0
+margin_bottom = 291.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="VSplitContainer/CollectionPanel/MarginContainer/VBoxContainer"]
+margin_right = 246.0
+margin_bottom = 31.0
+custom_fonts/font = SubResource( 4 )
+text = "Collections"
+align = 1
+valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VSplitContainer/CollectionPanel/MarginContainer/VBoxContainer"]
+margin_top = 36.0
+margin_right = 246.0
+margin_bottom = 60.0
+
+[node name="AddCollection" parent="VSplitContainer/CollectionPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 1 )]
+margin_right = 246.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 125, 24 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+Text = "Add collection"
+Icon = ExtResource( 2 )
+TintIcon = true
+
+[node name="Panel" type="Panel" parent="VSplitContainer/CollectionPanel/MarginContainer/VBoxContainer"]
+margin_top = 65.0
+margin_right = 246.0
+margin_bottom = 253.0
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 5 )
+
+[node name="TreeList" parent="VSplitContainer/CollectionPanel/MarginContainer/VBoxContainer/Panel" instance=ExtResource( 12 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.0
+margin_bottom = 0.0
+
+[node name="Filter" parent="VSplitContainer/CollectionPanel/MarginContainer/VBoxContainer" instance=ExtResource( 13 )]
+margin_top = 258.0
+margin_right = 246.0
+margin_bottom = 286.0
+clear_button_enabled = true
+right_icon = ExtResource( 14 )
+placeholder_text = "Filter"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+margin_left = 264.0
+margin_right = 1024.0
+margin_bottom = 600.0
+custom_constants/separation = 7
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
+margin_right = 496.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 5
+
+[node name="ToolBar" type="Panel" parent="HSplitContainer/VBoxContainer"]
+margin_right = 496.0
+margin_bottom = 38.0
+rect_min_size = Vector2( 0, 38 )
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/ToolBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="ToolList" type="HBoxContainer" parent="HSplitContainer/VBoxContainer/ToolBar/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 491.0
+margin_bottom = 33.0
+custom_constants/separation = 5
+
+[node name="WorkArea" type="ScrollContainer" parent="HSplitContainer/VBoxContainer"]
+margin_top = 43.0
+margin_right = 496.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 256, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = SubResource( 46 )
+follow_focus = true
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/WorkArea"]
+margin_right = 496.0
+margin_bottom = 557.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 0
+custom_constants/margin_bottom = 10
+
+[node name="FieldList" type="VBoxContainer" parent="HSplitContainer/VBoxContainer/WorkArea/MarginContainer"]
+margin_right = 496.0
+margin_bottom = 547.0
+rect_min_size = Vector2( 0, 256 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 13
+
+[node name="DataWindows" type="VSplitContainer" parent="HSplitContainer"]
+margin_left = 504.0
+margin_right = 760.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+custom_constants/separation = 7
+
+[node name="DesignPanel" type="Panel" parent="HSplitContainer/DataWindows"]
+margin_right = 256.0
+margin_bottom = 296.0
+rect_min_size = Vector2( 256, 256 )
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/DataWindows/DesignPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/DataWindows/DesignPanel/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 251.0
+margin_bottom = 291.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="HSplitContainer/DataWindows/DesignPanel/MarginContainer/VBoxContainer"]
+margin_right = 246.0
+margin_bottom = 31.0
+custom_fonts/font = SubResource( 4 )
+text = "Design"
+align = 1
+valign = 1
+
+[node name="Panel" type="Panel" parent="HSplitContainer/DataWindows/DesignPanel/MarginContainer/VBoxContainer"]
+margin_top = 36.0
+margin_right = 246.0
+margin_bottom = 253.0
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 5 )
+
+[node name="TreeList" parent="HSplitContainer/DataWindows/DesignPanel/MarginContainer/VBoxContainer/Panel" instance=ExtResource( 12 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.0
+margin_bottom = 0.0
+
+[node name="Filter" parent="HSplitContainer/DataWindows/DesignPanel/MarginContainer/VBoxContainer" instance=ExtResource( 13 )]
+margin_top = 258.0
+margin_right = 246.0
+margin_bottom = 286.0
+right_icon = ExtResource( 14 )
+placeholder_text = "Filter"
+
+[node name="InspectorPanel" type="Panel" parent="HSplitContainer/DataWindows"]
+margin_top = 304.0
+margin_right = 256.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 256, 256 )
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/DataWindows/InspectorPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/DataWindows/InspectorPanel/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 251.0
+margin_bottom = 291.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="HSplitContainer/DataWindows/InspectorPanel/MarginContainer/VBoxContainer"]
+margin_right = 246.0
+margin_bottom = 31.0
+custom_fonts/font = SubResource( 4 )
+text = "Inspector"
+align = 1
+valign = 1
+
+[node name="Panel" type="Panel" parent="HSplitContainer/DataWindows/InspectorPanel/MarginContainer/VBoxContainer"]
+margin_top = 36.0
+margin_right = 246.0
+margin_bottom = 286.0
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 5 )
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/DataWindows/InspectorPanel/MarginContainer/VBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+follow_focus = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/DataWindows/InspectorPanel/MarginContainer/VBoxContainer/Panel/ScrollContainer"]
+
+[connection signal="Pressed" from="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/HBoxContainer/AddType" to="." method="OnAddTypePressed"]
+[connection signal="Pressed" from="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/HBoxContainer/AddObject" to="." method="OnAddObjectPressed"]
+[connection signal="text_changed" from="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/Filter" to="." method="OnObjectsFilterTextChanged"]
+[connection signal="Pressed" from="VSplitContainer/CollectionPanel/MarginContainer/VBoxContainer/HBoxContainer/AddCollection" to="." method="OnAddCollectionPressed"]
+[connection signal="text_changed" from="VSplitContainer/CollectionPanel/MarginContainer/VBoxContainer/Filter" to="." method="OnCollectionsFilterTextChanged"]
+[connection signal="text_changed" from="HSplitContainer/DataWindows/DesignPanel/MarginContainer/VBoxContainer/Filter" to="." method="OnDesignFilterTextChanged"]

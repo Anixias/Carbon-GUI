@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://TextInputArea.cs" type="Script" id=1]
+
+[node name="TextInputArea" type="TextEdit"]
+margin_right = 40.0
+margin_bottom = 40.0
+wrap_enabled = true
+caret_blink = true
+script = ExtResource( 1 )
