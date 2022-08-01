@@ -8,8 +8,13 @@ public class Interface : Control
 		public ApplicationState Transition(ApplicationState target)
 		{
 			Exit();
-			target?.Enter();
-			return target;
+			if (target?.Enter() ?? false)
+			{
+				return target;
+			}
+			
+			Enter();
+			return this;
 		}
 		
 		public static ApplicationState Initialize(ApplicationState target)
@@ -18,7 +23,7 @@ public class Interface : Control
 			return target;
 		}
 		
-		public abstract void Enter();
+		public abstract bool Enter();
 		public abstract void Exit();
 	}
 	
@@ -31,9 +36,10 @@ public class Interface : Control
 			this.splashScreen = splashScreen;
 		}
 		
-		public override void Enter()
+		public override bool Enter()
 		{
 			splashScreen.Visible = true;
+			return true;
 		}
 		
 		public override void Exit()
@@ -51,7 +57,7 @@ public class Interface : Control
 			this.projectEditor = projectEditor;
 		}
 		
-		public override void Enter()
+		public override bool Enter()
 		{
 			var project = new Project();
 			
@@ -59,6 +65,11 @@ public class Interface : Control
 			{
 				projectEditor.SetProject(project);
 				projectEditor.Visible = true;
+				return true;
+			}
+			else
+			{
+				return false;
 			}
 		}
 		
