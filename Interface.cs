@@ -92,14 +92,7 @@ public class Interface : Control
 		{
 			default:
 				break;
-			case NotificationWmMouseEnter:
-				break;
 			case NotificationWmMouseExit:
-				// Just to disable effects caused by mouse location not updating outside of window
-				/*var focused = GetFocusOwner();
-				Visible = false;
-				Visible = true;
-				focused?.GrabFocus();*/
 				Input.ParseInputEvent(new InputEventMouseMotion());
 				break;
 		}
