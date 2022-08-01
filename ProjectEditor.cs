@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using Glint;
 using Glint.Collections;
+using NativeServices;
 
 public abstract class EditorCommand
 {
@@ -566,11 +567,33 @@ public class MoveObjectCommand : EditorCommand
 
 public class Project
 {
+	public static string defaultPath = OS.GetEnvironment("USERPROFILE") + "\\Documents\\";
 	public List<Collection> collections;
+	public string path { get; private set; }
 	
 	public Project()
 	{
 		collections = new List<Collection>();
+	}
+	
+	public bool SaveAs()
+	{
+		var path = NativeFileDialog.SaveFileDialog("Save project as...", defaultPath + "project.carbon", new[] { "*.carbon" }, "Carbon Project");
+		if (path == "") return false;
+		
+		var dir = new Directory();
+		if (!dir.DirExists(path.GetBaseDir()))
+		{
+			dir.MakeDirRecursive(path.GetBaseDir());
+		}
+		
+		var file = new File();
+		file.Open(path, File.ModeFlags.Write);
+		file.Close();
+		
+		this.path = path;
+		
+		return true;
 	}
 }
 
