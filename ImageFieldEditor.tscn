@@ -52,7 +52,7 @@ Icon = ExtResource( 4 )
 KeepPressedOutside = true
 TintIcon = true
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="ImageContainer" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 46.0
 margin_right = 262.0
 margin_bottom = 127.0
@@ -63,7 +63,7 @@ custom_constants/margin_top = 1
 custom_constants/margin_left = 1
 custom_constants/margin_bottom = 1
 
-[node name="Image" type="TextureRect" parent="VBoxContainer/MarginContainer"]
+[node name="Image" type="TextureRect" parent="VBoxContainer/ImageContainer"]
 unique_name_in_owner = true
 margin_left = 1.0
 margin_top = 1.0
@@ -73,7 +73,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 0
 stretch_mode = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Image"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/ImageContainer/Image"]
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -84,7 +84,7 @@ custom_constants/margin_top = -1
 custom_constants/margin_left = -1
 custom_constants/margin_bottom = -1
 
-[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer/Image/MarginContainer"]
+[node name="Panel" type="Panel" parent="VBoxContainer/ImageContainer/Image/MarginContainer"]
 margin_left = -1.0
 margin_top = -1.0
 margin_right = 1.0
