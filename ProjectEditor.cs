@@ -1205,6 +1205,27 @@ public class ImageField : Field
 		image = new Image();
 		if (image.Load(path) == Error.Ok)
 		{
+			var size = Image.GetSize();
+			
+			// Limit size to 256x256, scaling up if less than half that amount
+			const float targetSize = 256.0f;
+			var interpolation = Image.Interpolation.Nearest;
+			var axis = Math.Max(size.x, size.y);
+			var scale = 1.0f;
+			
+			while (axis * scale < targetSize)
+			{
+				if (axis * scale * 2.0f > targetSize) break;
+				scale *= 2.0f;
+			}
+			
+			while (axis * scale > targetSize)
+			{
+				interpolation = Image.Interpolation.Lanczos;
+				scale /= 2.0f;
+			}
+			
+			image.Resize((int)(size.x * scale), (int)(size.y * scale), interpolation);
 			data = path;
 			return true;
 		}
