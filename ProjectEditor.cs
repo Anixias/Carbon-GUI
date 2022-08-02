@@ -1233,6 +1233,12 @@ public class ImageField : Field
 		}
 	}
 	
+	public override void RemoveEditor()
+	{
+		editor?.QueueFree();
+		editor = null;
+	}
+	
 	public override void SetEditorOverriding(bool overriding)
 	{
 		if (HasEditor())
