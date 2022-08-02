@@ -42,7 +42,7 @@ public class ImageFieldEditor : FieldEditor
 	public override void _Ready()
 	{
 		label = GetNode<Label>("VBoxContainer/Label");
-		image = GetNode<TextureRect>("VBoxContainer/Image");
+		image = GetNode<TextureRect>("%Image");
 		textInputBox = GetNode<TextInputBox>("VBoxContainer/Path/TextInputBox");
 		
 		UpdateState();
