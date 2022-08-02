@@ -97,12 +97,33 @@ public class ImageFieldEditor : FieldEditor
 	
 	public void OnBrowseButtonPressed()
 	{
+		if (field == null) return;
+		
 		var paths = NativeFileDialog.OpenFileDialog("Load Image", Project.defaultPath, new[] { "*.png" }, "Image Files", false);
 		if (paths == null || paths.Length == 0) return;
 		
 		var path = paths[0];
 		if (path == "" || path == null) return;
 		
-		field?.LoadImage(path);
+		field.Data = path;
+		EmitSignal(nameof(OnDataChanged), this);
+	}
+	
+	public void OnTextInputEntered(string newText)
+	{
+		if (field != null)
+		{
+			field.Data = newText;
+			EmitSignal(nameof(OnDataChanged), this);
+		}
+	}
+	
+	public void OnTextFocusExited()
+	{
+		if (field != null)
+		{
+			field.Data = textInputBox.Text;
+			EmitSignal(nameof(OnDataChanged), this);
+		}
 	}
 }
