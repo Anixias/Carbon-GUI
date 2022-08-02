@@ -1147,6 +1147,7 @@ public class ImageField : Field
 			var prevData = Data;
 			data = value;
 			
+			LoadImage(value);
 			UpdateEditor();
 			
 			if (Data != prevData && dataEditedCallback != null)
@@ -1186,15 +1187,21 @@ public class ImageField : Field
 	
 	public bool LoadImage(string path)
 	{
-		if (ResourceLoader.Exists(path, "Image"))
+		image = null;
+		
+		if (path == null || path == "") return false;
+		path = path.Replace("\\", "/");
+		
+		var file = new File();
+		if (!file.FileExists(path)) return false;
+		
+		image = new Image();
+		if (image.Load(path) == Error.Ok)
 		{
-			image = ResourceLoader.Load<Image>(path, "Image");
-			Data = path;
+			data = path;
 			return true;
 		}
 		
-		image = null;
-		Data = null;
 		return false;
 	}
 	
