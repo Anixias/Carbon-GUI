@@ -1178,18 +1178,18 @@ public class ImageField : Field
 		dataEditedCallback = callback;
 	}
 	
-	public void LoadImage(string path)
+	public bool LoadImage(string path)
 	{
 		if (ResourceLoader.Exists(path, "Image"))
 		{
 			image = ResourceLoader.Load<Image>(path, "Image");
-			data = path;
+			Data = path;
+			return true;
 		}
-		else
-		{
-			image = null;
-			data = "";
-		}
+		
+		image = null;
+		Data = null;
+		return false;
 	}
 	
 	public override FieldEditor CreateEditor(bool inherited)
