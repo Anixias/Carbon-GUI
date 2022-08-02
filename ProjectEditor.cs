@@ -1156,6 +1156,12 @@ public class ImageField : Field
 		}
 	}
 	
+	// Image
+	public Image Image
+	{
+		get => image;
+	}
+	
 	protected new ImageFieldEditor editor;
 	protected Image image;
 	
