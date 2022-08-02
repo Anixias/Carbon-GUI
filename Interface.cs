@@ -44,22 +44,19 @@ public class Interface : Control
 
 	private class ProjectEditorState : ApplicationState
 	{
+		private Project project;
 		private ProjectEditor projectEditor;
 
-		public ProjectEditorState(ProjectEditor projectEditor)
+		public ProjectEditorState(Project project, ProjectEditor projectEditor)
 		{
+			this.project = project;
 			this.projectEditor = projectEditor;
 		}
 
 		public override void Enter()
 		{
-			var project = new Project();
-
-			if (project.SaveAs())
-			{
-				projectEditor.SetProject(project);
-				projectEditor.Visible = true;
-			}
+			projectEditor.SetProject(project);
+			projectEditor.Visible = true;
 		}
 
 		public override void Exit()
@@ -124,7 +121,11 @@ public class Interface : Control
 
 	public void OnNewProject()
 	{
-		state = state.Transition(new ProjectEditorState(projectEditor));
+		var project = new Project();
+		if (project.SaveAs())
+		{
+			state = state.Transition(new ProjectEditorState(project, projectEditor));
+		}
 	}
 
 	public void OnCloseProject()
