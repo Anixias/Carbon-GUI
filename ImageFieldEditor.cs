@@ -6,6 +6,7 @@ public class ImageFieldEditor : FieldEditor
 	private TextureRect image;
 	private TextInputBox textInputBox;
 	private Label label;
+	private IconButton browseButton;
 	
 	public new ImageField Field
 	{
@@ -44,6 +45,7 @@ public class ImageFieldEditor : FieldEditor
 		label = GetNode<Label>("VBoxContainer/Label");
 		image = GetNode<TextureRect>("%Image");
 		textInputBox = GetNode<TextInputBox>("VBoxContainer/Path/TextInputBox");
+		browseButton = GetNode<Control>("VBoxContainer/Path/BrowseButton") as IconButton;
 		
 		UpdateState();
 	}
@@ -71,6 +73,7 @@ public class ImageFieldEditor : FieldEditor
 		if (textInputBox != null)
 		{
 			textInputBox.Text = field?.Data ?? "";
+			textInputBox.Editable = editable;
 		}
 		
 		if (image != null)
@@ -92,6 +95,11 @@ public class ImageFieldEditor : FieldEditor
 			label.Text = field?.Name ?? "";
 			var color = overriding ? new Color(0.11f, 1.0f, 0.61f, 1.0f) : new Color(1.0f, 1.0f, 1.0f, 1.0f);
 			label.Modulate = editable ? color : new Color(1.0f, 1.0f, 1.0f, 0.6f);
+		}
+		
+		if (browseButton != null)
+		{
+			browseButton.Enabled = editable;
 		}
 	}
 	
