@@ -1137,10 +1137,10 @@ public class ImageField : Field
 		{
 			if (data != null)
 			{
-				return data.ToString();
+				return data as string;
 			}
 			
-			return "";
+			return null;
 		}
 		set
 		{
@@ -1169,10 +1169,11 @@ public class ImageField : Field
 		return (HasEditor() ? editor : null);
 	}
 	
-	public ImageField(Glint.UniqueName name, Image data = null, DataEdited callback = null)
+	public ImageField(Glint.UniqueName name, string path = null, Image image = null, DataEdited callback = null)
 	{
 		this.name = name;
-		this.data = data;
+		this.data = path;
+		this.image = image;
 		type = FieldType.Image;
 		dataEditedCallback = callback;
 	}
@@ -1991,7 +1992,7 @@ public class ProjectEditor : HSplitContainer
 	
 	public void OnToolImagePressed()
 	{
-		var field = new ImageField("Image", null, OnFieldDataEdited);
+		var field = new ImageField("Image", null, null, OnFieldDataEdited);
 		PushCommand(new CreateFieldCommand(this, currentObject, toolImageIcon, field));
 		field.ListItem?.Edit();
 		designFilter.Text = "";
