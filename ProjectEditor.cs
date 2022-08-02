@@ -528,43 +528,6 @@ public class MoveObjectCommand : EditorCommand
 	}
 }
 
-/*public class MoveListItemCommand : EditorCommand
-{
-	private TreeList treeList;
-	private TreeListItem listItem;
-	private TreeListItem oldParent;
-	private TreeListItem newParent;
-	private int oldIndex;
-	private int newIndex;
-	
-	public MoveListItemCommand(ProjectEditor editor, TreeList treeList, TreeListItem listItem, TreeListItem oldParent, int oldIndex, int newIndex) : base(editor)
-	{
-		this.treeList = treeList;
-		this.listItem = listItem;
-		this.oldParent = oldParent;
-		this.newParent = listItem.Parent;
-		this.oldIndex = oldIndex;
-		this.newIndex = newIndex;
-	}
-	
-	public override void Execute()
-	{
-		treeList?.ReparentListItem(listItem, newParent, false);
-		treeList?.MoveListItem(listItem, newIndex, false);
-	}
-	
-	public override void Undo()
-	{
-		treeList?.ReparentListItem(listItem, oldParent, false);
-		treeList?.MoveListItem(listItem, oldIndex, false);
-	}
-	
-	public override string ToString()
-	{
-		return "Move List Item: '" + listItem.Text + "'";
-	}
-}*/
-
 public class Project
 {
 	public static string defaultPath = OS.GetEnvironment("USERPROFILE") + "\\Documents\\";
