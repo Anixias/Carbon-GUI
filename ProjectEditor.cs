@@ -1131,16 +1131,16 @@ public class BooleanField : Field
 public class ImageField : Field
 {
 	// Path
-	public new Image Data
+	public new string Data
 	{
 		get
 		{
 			if (data != null)
 			{
-				return data as Image;
+				return data.ToString();
 			}
 			
-			return null;
+			return "";
 		}
 		set
 		{
