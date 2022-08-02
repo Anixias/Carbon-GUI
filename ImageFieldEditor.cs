@@ -1,4 +1,5 @@
 using Godot;
+using NativeServices;
 
 public class ImageFieldEditor : FieldEditor
 {
@@ -67,6 +68,25 @@ public class ImageFieldEditor : FieldEditor
 	{
 		var editable = (!Inherited || Overriding);
 		
+		if (textInputBox != null)
+		{
+			textInputBox.Text = field?.Data ?? "";
+		}
+		
+		if (image != null)
+		{
+			if (field?.Image != null)
+			{
+				var imgTex = new ImageTexture();
+				imgTex.CreateFromImage(field?.Image, 0);
+				image.Texture = imgTex;
+			}
+			else
+			{
+				image.Texture = null;
+			}
+		}
+		
 		if (label != null)
 		{
 			label.Text = field?.Name ?? "";
@@ -77,6 +97,12 @@ public class ImageFieldEditor : FieldEditor
 	
 	public void OnBrowseButtonPressed()
 	{
+		var paths = NativeFileDialog.OpenFileDialog("Load Image", Project.defaultPath, new[] { "*.png" }, "Image Files", false);
+		if (paths == null || paths.Length == 0) return;
 		
+		var path = paths[0];
+		if (path == "" || path == null) return;
+		
+		field?.LoadImage(path);
 	}
 }
