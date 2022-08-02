@@ -1,9 +1,18 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://ImageFieldEditor.cs" type="Script" id=1]
 [ext_resource path="res://TextInputBox.tscn" type="PackedScene" id=2]
 [ext_resource path="res://IconButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Icons/folder-open.png" type="Texture" id=4]
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.133333, 0.164706, 0.188235, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0901961, 0.109804, 0.12549, 1 )
+anti_aliasing = false
 
 [node name="ImageFieldEditor" type="MarginContainer"]
 anchor_right = 1.0
@@ -43,13 +52,46 @@ Icon = ExtResource( 4 )
 KeepPressedOutside = true
 TintIcon = true
 
-[node name="Image" type="TextureRect" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 margin_top = 46.0
 margin_right = 262.0
-margin_bottom = 54.0
-rect_min_size = Vector2( 8, 8 )
-size_flags_horizontal = 5
-size_flags_vertical = 5
+margin_bottom = 127.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 1
+custom_constants/margin_top = 1
+custom_constants/margin_left = 1
+custom_constants/margin_bottom = 1
+
+[node name="Image" type="TextureRect" parent="VBoxContainer/MarginContainer"]
+unique_name_in_owner = true
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 1.0
+margin_bottom = 1.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+stretch_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MarginContainer/Image"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = -1
+custom_constants/margin_top = -1
+custom_constants/margin_left = -1
+custom_constants/margin_bottom = -1
+
+[node name="Panel" type="Panel" parent="VBoxContainer/MarginContainer/Image/MarginContainer"]
+margin_left = -1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 5 )
 
 [connection signal="focus_exited" from="VBoxContainer/Path/TextInputBox" to="." method="OnTextFocusExited"]
 [connection signal="text_entered" from="VBoxContainer/Path/TextInputBox" to="." method="OnTextInputEntered"]
