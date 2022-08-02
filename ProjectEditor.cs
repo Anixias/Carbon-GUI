@@ -1251,7 +1251,7 @@ public class ImageField : Field
 	{
 		var field = new ImageField(name);
 		field.data = data;
-		field.image = (Image)image.Duplicate(true);
+		field.image = (Image)image?.Duplicate(true);
 		field.dataEditedCallback = dataEditedCallback;
 		
 		return field;
