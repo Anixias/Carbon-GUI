@@ -3,6 +3,7 @@ using NativeServices;
 
 public class ImageFieldEditor : FieldEditor
 {
+	private MarginContainer imageContainer;
 	private TextureRect image;
 	private TextInputBox textInputBox;
 	private Label label;
@@ -43,6 +44,7 @@ public class ImageFieldEditor : FieldEditor
 	public override void _Ready()
 	{
 		label = GetNode<Label>("VBoxContainer/Label");
+		imageContainer = GetNode<MarginContainer>("VBoxContainer/ImageContainer");
 		image = GetNode<TextureRect>("%Image");
 		textInputBox = GetNode<TextInputBox>("VBoxContainer/Path/TextInputBox");
 		browseButton = GetNode<Control>("VBoxContainer/Path/BrowseButton") as IconButton;
@@ -80,12 +82,14 @@ public class ImageFieldEditor : FieldEditor
 		{
 			if (field?.Image != null)
 			{
+				imageContainer.Visible = true;
 				var imgTex = new ImageTexture();
 				imgTex.CreateFromImage(field?.Image, 0);
 				image.Texture = imgTex;
 			}
 			else
 			{
+				imageContainer.Visible = false;
 				image.Texture = null;
 			}
 		}
