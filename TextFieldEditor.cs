@@ -74,8 +74,30 @@ public class TextFieldEditor : FieldEditor
             dragging = false;
         }
     }
-    
-    protected override void FieldChanged()
+	
+	public override void _Input(InputEvent @event)
+	{
+		// If currently resizing, consume all mouse wheel events
+		if (dragging)
+		{
+			if (@event is InputEventMouseButton eventMouseButton)
+			{
+				switch (eventMouseButton.ButtonIndex)
+				{
+					default:
+						break;
+					case (int)ButtonList.WheelUp:
+					case (int)ButtonList.WheelDown:
+					case (int)ButtonList.WheelLeft:
+					case (int)ButtonList.WheelRight:
+						AcceptEvent();
+						break;
+				}
+			}
+		}
+	}
+	
+	protected override void FieldChanged()
     {
         UpdateState();
     }
