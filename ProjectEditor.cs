@@ -1185,6 +1185,13 @@ public class ImageField : Field
 		dataEditedCallback = callback;
 	}
 	
+	public override void SetData(object data)
+	{
+		this.data = data;
+		LoadImage(this.data as string);
+		UpdateEditor();
+	}
+	
 	public bool LoadImage(string path)
 	{
 		image = null;
