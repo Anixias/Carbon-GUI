@@ -1157,6 +1157,7 @@ public class ImageField : Field
 	}
 	
 	protected new ImageFieldEditor editor;
+	protected Image image;
 	
 	public override bool HasEditor()
 	{
@@ -1180,11 +1181,13 @@ public class ImageField : Field
 	{
 		if (ResourceLoader.Exists(path, "Image"))
 		{
-			data = ResourceLoader.Load<Image>(path, "Image");
+			image = ResourceLoader.Load<Image>(path, "Image");
+			data = path;
 		}
 		else
 		{
-			data = null;
+			image = null;
+			data = "";
 		}
 	}
 	
@@ -1221,6 +1224,7 @@ public class ImageField : Field
 	{
 		var field = new ImageField(name);
 		field.data = data;
+		field.image = (Image)image.Duplicate(true);
 		field.dataEditedCallback = dataEditedCallback;
 		
 		return field;
