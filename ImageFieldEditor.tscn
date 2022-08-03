@@ -48,6 +48,7 @@ margin_left = 232.0
 margin_right = 262.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 30, 24 )
+hint_tooltip = "Browse..."
 Icon = ExtResource( 4 )
 KeepPressedOutside = true
 TintIcon = true
