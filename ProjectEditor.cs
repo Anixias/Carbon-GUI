@@ -8,10 +8,12 @@ using NativeServices;
 
 public abstract class EditorCommand
 {
+	protected readonly Guid guid;
 	protected ProjectEditor editor;
 	
 	public EditorCommand(ProjectEditor editor)
 	{
+		guid = Guid.NewGuid();
 		this.editor = editor;
 	}
 	
