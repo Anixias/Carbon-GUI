@@ -7,9 +7,9 @@ public class Project
 {
 	public static readonly Version version = new Version("0.1");
 	public List<Collection> collections;
-	public string path { get; private set; } = defaultPath + "project.carbon";
+	public string path { get; private set; } = DefaultPath + "project.carbon";
 	
-	private static readonly string defaultPath = OS.GetEnvironment("USERPROFILE") + "\\Documents\\";
+	public static readonly string DefaultPath = OS.GetEnvironment("USERPROFILE") + "\\Documents\\";
 	
 	public Project()
 	{
@@ -77,7 +77,7 @@ public class Project
 	
 	public bool Open()
 	{
-		var newPaths = NativeFileDialog.OpenFileDialog("Open project...", defaultPath, new[] { "*.carbon" }, "Carbon Project");
+		var newPaths = NativeFileDialog.OpenFileDialog("Open project...", DefaultPath, new[] { "*.carbon" }, "Carbon Project");
 		if (newPaths == null) return false;
 		
 		var newPath = newPaths[0];

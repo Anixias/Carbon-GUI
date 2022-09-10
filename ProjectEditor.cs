@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using System.Collections.Generic;
 using Glint;
 using Glint.Collections;
@@ -19,6 +18,13 @@ public class ProjectEditor : HSplitContainer
 	private Collection currentCollection;
 	private Object currentObject;
 	private History<EditorCommand> commands = new History<EditorCommand>();
+	
+	private int lastSavedHashCode;
+	
+	public bool HasUnsavedChanges
+	{
+		get => commands.GetHashCode() != lastSavedHashCode;
+	}
 	 
 	private List<Collection> Collections
 	{
@@ -182,6 +188,11 @@ public class ProjectEditor : HSplitContainer
 		fieldObjectLabels = new Dictionary<Object, Label>();
 	}
 	
+	public void ProjectSaved()
+	{
+		lastSavedHashCode = commands.GetHashCode();
+	}
+	
 	public void Undo()
 	{
 		if (commands.HasUndo())
@@ -241,6 +252,8 @@ public class ProjectEditor : HSplitContainer
 		{
 			LoadCollections();
 		}
+		
+		ProjectSaved();
 		
 		EmitSignal(nameof(UpdateProjectStatus), HasProject());
 	}

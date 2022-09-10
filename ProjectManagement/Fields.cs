@@ -715,6 +715,11 @@ public class ImageField : Field
 		
 		return field;
 	}
+	
+	public override object WriteData()
+	{
+		return Data;
+	}
 }
 
 #region Editor Commands
