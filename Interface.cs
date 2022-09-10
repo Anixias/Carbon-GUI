@@ -128,6 +128,15 @@ public class Interface : Control
 		}
 	}
 	
+	public void OnOpenProject()
+	{
+		var project = new Project();
+		if (project.Open())
+		{
+			state = state.Transition(new ProjectEditorState(project, projectEditor));
+		}
+	}
+	
 	public void OnCloseProject()
 	{
 		state = state.Transition(new SplashScreenState(splashScreen));

@@ -57,3 +57,4 @@ margin_bottom = 836.0
 
 [connection signal="CloseProject" from="MarginContainer/VBoxContainer/MenuBar" to="." method="OnCloseProject"]
 [connection signal="NewProject" from="MarginContainer/VBoxContainer/MenuBar" to="." method="OnNewProject"]
+[connection signal="OpenProject" from="MarginContainer/VBoxContainer/MenuBar" to="." method="OnOpenProject"]
