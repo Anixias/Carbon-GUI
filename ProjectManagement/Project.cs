@@ -83,7 +83,7 @@ public class Project
 		collections.Clear();
 	}
 	
-	protected string Write()
+	protected Dictionary<string, object> Write()
 	{
 		var data = new Dictionary<string, object>();
 		var collectionData = new Dictionary<string, object>();
@@ -96,6 +96,6 @@ public class Project
 		data["version"] = version.ToString();
 		data["collections"] = collectionData;
 		
-		return JSON.Print(data, "\t");
+		return data;
 	}
 }

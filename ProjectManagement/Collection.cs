@@ -83,7 +83,7 @@ public class Collection
 		objects.Clear();
 	}
 	
-	public string Write()
+	public Dictionary<string, object> Write()
 	{
 		var data = new Dictionary<string, object>();
 		var objectData = new Dictionary<string, object>();
@@ -98,7 +98,7 @@ public class Collection
 		data["name"] = name.ToString();
 		data["objects"] = objectData;
 		
-		return JSON.Print(data, "\t");
+		return data;
 	}
 }
 
