@@ -93,7 +93,7 @@ public class Collection
 			objectData[@object.ID.ToString()] = @object.Write();
 		}
 		
-		data["name"] = name;
+		data["name"] = name.ToString();
 		data["objects"] = objectData;
 		
 		return JSON.Print(data, "\t");
