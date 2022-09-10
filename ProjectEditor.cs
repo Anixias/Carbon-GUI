@@ -541,7 +541,7 @@ public class ProjectEditor : HSplitContainer
 	
 	public void OnToolImagePressed()
 	{
-		var field = new ImageField("Image", null, OnFieldDataEdited);
+		var field = new ImageField("Image", null, null, OnFieldDataEdited);
 		PushCommand(new CreateFieldCommand(this, currentObject, toolImageIcon, field));
 		field.ListItem?.Edit();
 		designFilter.Text = "";
@@ -1783,8 +1783,8 @@ public class ProjectEditor : HSplitContainer
 	
 	private void RefreshUI()
 	{
-		objAddType.Enabled = (currentCollection != null/* && (currentObject == null || currentObject.isType)*/);
-		objAddObject.Enabled = (currentCollection != null/* && (currentObject == null || currentObject.isType)*/);
+		objAddType.Enabled = (currentCollection != null/* && (currentObject == null || currentObject.IsType)*/);
+		objAddObject.Enabled = (currentCollection != null/* && (currentObject == null || currentObject.IsType)*/);
 		
 		//toolBar.Visible = (currentCollection != null && currentObject != null);
 		//dataWindows.Visible = (currentCollection != null && currentObject != null);

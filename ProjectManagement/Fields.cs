@@ -569,13 +569,13 @@ public class BooleanField : Field
 public class ImageField : Field
 {
 	// Path
-	public new Image Data
+	public new string Data
 	{
 		get
 		{
 			if (data != null)
 			{
-				return data as Image;
+				return data as string;
 			}
 			
 			return null;
@@ -585,6 +585,7 @@ public class ImageField : Field
 			var prevData = Data;
 			data = value;
 			
+			LoadImage(value);
 			UpdateEditor();
 			
 			if (Data != prevData && dataEditedCallback != null)
@@ -594,37 +595,107 @@ public class ImageField : Field
 		}
 	}
 	
-	public override object WriteData()
+	// Image
+	public Image Image
 	{
-		return null;
+		get => image;
 	}
 	
-	public ImageField(UniqueName name, Image data = null, DataEdited callback = null)
+	protected new ImageFieldEditor editor;
+	protected Image image;
+	
+	public override bool HasEditor()
+	{
+		return (editor != null && Godot.Object.IsInstanceValid(editor));
+	}
+	
+	public override FieldEditor GetEditor()
+	{
+		return (HasEditor() ? editor : null);
+	}
+	
+	public ImageField(Glint.UniqueName name, string path = null, Image image = null, DataEdited callback = null)
 	{
 		this.name = name;
-		this.data = data;
+		this.data = path;
+		this.image = image;
 		type = FieldType.Image;
 		dataEditedCallback = callback;
 	}
 	
-	public void LoadImage(string path)
+	public override void SetData(object data)
 	{
-		if (ResourceLoader.Exists(path, "Image"))
+		this.data = data;
+		LoadImage(this.data as string);
+		UpdateEditor();
+	}
+	
+	public bool LoadImage(string path)
+	{
+		image = null;
+		
+		if (path == null || path == "") return false;
+		path = path.Replace("\\", "/");
+		
+		var file = new File();
+		if (!file.FileExists(path)) return false;
+		
+		image = new Image();
+		if (image.Load(path) == Error.Ok)
 		{
-			data = ResourceLoader.Load<Image>(path, "Image");
+			var size = Image.GetSize();
+			
+			// Limit size to 256x256, scaling up if less than half that amount
+			const float targetSize = 256.0f;
+			var interpolation = Image.Interpolation.Nearest;
+			var axis = Math.Max(size.x, size.y);
+			var scale = 1.0f;
+			
+			while (axis * scale < targetSize)
+			{
+				if (axis * scale * 2.0f > targetSize) break;
+				scale *= 2.0f;
+			}
+			
+			while (axis * scale > targetSize)
+			{
+				interpolation = Image.Interpolation.Lanczos;
+				scale /= 2.0f;
+			}
+			
+			image.Resize((int)(size.x * scale), (int)(size.y * scale), interpolation);
+			data = path;
+			return true;
 		}
-		else
-		{
-			data = null;
-		}
+		
+		return false;
 	}
 	
 	public override FieldEditor CreateEditor(bool inherited)
 	{
 		RemoveEditor();
 		
-		var editor = ResourceLoader.Load<PackedScene>("res://StringFieldEditor.tscn");
-		return editor.Instance<StringFieldEditor>();
+		var editorScene = ResourceLoader.Load<PackedScene>("res://ImageFieldEditor.tscn");
+		var editorInstance = editorScene.Instance<ImageFieldEditor>();
+		editorInstance.Field = this;
+		editorInstance.Inherited = inherited;
+		
+		editor = editorInstance;
+		return editor;
+	}
+	
+	public override void UpdateEditor()
+	{
+		if (HasEditor())
+		{
+			editor.UpdateState();
+		}
+	}
+	
+	public override void RemoveEditor()
+	{
+		editor?.QueueFree();
+		editor = null;
 	}
 	
 	public override void SetEditorOverriding(bool overriding)
@@ -634,14 +705,20 @@ public class ImageField : Field
 			editor.Overriding = overriding;
 		}
 	}
-
+	
 	public override Field Duplicate()
 	{
 		var field = new ImageField(name);
 		field.data = data;
+		field.image = (Image)image?.Duplicate(true);
 		field.dataEditedCallback = dataEditedCallback;
 		
 		return field;
+	}
+	
+	public override object WriteData()
+	{
+		return Data;
 	}
 }
 
