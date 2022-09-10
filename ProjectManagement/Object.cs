@@ -182,7 +182,7 @@ public class Object
 		}*/
 		
 		string parentID = null;
-		if (parent != null && !parent.IsRoot)
+		if (parent != null)
 		{
 			parentID = parent.ID.ToString();
 		}

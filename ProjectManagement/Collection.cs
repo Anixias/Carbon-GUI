@@ -91,8 +91,6 @@ public class Collection
 		
 		foreach(var @object in objects)
 		{
-			if (@object == root) continue;
-			
 			objectData[@object.ID.ToString()] = @object.Write();
 		}
 		
