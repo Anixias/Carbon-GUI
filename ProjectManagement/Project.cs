@@ -93,7 +93,7 @@ public class Project
 			collectionData[collection.ID.ToString()] = collection.Write();
 		}
 		
-		data["version"] = version;
+		data["version"] = version.ToString();
 		data["collections"] = collectionData;
 		
 		return JSON.Print(data, "\t");
