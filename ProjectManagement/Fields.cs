@@ -48,10 +48,8 @@ public abstract class Field
 		UpdateEditor();
 	}
 	
-	public string ID
-	{
-		get => id;
-	}
+	private Guid guid = Guid.NewGuid();
+	public ref readonly Guid ID { get => ref guid; }
 	
 	public UniqueName Name
 	{
@@ -158,6 +156,22 @@ public abstract class Field
 	{
 		linkedFields.Remove(link);
 	}
+	
+	public Dictionary<string, object> Write()
+	{
+		var data = new Dictionary<string, object>();
+		
+		data["name"] = name.ToString();
+		data["type"] = type.ToString();
+		data["data"] = WriteData();
+		
+		return data;
+	}
+	
+	public virtual object WriteData()
+	{
+		return data.ToString();
+	}
 }
 
 public class StringField : Field
@@ -185,6 +199,11 @@ public class StringField : Field
 				dataEditedCallback(this, prevData);
 			}
 		}
+	}
+	
+	public override object WriteData()
+	{
+		return Data;
 	}
 	
 	public List<string> Options;
@@ -283,6 +302,11 @@ public class TextField : Field
 		}
 	}
 	
+	public override object WriteData()
+	{
+		return Data;
+	}
+	
 	public TextField(UniqueName name, string data = "", DataEdited callback = null)
 	{
 		this.name = name;
@@ -373,6 +397,11 @@ public class NumberField : Field
 				dataEditedCallback(this, prevData);
 			}
 		}
+	}
+	
+	public override object WriteData()
+	{
+		return Data;
 	}
 	
 	public NumberField(UniqueName name, double data = 0d, DataEdited callback = null)
@@ -467,6 +496,11 @@ public class BooleanField : Field
 		}
 	}
 	
+	public override object WriteData()
+	{
+		return Data;
+	}
+	
 	public BooleanField(UniqueName name, bool data = false, DataEdited callback = null)
 	{
 		this.name = name;
@@ -558,6 +592,11 @@ public class ImageField : Field
 				dataEditedCallback(this, prevData);
 			}
 		}
+	}
+	
+	public override object WriteData()
+	{
+		return null;
 	}
 	
 	public ImageField(UniqueName name, Image data = null, DataEdited callback = null)

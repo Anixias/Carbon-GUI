@@ -175,11 +175,24 @@ public class Object
 	public Dictionary<string, object> Write()
 	{
 		var data = new Dictionary<string, object>();
+		var fieldData = new Dictionary<string, object>();
+		var fieldOverrideData = new Dictionary<string, Dictionary<string, object>>();
 		
-		/*foreach(var @object in objects)
+		foreach(var field in fields)
 		{
-			data[@object.ID.ToString()] = @object.Write();
-		}*/
+			fieldData[field.ID.ToString()] = field.Write();
+		}
+		
+		foreach(var fieldOverride in fieldOverrides)
+		{
+			var id = fieldOverride.Value.ID.ToString();
+			var inheritId = fieldOverride.Key.ID.ToString();
+			fieldOverrideData[id] = new Dictionary<string, object>()
+			{
+				{ "override", inheritId },
+				{ "data", fieldOverride.Value.WriteData() }
+			};
+		}
 		
 		string parentID = null;
 		if (parent != null)
@@ -190,6 +203,8 @@ public class Object
 		data["name"] = name.ToString();
 		data["parent"] = parentID;
 		data["is_type"] = IsType;
+		data["fields"] = fieldData;
+		data["fieldOverrides"] = fieldOverrideData;
 		
 		return data;
 	}
