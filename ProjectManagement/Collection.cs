@@ -87,14 +87,15 @@ public class Collection
 	public Dictionary<string, object> Write()
 	{
 		var data = new Dictionary<string, object>();
-		var objectData = new Dictionary<string, object>();
+		var objectData = new List<object>();
 		
 		foreach(var @object in objects)
 		{
-			objectData[@object.ID.ToString()] = @object.Write();
+			objectData.Add(@object.Write());
 		}
 		
 		data["name"] = name.ToString();
+		data["id"] = ID.ToString();
 		data["objects"] = objectData;
 		
 		return data;

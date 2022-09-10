@@ -162,6 +162,7 @@ public abstract class Field
 		var data = new Dictionary<string, object>();
 		
 		data["name"] = name.ToString();
+		data["id"] = ID.ToString();
 		data["type"] = type.ToString();
 		data["data"] = WriteData();
 		

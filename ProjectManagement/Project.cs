@@ -100,17 +100,18 @@ public class Project
 	
 	protected void Read(string data)
 	{
+		var result = JSON.Parse(data);
 		collections.Clear();
 	}
 	
 	protected Dictionary<string, object> Write()
 	{
 		var data = new Dictionary<string, object>();
-		var collectionData = new Dictionary<string, object>();
+		var collectionData = new List<object>();
 		
 		foreach(var collection in collections)
 		{
-			collectionData[collection.ID.ToString()] = collection.Write();
+			collectionData.Add(collection.Write());
 		}
 		
 		data["version"] = version.ToString();
