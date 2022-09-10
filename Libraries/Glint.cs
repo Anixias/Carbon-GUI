@@ -101,6 +101,20 @@ namespace Glint
 				undoHistory.Clear();
 				redoHistory.Clear();
 			}
+
+			public override int GetHashCode()
+			{
+				int offset = 0;
+				uint currentCode = 0u;
+				foreach(var value in undoHistory)
+				{
+					var next = (uint)value.GetHashCode();
+					currentCode ^= (next << offset) | (next >> (-offset));
+					offset += 2;
+				}
+				
+				return (int)currentCode;
+			}
 		}
 		
 		public class Tree<T> : IEnumerable<T>

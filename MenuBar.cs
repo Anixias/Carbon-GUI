@@ -51,14 +51,14 @@ public class MenuBar : HBoxContainer
 		itemIndices.Add("Project::New", idx);
 		SetEnabled(mbProject, idx, true); // Always enabled
         
-        idx = AddShortcut(mbProject, "Open Project...", null, KeyList.O, true);
+        idx = AddShortcut(mbProject, "Open Project...", nameof(OnProjectOpen), KeyList.O, true);
 		itemIndices.Add("Project::Open", idx);
 		SetEnabled(mbProject, idx, true); // Always enabled
         
-        idx = AddShortcut(mbProject, "Save Project", null, KeyList.S, true);
+        idx = AddShortcut(mbProject, "Save Project", nameof(OnProjectSave), KeyList.S, true);
 		itemIndices.Add("Project::Save", idx);
         
-        idx = AddShortcut(mbProject, "Save Project As...", null, KeyList.S, true, true);
+        idx = AddShortcut(mbProject, "Save Project As...", nameof(OnProjectSaveAs), KeyList.S, true, true);
 		itemIndices.Add("Project::SaveAs", idx);
         
         idx = AddShortcut(mbProject, "Close Project", nameof(OnProjectClose), KeyList.W, true, true);
@@ -191,17 +191,17 @@ public class MenuBar : HBoxContainer
 	
 	private void OnProjectOpen()
 	{
-		//EmitSignal(nameof(NewProject));
+		EmitSignal(nameof(OpenProject));
 	}
 	
 	private void OnProjectSave()
 	{
-		//EmitSignal(nameof(NewProject));
+		EmitSignal(nameof(SaveProject));
 	}
 	
 	private void OnProjectSaveAs()
 	{
-		//EmitSignal(nameof(NewProject));
+		EmitSignal(nameof(SaveProjectAs));
 	}
 	
 	private void OnProjectClose()

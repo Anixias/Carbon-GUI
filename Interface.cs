@@ -8,13 +8,8 @@ public class Interface : Control
 		public ApplicationState Transition(ApplicationState target)
 		{
 			Exit();
-			if (target?.Enter() ?? false)
-			{
-				return target;
-			}
-			
-			Enter();
-			return this;
+			target?.Enter();
+			return target;
 		}
 		
 		public static ApplicationState Initialize(ApplicationState target)
@@ -23,7 +18,7 @@ public class Interface : Control
 			return target;
 		}
 		
-		public abstract bool Enter();
+		public abstract void Enter();
 		public abstract void Exit();
 	}
 	
@@ -36,10 +31,9 @@ public class Interface : Control
 			this.splashScreen = splashScreen;
 		}
 		
-		public override bool Enter()
+		public override void Enter()
 		{
 			splashScreen.Visible = true;
-			return true;
 		}
 		
 		public override void Exit()
@@ -50,25 +44,19 @@ public class Interface : Control
 	
 	private class ProjectEditorState : ApplicationState
 	{
-		private ProjectEditor projectEditor;
+		public readonly Project project;
+		public readonly ProjectEditor projectEditor;
 		
-		public ProjectEditorState(ProjectEditor projectEditor)
+		public ProjectEditorState(Project project, ProjectEditor projectEditor)
 		{
+			this.project = project;
 			this.projectEditor = projectEditor;
 		}
 		
-		public override bool Enter()
+		public override void Enter()
 		{
-			var project = new Project();
-			
-			if (project.SaveAs())
-			{
-				projectEditor.SetProject(project);
-				projectEditor.Visible = true;
-				return true;
-			}
-			
-			return false;
+			projectEditor.SetProject(project);
+			projectEditor.Visible = true;
 		}
 		
 		public override void Exit()
@@ -86,7 +74,7 @@ public class Interface : Control
 	public override void _Ready()
 	{
 		OS.WindowMaximized = true;
-
+		
 		splashScreen = GetNode<CenterContainer>("MarginContainer/VBoxContainer/SplashScreen");
 		projectEditor = GetNode<ProjectEditor>("MarginContainer/VBoxContainer/ProjectEditor");
 		menuBar = GetNode<HBoxContainer>("MarginContainer/VBoxContainer/MenuBar") as MenuBar;
@@ -99,7 +87,19 @@ public class Interface : Control
 		
 		state = ApplicationState.Initialize(new SplashScreenState(splashScreen));
 	}
-	
+
+	public override void _Process(float delta)
+	{
+		var title = "Carbon GUI";
+		
+		if (state is ProjectEditorState projectEditorState)
+		{
+			title = projectEditorState.project.path.GetFile() + (projectEditorState.projectEditor.HasUnsavedChanges ? "*" : "") + " - " + title;
+		}
+		
+		OS.SetWindowTitle(title);
+	}
+
 	public override void _Notification(int notification)
 	{
 		switch(notification)
@@ -133,11 +133,42 @@ public class Interface : Control
 	
 	public void OnNewProject()
 	{
-		state = state.Transition(new ProjectEditorState(projectEditor));
+		var project = new Project();
+		if (project.SaveAs())
+		{
+			state = state.Transition(new ProjectEditorState(project, projectEditor));
+		}
+	}
+	
+	public void OnOpenProject()
+	{
+		var project = new Project();
+		if (project.Open())
+		{
+			state = state.Transition(new ProjectEditorState(project, projectEditor));
+		}
 	}
 	
 	public void OnCloseProject()
 	{
 		state = state.Transition(new SplashScreenState(splashScreen));
+	}
+	
+	public void OnSaveProject()
+	{
+		if (state is ProjectEditorState projectEditorState)
+		{
+			projectEditorState.project.Save();
+			projectEditorState.projectEditor.ProjectSaved();
+		}
+	}
+	
+	public void OnSaveProjectAs()
+	{
+		if (state is ProjectEditorState projectEditorState)
+		{
+			projectEditorState.project.SaveAs();
+			projectEditorState.projectEditor.ProjectSaved();
+		}
 	}
 }
