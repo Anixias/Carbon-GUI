@@ -47,6 +47,7 @@ public class Collection
 		
 		this.root = root ?? new Object(null, null, true);
 		objects.Add(this.root);
+		this.root.IsRoot = true;
 		
 		if (listItem != null)
 		{

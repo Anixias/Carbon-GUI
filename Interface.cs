@@ -44,8 +44,8 @@ public class Interface : Control
 	
 	private class ProjectEditorState : ApplicationState
 	{
-		private Project project;
-		private ProjectEditor projectEditor;
+		public readonly Project project;
+		public readonly ProjectEditor projectEditor;
 		
 		public ProjectEditorState(Project project, ProjectEditor projectEditor)
 		{
@@ -87,7 +87,19 @@ public class Interface : Control
 		
 		state = ApplicationState.Initialize(new SplashScreenState(splashScreen));
 	}
-	
+
+	public override void _Process(float delta)
+	{
+		var title = "Carbon GUI";
+		
+		if (state is ProjectEditorState projectEditorState)
+		{
+			title = projectEditorState.project.path.GetFile() + (projectEditorState.projectEditor.HasUnsavedChanges ? "*" : "") + " - " + title;
+		}
+		
+		OS.SetWindowTitle(title);
+	}
+
 	public override void _Notification(int notification)
 	{
 		switch(notification)
@@ -140,5 +152,23 @@ public class Interface : Control
 	public void OnCloseProject()
 	{
 		state = state.Transition(new SplashScreenState(splashScreen));
+	}
+	
+	public void OnSaveProject()
+	{
+		if (state is ProjectEditorState projectEditorState)
+		{
+			projectEditorState.project.Save();
+			projectEditorState.projectEditor.ProjectSaved();
+		}
+	}
+	
+	public void OnSaveProjectAs()
+	{
+		if (state is ProjectEditorState projectEditorState)
+		{
+			projectEditorState.project.SaveAs();
+			projectEditorState.projectEditor.ProjectSaved();
+		}
 	}
 }

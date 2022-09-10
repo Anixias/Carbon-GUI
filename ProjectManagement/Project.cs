@@ -9,18 +9,11 @@ public class Project
 	public List<Collection> collections;
 	public string path { get; private set; } = defaultPath + "project.carbon";
 	
-	public bool HasUnsavedChanges
-	{
-		get => lastHashCode != collections.GetHashCode();
-	}
-	
 	private static readonly string defaultPath = OS.GetEnvironment("USERPROFILE") + "\\Documents\\";
-	private int lastHashCode;
 	
 	public Project()
 	{
 		collections = new List<Collection>();
-		lastHashCode = collections.GetHashCode();
 	}
 	
 	public bool SaveAs()
@@ -37,20 +30,49 @@ public class Project
 		}
 		
 		path = newPath;
-		Save();
+		Save(false);
 		
 		return true;
 	}
 	
 	public void Save()
 	{
+		Save(true);
+	}
+	
+	private void Save(bool saveExistingData)
+	{
 		var file = new File();
+		var existingData = "";
+		
+		// First, read the contents in case there is a crash during the save
+		if (saveExistingData)
+		{
+			file.Open(path, File.ModeFlags.Read);
+			existingData = file.GetAsText();
+			file.Close();
+		}
+		
+		// Re-open the file for writing
 		file.Open(path, File.ModeFlags.Write);
 		
-		file.StoreString(Write());
-		
-		file.Close();
-		lastHashCode = collections.GetHashCode();
+		try
+		{
+			file.StoreString(JSON.Print(Write(), "\t"));
+		}
+		catch(Exception e)
+		{
+			GD.PrintErr(e.Message);
+			
+			if (saveExistingData)
+			{
+				file.StoreString(existingData);
+			}
+		}
+		finally
+		{
+			file.Close();
+		}
 	}
 	
 	public bool Open()
@@ -69,8 +91,6 @@ public class Project
 			file.Open(path, File.ModeFlags.Read);
 			Read(file.GetAsText());
 			file.Close();
-			
-			lastHashCode = collections.GetHashCode();
 			
 			return true;
 		}

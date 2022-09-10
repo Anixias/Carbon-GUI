@@ -18,6 +18,13 @@ public class ProjectEditor : HSplitContainer
 	private Collection currentCollection;
 	private Object currentObject;
 	private History<EditorCommand> commands = new History<EditorCommand>();
+	
+	private int lastSavedHashCode;
+	
+	public bool HasUnsavedChanges
+	{
+		get => commands.GetHashCode() != lastSavedHashCode;
+	}
 	 
 	private List<Collection> Collections
 	{
@@ -181,6 +188,11 @@ public class ProjectEditor : HSplitContainer
 		fieldObjectLabels = new Dictionary<Object, Label>();
 	}
 	
+	public void ProjectSaved()
+	{
+		lastSavedHashCode = commands.GetHashCode();
+	}
+	
 	public void Undo()
 	{
 		if (commands.HasUndo())
@@ -240,6 +252,8 @@ public class ProjectEditor : HSplitContainer
 		{
 			LoadCollections();
 		}
+		
+		ProjectSaved();
 		
 		EmitSignal(nameof(UpdateProjectStatus), HasProject());
 	}
@@ -767,7 +781,7 @@ public class ProjectEditor : HSplitContainer
 		{
 			var parentItem = parent.ListItem;
 			
-			var btn = @object.isType ? objectList.AddListItem(parentItem, @object.Name, typeOpenIcon, typeIcon, true)
+			var btn = @object.IsType ? objectList.AddListItem(parentItem, @object.Name, typeOpenIcon, typeIcon, true)
 									 : objectList.AddListItem(parentItem, @object.Name, objectIcon, null, false);
 			parentItem.Collapsed = false;
 			@object.ListItem = btn;
@@ -818,7 +832,7 @@ public class ProjectEditor : HSplitContainer
 		{
 			var parentItem = parent?.ListItem;
 			
-			var btn = @object.isType ? objectList.AddListItem(parentItem, @object.Name, typeOpenIcon, typeIcon, true)
+			var btn = @object.IsType ? objectList.AddListItem(parentItem, @object.Name, typeOpenIcon, typeIcon, true)
 									 : objectList.AddListItem(parentItem, @object.Name, objectIcon, null, false);
 			parentItem.Collapsed = false;
 			@object.ListItem = btn;
@@ -829,7 +843,7 @@ public class ProjectEditor : HSplitContainer
 			{
 				parentItem = child.Parent?.ListItem;
 				
-				btn = child.isType ? objectList.AddListItem(parentItem, child.Name, typeOpenIcon, typeIcon, true)
+				btn = child.IsType ? objectList.AddListItem(parentItem, child.Name, typeOpenIcon, typeIcon, true)
 								   : objectList.AddListItem(parentItem, child.Name, objectIcon, null, false);
 				parentItem.Collapsed = false;
 				child.ListItem = btn;
@@ -1244,7 +1258,7 @@ public class ProjectEditor : HSplitContainer
 		foreach(var item in collection.objects)
 		{
 			if (item == obj) continue;
-			if (item.isType != obj.isType) continue;
+			if (item.IsType != obj.IsType) continue;
 			
 			if (item?.Name.text == obj.Name.text)
 			{
@@ -1456,7 +1470,7 @@ public class ProjectEditor : HSplitContainer
 				parent = obj.Parent.ListItem;
 			}
 			
-			if (obj.isType)
+			if (obj.IsType)
 			{
 				obj.ListItem = objectList.AddListItem(parent, obj.Name, typeOpenIcon, typeIcon, true);
 			}
@@ -1518,7 +1532,7 @@ public class ProjectEditor : HSplitContainer
 		var objParent = obj;
 		while(objParent != null)
 		{
-			if (objParent != obj || obj.isType)
+			if (objParent != obj || obj.IsType)
 			{
 				objects.Add(objParent);
 			}
@@ -1559,7 +1573,7 @@ public class ProjectEditor : HSplitContainer
 			var iconOpen = typeOpenIcon;
 			var iconClosed = typeIcon;
 			
-			if (!_obj.isType)
+			if (!_obj.IsType)
 			{
 				iconOpen = objectIcon;
 				iconClosed = objectIcon;
@@ -1648,7 +1662,7 @@ public class ProjectEditor : HSplitContainer
 				}
 			}
 			
-			if (inherited && _obj.isType && (obj.isType || _obj != obj.Parent))
+			if (inherited && _obj.IsType && (obj.IsType || _obj != obj.Parent))
 			{
 				var separator = new HSeparator();
 				fieldList.AddChild(separator);
@@ -1790,7 +1804,7 @@ public class ProjectEditor : HSplitContainer
 			designFilter.Editable = true;
 			designFilter.PlaceholderAlpha = 0.6f;
 			
-			SetToolsEnabled(currentObject.isType);
+			SetToolsEnabled(currentObject.IsType);
 		}
 		
 		if (currentCollection == null)

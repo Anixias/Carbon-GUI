@@ -9,7 +9,8 @@ public class Object
 	private TreeListItem listItem;
 	private Object parent;
 	private List<Object> children;
-	public readonly bool isType;
+	public bool IsRoot;
+	public readonly bool IsType;
 	public List<Field> fields;
 	public Dictionary<Field, Field> fieldOverrides;
 	
@@ -108,7 +109,7 @@ public class Object
 		
 		ListItem = listItem;
 		Parent = parent;
-		this.isType = isType;
+		this.IsType = isType;
 		
 		if (listItem != null)
 		{
@@ -171,18 +172,26 @@ public class Object
 		
 	}
 	
-	public string Write()
+	public Dictionary<string, object> Write()
 	{
-		throw new NotImplementedException();
+		var data = new Dictionary<string, object>();
 		
-		/*var data = new Dictionary<string, object>();
-		
-		foreach(var @object in objects)
+		/*foreach(var @object in objects)
 		{
 			data[@object.ID.ToString()] = @object.Write();
+		}*/
+		
+		string parentID = null;
+		if (parent != null && !parent.IsRoot)
+		{
+			parentID = parent.ID.ToString();
 		}
 		
-		return JSON.Print(data, "\t");*/
+		data["name"] = name.ToString();
+		data["parent"] = parentID;
+		data["is_type"] = IsType;
+		
+		return data;
 	}
 }
 
@@ -200,7 +209,7 @@ public class AddObjectCommand : EditorCommand
 		this.parent = parent ?? collection?.root;
 		this.obj = obj;
 		
-		while(this.parent != null && !this.parent.isType)
+		while(this.parent != null && !this.parent.IsType)
 		{
 			this.parent = this.parent.Parent;
 		}
@@ -311,12 +320,12 @@ public class MoveObjectCommand : EditorCommand
 		this.newParent = newParent ?? collection?.root;
 		this.newLocalIndex = newLocalIndex;
 		
-		while(this.oldParent != null && !this.oldParent.isType)
+		while(this.oldParent != null && !this.oldParent.IsType)
 		{
 			this.oldParent = this.oldParent.Parent;
 		}
 		
-		while(this.newParent != null && !this.newParent.isType)
+		while(this.newParent != null && !this.newParent.IsType)
 		{
 			this.newParent = this.newParent.Parent;
 		}
