@@ -826,7 +826,7 @@ public class ProjectEditor : HSplitContainer
 		if (!HasProject()) return;
 		if (@object == null) return;
 		
-		parent ??= collection.root;
+		parent ??= collection.Root;
 		@object.ListItem = null;
 		
 		if (currentCollection == collection)
@@ -964,8 +964,8 @@ public class ProjectEditor : HSplitContainer
 		if (!HasProject()) return;
 		if (@object == null) return;
 		
-		var oldParent = @object.Parent ?? collection.root;
-		newParent ??= collection.root;
+		var oldParent = @object.Parent ?? collection.Root;
+		newParent ??= collection.Root;
 		
 		var parentChanged = (oldParent != newParent);
 		
@@ -1093,7 +1093,7 @@ public class ProjectEditor : HSplitContainer
 	
 	public void RenameObject(Collection collection, Object @object, string newName)
 	{
-		if (collection.root == @object)
+		if (collection.Root == @object)
 		{
 			collection.Name = newName;
 			EnsureUnique(collection);
@@ -1456,20 +1456,20 @@ public class ProjectEditor : HSplitContainer
 		currentCollection = collection;
 		collection.ListItem.Select();
 		
-		// Ensure collection's root has a listItem
-		if (collection.root != null && collection.root.ListItem == null)
+		// Ensure collection's Root has a listItem
+		if (collection.Root != null && collection.Root.ListItem == null)
 		{
-			collection.root.ListItem = objectList.AddListItem(null, collection.Name, collectionIcon, collectionIcon, true);
-			collection.root.ListItem.CanBeDeleted = false;
-			collection.root.ListItem.CanDragSibling = false;
+			collection.Root.ListItem = objectList.AddListItem(null, collection.Name, collectionIcon, collectionIcon, true);
+			collection.Root.ListItem.CanBeDeleted = false;
+			collection.Root.ListItem.CanDragSibling = false;
 		}
 		
 		// Load objects
 		foreach(var obj in collection.objects)
 		{
-			if (obj == collection.root) continue;
+			if (obj == collection.Root) continue;
 			
-			TreeListItem parent = collection.root.ListItem;
+			TreeListItem parent = collection.Root.ListItem;
 			
 			if (obj.Parent != null)
 			{
@@ -1489,7 +1489,7 @@ public class ProjectEditor : HSplitContainer
 		ExpandObjects();
 		//FilterObjects();
 		
-		collection.root.ListItem.UpdateState();
+		collection.Root.ListItem.UpdateState();
 		objectList.UpdateGraphics();
 		
 		RefreshUI();
@@ -1585,7 +1585,7 @@ public class ProjectEditor : HSplitContainer
 				iconClosed = objectIcon;
 			}
 			
-			if (_obj == currentCollection.root)
+			if (_obj == currentCollection.Root)
 			{
 				iconOpen = collectionIcon;
 				iconClosed = collectionIcon;
@@ -1748,7 +1748,7 @@ public class ProjectEditor : HSplitContainer
 			return;
 		}
 		
-		if (obj == currentCollection?.root)
+		if (obj == currentCollection?.Root)
 		{
 			obj.ListItem.Filtered = false;
 			return;

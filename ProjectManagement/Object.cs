@@ -339,7 +339,6 @@ public class MoveObjectCommand : EditorCommand
 		this.obj = obj;
 		this.oldParent = oldParent ?? collection?.root;
 		this.oldLocalIndex = oldLocalIndex;
-		this.newParent = newParent ?? collection?.root;
 		this.newLocalIndex = newLocalIndex;
 		
 		while(this.oldParent != null && !this.oldParent.IsType)

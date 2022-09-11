@@ -8,7 +8,12 @@ public class Collection
 	private Guid guid;
 	private TreeListItem listItem;
 	public List<Object> objects;
-	public readonly Object root;
+	
+	private Object root;
+	public Object Root
+	{
+		get => root;
+	}
 	
 	public ref readonly Guid ID { get => ref guid; }
 	
