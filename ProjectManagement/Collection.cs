@@ -79,7 +79,7 @@ public class Collection
 		}
 	}
 	
-	public void Read(string data)
+	public void Read(Dictionary<string, object> data)
 	{
 		objects.Clear();
 	}

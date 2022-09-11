@@ -89,7 +89,6 @@ public class Project
 			path = newPath;
 			
 			file.Open(path, File.ModeFlags.Read);
-			Read(file.GetAsText());
 			file.Close();
 			
 			return true;
@@ -98,7 +97,7 @@ public class Project
 		return false;
 	}
 	
-	protected void Read(string data)
+	protected void Read(Dictionary<string, object> data)
 	{
 		var result = JSON.Parse(data);
 		collections.Clear();

@@ -173,9 +173,9 @@ public class Object
 		return field;
 	}
 	
-	public void Read(string data)
+	public void Read(Dictionary<string, object> data)
 	{
-		
+		// TODO - Implement reading data
 	}
 	
 	public Dictionary<string, object> Write()
