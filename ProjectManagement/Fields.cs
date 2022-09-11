@@ -18,7 +18,7 @@ public abstract class Field
 	}
 
 	public delegate void DataEdited(Field field, object previousData);
-	protected DataEdited dataEditedCallback;
+	public DataEdited DataEditedCallback;
 
 	public FieldType Type
 	{
@@ -35,9 +35,9 @@ public abstract class Field
 			
 			UpdateEditor();
 			
-			if (Data != prevData && dataEditedCallback != null)
+			if (Data != prevData && DataEditedCallback != null)
 			{
-				dataEditedCallback(this, prevData);
+				DataEditedCallback(this, prevData);
 			}
 		}
 	}
@@ -195,9 +195,9 @@ public class StringField : Field
 			
 			UpdateEditor();
 			
-			if (Data != prevData && dataEditedCallback != null)
+			if (Data != prevData && DataEditedCallback != null)
 			{
-				dataEditedCallback(this, prevData);
+				DataEditedCallback(this, prevData);
 			}
 		}
 	}
@@ -216,7 +216,7 @@ public class StringField : Field
 		type = FieldType.String;
 		
 		Options = new List<string>();
-		dataEditedCallback = callback;
+		DataEditedCallback = callback;
 	}
 	
 	protected new StringFieldEditor editor;
@@ -270,7 +270,7 @@ public class StringField : Field
 	{
 		var field = new StringField(name);
 		field.data = data;
-		field.dataEditedCallback = dataEditedCallback;
+		field.DataEditedCallback = DataEditedCallback;
 
 		return field;
 	}
@@ -296,9 +296,9 @@ public class TextField : Field
 			
 			UpdateEditor();
 			
-			if (Data != prevData && dataEditedCallback != null)
+			if (Data != prevData && DataEditedCallback != null)
 			{
-				dataEditedCallback(this, prevData);
+				DataEditedCallback(this, prevData);
 			}
 		}
 	}
@@ -313,7 +313,7 @@ public class TextField : Field
 		this.name = name;
 		this.data = data;
 		type = FieldType.Text;
-		dataEditedCallback = callback;
+		DataEditedCallback = callback;
 	}
 	
 	protected new TextFieldEditor editor;
@@ -367,7 +367,7 @@ public class TextField : Field
 	{
 		var field = new TextField(name);
 		field.data = data;
-		field.dataEditedCallback = dataEditedCallback;
+		field.DataEditedCallback = DataEditedCallback;
 		
 		return field;
 	}
@@ -393,9 +393,9 @@ public class NumberField : Field
 			
 			UpdateEditor();
 			
-			if (Data != prevData && dataEditedCallback != null)
+			if (Data != prevData && DataEditedCallback != null)
 			{
-				dataEditedCallback(this, prevData);
+				DataEditedCallback(this, prevData);
 			}
 		}
 	}
@@ -410,7 +410,7 @@ public class NumberField : Field
 		this.name = name;
 		this.data = data;
 		type = FieldType.Number;
-		dataEditedCallback = callback;
+		DataEditedCallback = callback;
 	}
 	
 	protected new NumberFieldEditor editor;
@@ -464,7 +464,7 @@ public class NumberField : Field
 	{
 		var field = new NumberField(name);
 		field.data = data;
-		field.dataEditedCallback = dataEditedCallback;
+		field.DataEditedCallback = DataEditedCallback;
 		
 		return field;
 	}
@@ -490,9 +490,9 @@ public class BooleanField : Field
 			
 			UpdateEditor();
 			
-			if (Data != prevData && dataEditedCallback != null)
+			if (Data != prevData && DataEditedCallback != null)
 			{
-				dataEditedCallback(this, prevData);
+				DataEditedCallback(this, prevData);
 			}
 		}
 	}
@@ -507,7 +507,7 @@ public class BooleanField : Field
 		this.name = name;
 		this.data = data;
 		type = FieldType.Boolean;
-		dataEditedCallback = callback;
+		DataEditedCallback = callback;
 	}
 	
 	protected new BooleanFieldEditor editor;
@@ -561,7 +561,7 @@ public class BooleanField : Field
 	{
 		var field = new BooleanField(name);
 		field.data = data;
-		field.dataEditedCallback = dataEditedCallback;
+		field.DataEditedCallback = DataEditedCallback;
 		
 		return field;
 	}
@@ -589,9 +589,9 @@ public class ImageField : Field
 			LoadImage(value);
 			UpdateEditor();
 			
-			if (Data != prevData && dataEditedCallback != null)
+			if (Data != prevData && DataEditedCallback != null)
 			{
-				dataEditedCallback(this, prevData);
+				DataEditedCallback(this, prevData);
 			}
 		}
 	}
@@ -621,7 +621,7 @@ public class ImageField : Field
 		this.data = path;
 		this.image = image;
 		type = FieldType.Image;
-		dataEditedCallback = callback;
+		DataEditedCallback = callback;
 	}
 	
 	public override void SetData(object data)
@@ -712,7 +712,7 @@ public class ImageField : Field
 		var field = new ImageField(name);
 		field.data = data;
 		field.image = (Image)image?.Duplicate(true);
-		field.dataEditedCallback = dataEditedCallback;
+		field.DataEditedCallback = DataEditedCallback;
 		
 		return field;
 	}
