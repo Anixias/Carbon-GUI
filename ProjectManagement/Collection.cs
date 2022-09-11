@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Godot;
+using Godot.Conversion;
 using Glint;
 
 public class Collection
@@ -81,7 +81,33 @@ public class Collection
 	
 	public void Read(Dictionary<string, object> data)
 	{
+		T Load<T>(string key, T defaultValue)
+		{
+			if (data.ContainsKey(key) && data[key] is T value)
+			{
+				return value;
+			}
+			
+			return defaultValue;
+		}
+		
+		name = new UniqueName(Load<string>("name", ""));
+		Guid.TryParse(Load<string>("id", ""), out guid);
+		
+		// Load objects
 		objects.Clear();
+		
+		var objectData = Load<Godot.Collections.Array>("objects", new Godot.Collections.Array() {}).ToList<object>(null);
+		foreach(var @object in objectData)
+		{
+			if (@object is Godot.Collections.Dictionary loadedObjectData)
+			{
+				var loadedObject = new Object();
+				loadedObject.Read(loadedObjectData.Convert<string, object>());
+				
+				objects.Add(loadedObject);
+			}
+		}
 	}
 	
 	public Dictionary<string, object> Write()
