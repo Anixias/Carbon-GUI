@@ -10,7 +10,13 @@ public class Object
 	private Object parent;
 	private List<Object> children;
 	public bool IsRoot;
-	public readonly bool IsType;
+	
+	private bool isType;
+	public bool IsType
+	{
+		get => isType;
+	}
+	
 	public List<Field> fields;
 	public Dictionary<Field, Field> fieldOverrides;
 	
@@ -109,7 +115,7 @@ public class Object
 		
 		ListItem = listItem;
 		Parent = parent;
-		this.IsType = isType;
+		this.isType = isType;
 		
 		if (listItem != null)
 		{
