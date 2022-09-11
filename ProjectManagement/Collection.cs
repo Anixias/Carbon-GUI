@@ -100,17 +100,24 @@ public class Collection
 		Guid.TryParse(Load<string>("id", ""), out guid);
 		
 		// Load objects
+		root = null;
 		objects.Clear();
 		
 		var objectData = Load<Godot.Collections.Array>("objects", new Godot.Collections.Array() {}).ToList<object>(null);
+		var objectLookup = new Dictionary<Guid, Object>();
 		foreach(var @object in objectData)
 		{
 			if (@object is Godot.Collections.Dictionary loadedObjectData)
 			{
 				var loadedObject = new Object();
-				loadedObject.Read(loadedObjectData.Convert<string, object>());
-				
+				loadedObject.Read(this, loadedObjectData.Convert<string, object>(), objectLookup);
+				objectLookup[loadedObject.ID] = loadedObject;
 				objects.Add(loadedObject);
+				
+				if (loadedObject.Parent == null)
+				{
+					root = loadedObject;
+				}
 			}
 		}
 	}

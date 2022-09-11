@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
-using Godot;
+using Godot.Conversion;
 using Glint;
+
+using GDC = Godot.Collections;
 
 public class Object
 {
@@ -173,9 +175,110 @@ public class Object
 		return field;
 	}
 	
-	public void Read(Dictionary<string, object> data)
+	public Field FindField(Guid guid, bool includeOverrides = true)
 	{
-		// TODO - Implement reading data
+		foreach(var field in fields)
+		{
+			if (field.ID == guid)
+			{
+				return field;
+			}
+		}
+		
+		if (includeOverrides)
+		{
+			foreach(var field in fieldOverrides.Values)
+			{
+				if (field.ID == guid)
+				{
+					return field;
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	public void Read(Collection collection, Dictionary<string, object> data, in Dictionary<Guid, Object> objectLookup = null)
+	{
+		T Load<T>(string key, T defaultValue)
+		{
+			if (data.ContainsKey(key) && data[key] is T value)
+			{
+				return value;
+			}
+			
+			return defaultValue;
+		}
+		
+		name = new UniqueName(Load<string>("name", ""));
+		Guid.TryParse(Load<string>("id", ""), out guid);
+		isType = Load<bool>("is_type", true);
+		
+		// Parent
+		var parentID = Guid.Empty;
+		Guid.TryParse(Load<string>("parent", ""), out parentID);
+		
+		if (objectLookup != null && objectLookup.ContainsKey(parentID))
+		{
+			Parent = objectLookup[parentID];
+		}
+		
+		Parent ??= collection.Root;
+		
+		// Fields
+		fields.Clear();
+		var fieldData = Load<GDC.Array>("fields", new GDC.Array() {}).ToList<object>(null);
+		
+		foreach(var field in fieldData)
+		{
+			if (field is GDC.Dictionary loadedGDFieldData)
+			{
+				var loadedFieldData = loadedGDFieldData.Convert<string, object>();
+				var loadedField = Field.Read(loadedFieldData);
+				
+				if (loadedField != null)
+				{
+					fields.Add(loadedField);
+				}
+			}
+		}
+		
+		// Field Overrides
+		fieldOverrides.Clear();
+		var fieldOverrideList = Load<GDC.Array>("field_overrides", new GDC.Array() {}).ToArray<GDC.Dictionary>(new GDC.Dictionary());
+		
+		foreach(var fieldOverrideEntry in fieldOverrideList)
+		{
+			var fieldOverrideData = fieldOverrideEntry.Convert<string, object>();
+			
+			if (fieldOverrideData.ContainsKey("override") && fieldOverrideData["override"] is string inheritedID)
+			{
+				if (fieldOverrideData.ContainsKey("data"))
+				{
+					var id = Guid.Empty;
+					if (Guid.TryParse(inheritedID, out id))
+					{
+						// Find original Field
+						var obj = parent;
+						Field originalField = null;
+						while(originalField == null && obj != null)
+						{
+							originalField = obj.FindField(id, false);
+							obj = obj.parent;
+						}
+						
+						if (originalField != null)
+						{
+							var overrideField = originalField.Duplicate();
+							overrideField.SetData(fieldOverrideData["data"]);
+							originalField.AddLink(overrideField);
+							fieldOverrides[originalField] = overrideField;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public Dictionary<string, object> Write()
@@ -211,7 +314,7 @@ public class Object
 		data["parent"] = parentID;
 		data["is_type"] = IsType;
 		data["fields"] = fieldData;
-		data["fieldOverrides"] = fieldOverrideData;
+		data["field_overrides"] = fieldOverrideData;
 		
 		return data;
 	}
@@ -228,7 +331,7 @@ public class AddObjectCommand : EditorCommand
 	public AddObjectCommand(ProjectEditor editor, Collection collection, Object parent, Object obj) : base(editor)
 	{
 		this.collection = collection;
-		this.parent = parent ?? collection?.root;
+		this.parent = parent ?? collection?.Root;
 		this.obj = obj;
 		
 		while(this.parent != null && !this.parent.IsType)
@@ -263,7 +366,7 @@ public class DeleteObjectCommand : EditorCommand
 	public DeleteObjectCommand(ProjectEditor editor, Collection collection, Object parent, int localIndex, Object obj) : base(editor)
 	{
 		this.collection = collection;
-		this.parent = parent ?? collection?.root;
+		this.parent = parent ?? collection?.Root;
 		this.localIndex = localIndex;
 		this.obj = obj;
 	}
@@ -337,8 +440,9 @@ public class MoveObjectCommand : EditorCommand
 	{
 		this.collection = collection;
 		this.obj = obj;
-		this.oldParent = oldParent ?? collection?.root;
+		this.oldParent = oldParent ?? collection?.Root;
 		this.oldLocalIndex = oldLocalIndex;
+		this.newParent = newParent ?? collection?.Root;
 		this.newLocalIndex = newLocalIndex;
 		
 		while(this.oldParent != null && !this.oldParent.IsType)

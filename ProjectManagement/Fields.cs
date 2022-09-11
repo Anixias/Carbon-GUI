@@ -157,6 +157,62 @@ public abstract class Field
 		linkedFields.Remove(link);
 	}
 	
+	public static Field Read(Dictionary<string, object> data)
+	{
+		T Load<T>(string key, T defaultValue)
+		{
+			if (data.ContainsKey(key) && data[key] is T value)
+			{
+				return value;
+			}
+			
+			return defaultValue;
+		}
+		
+		var name = Load<string>("name", "");
+		var id = Guid.Empty;
+		Guid.TryParse(Load<string>("id", ""), out id);
+		var loadedData = Load<string>("data", null);
+		
+		Field output = null;
+		
+		var loadedType = FieldType.None;
+		if (FieldType.TryParse(Load<string>("type", FieldType.None.ToString()), true, out loadedType))
+		{
+			switch(loadedType)
+			{
+				default:
+					return null;
+				case FieldType.String:
+					output = new StringField(name, loadedData);
+					output.guid = id;
+					break;
+				case FieldType.Text:
+					output = new TextField(name, loadedData);
+					output.guid = id;
+					break;
+				case FieldType.Number:
+					var loadedDouble = 0.0;
+					Double.TryParse(loadedData, out loadedDouble);
+					output = new NumberField(name, loadedDouble);
+					output.guid = id;
+					break;
+				case FieldType.Boolean:
+					var loadedBool = false;
+					Boolean.TryParse(loadedData, out loadedBool);
+					output = new BooleanField(name, loadedBool);
+					output.guid = id;
+					break;
+				case FieldType.Image:
+					output = new ImageField(name, loadedData);
+					output.guid = id;
+					break;
+			}
+		}
+		
+		return output;
+	}
+	
 	public Dictionary<string, object> Write()
 	{
 		var data = new Dictionary<string, object>();
@@ -274,6 +330,18 @@ public class StringField : Field
 
 		return field;
 	}
+
+	public override void SetData(object data)
+	{
+		if (data is string)
+		{
+			this.data = data;
+		}
+		else
+		{
+			this.data = data.ToString();
+		}
+	}
 }
 
 public class TextField : Field
@@ -370,6 +438,18 @@ public class TextField : Field
 		field.DataEditedCallback = DataEditedCallback;
 		
 		return field;
+	}
+	
+	public override void SetData(object data)
+	{
+		if (data is string)
+		{
+			this.data = data;
+		}
+		else
+		{
+			this.data = data.ToString();
+		}
 	}
 }
 
@@ -468,6 +548,22 @@ public class NumberField : Field
 		
 		return field;
 	}
+	
+	public override void SetData(object data)
+	{
+		if (data is double)
+		{
+			this.data = data;
+		}
+		else if (data is string)
+		{
+			double value;
+			if (Double.TryParse((string)data, out value))
+			{
+				this.data = value;
+			}
+		}
+	}
 }
 
 public class BooleanField : Field
@@ -565,6 +661,22 @@ public class BooleanField : Field
 		
 		return field;
 	}
+	
+	public override void SetData(object data)
+	{
+		if (data is bool)
+		{
+			this.data = data;
+		}
+		else if (data is string)
+		{
+			bool value;
+			if (Boolean.TryParse((string)data, out value))
+			{
+				this.data = value;
+			}
+		}
+	}
 }
 
 public class ImageField : Field
@@ -626,9 +738,12 @@ public class ImageField : Field
 	
 	public override void SetData(object data)
 	{
-		this.data = data;
-		LoadImage(this.data as string);
-		UpdateEditor();
+		if (data is string || data == null)
+		{
+			this.data = data;
+			LoadImage(this.data as string);
+			UpdateEditor();
+		}
 	}
 	
 	public bool LoadImage(string path)
@@ -851,7 +966,7 @@ public class MoveFieldCommand : EditorCommand
 	
 	public override string ToString()
 	{
-		return "Move Field: '" + field.Name;
+		return "Move Field: '" + field.Name + "'";
 	}
 }
 
@@ -917,7 +1032,7 @@ public class OverrideFieldCommand : EditorCommand
 	
 	public override string ToString()
 	{
-		return (overriding ? "Override Field" : "Remove Field Override") + ": '" + field.Name;
+		return (overriding ? "Override Field" : "Remove Field Override") + ": '" + field.Name + "'";
 	}
 }
 
