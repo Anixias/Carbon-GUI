@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using NativeServices;
+using Godot.Conversion;
 
 public class Project
 {
@@ -89,7 +90,14 @@ public class Project
 			path = newPath;
 			
 			file.Open(path, File.ModeFlags.Read);
+			var fileContents = file.GetAsText();
 			file.Close();
+			
+			var jsonResult = JSON.Parse(fileContents);
+			if (jsonResult.Result is Godot.Collections.Dictionary data)
+			{
+				Read(data.Convert<string, object>());
+			}
 			
 			return true;
 		}
@@ -99,8 +107,45 @@ public class Project
 	
 	protected void Read(Dictionary<string, object> data)
 	{
-		var result = JSON.Parse(data);
+		T Load<T>(string key, T defaultValue)
+		{
+			if (data.ContainsKey(key) && data[key] is T value)
+			{
+				return value;
+			}
+			
+			return defaultValue;
+		}
+		
+		var dataVersion = version;
+		try
+		{
+			var loadedVersion = Load<string>("version", null);
+			
+			if (loadedVersion != null)
+			{
+				dataVersion = new Version(loadedVersion);
+			}
+		}
+		catch (Exception e)
+		{
+			GD.PrintErr(e.Message);
+		}
+		
+		// Load collections
 		collections.Clear();
+		
+		var collectionData = Load<Godot.Collections.Array>("collections", new Godot.Collections.Array() {}).ToList<object>(null);
+		foreach(var collection in collectionData)
+		{
+			if (collection is Godot.Collections.Dictionary loadedCollectionData)
+			{
+				var loadedCollection = new Collection();
+				loadedCollection.Read(loadedCollectionData.Convert<string, object>());
+				
+				collections.Add(loadedCollection);
+			}
+		}
 	}
 	
 	protected Dictionary<string, object> Write()
