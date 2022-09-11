@@ -1432,6 +1432,20 @@ public class ProjectEditor : HSplitContainer
 			foreach(var collection in currentProject.collections)
 			{
 				AddCollection(collection, false);
+				
+				// Add dataEditedCallback to all object fields
+				foreach(var @object in collection.objects)
+				{
+					foreach(var field in @object.fields)
+					{
+						field.DataEditedCallback = OnFieldDataEdited;
+					}
+					
+					foreach(var fieldOverride in @object.fieldOverrides.Values)
+					{
+						fieldOverride.DataEditedCallback = OnFieldDataEdited;
+					}
+				}
 			}
 		}
 		
