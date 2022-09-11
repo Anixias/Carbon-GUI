@@ -243,16 +243,12 @@ public class ProjectEditor : HSplitContainer
 		
 		UnloadCurrentObject();
 		UnloadCurrentCollection();
-		ClearCollections();
+		Collections?.Clear();
 		commands.Clear();
 		
 		currentProject = project;
 		
-		if (currentProject != null)
-		{
-			LoadCollections();
-		}
-		
+		LoadCollections();
 		ProjectSaved();
 		
 		EmitSignal(nameof(UpdateProjectStatus), HasProject());
@@ -639,12 +635,17 @@ public class ProjectEditor : HSplitContainer
 		parent.MoveChild(target, pos);
 	}
 	
-	public void AddCollection(Collection collection)
+	public void AddCollection(Collection collection, bool addToCollections = true)
 	{
 		var btn = collectionList.AddListItem(null, collection.Name, collectionIcon, null, false);
 		btn.MetaData = collection;
 		collection.ListItem = btn;
-		Collections.Insert(btn.ListIndex, collection);
+		
+		if (addToCollections)
+		{
+			Collections.Insert(btn.ListIndex, collection);
+		}
+		
 		EnsureUnique(collection);
 		
 		RefreshUI();
@@ -1426,6 +1427,12 @@ public class ProjectEditor : HSplitContainer
 		if (HasProject())
 		{
 			// @TODO
+			ClearCollections();
+			
+			foreach(var collection in currentProject.collections)
+			{
+				AddCollection(collection, false);
+			}
 		}
 		
 		RefreshUI();
@@ -1436,7 +1443,6 @@ public class ProjectEditor : HSplitContainer
 		UnloadCurrentCollection();
 		
 		collectionList?.Clear();
-		Collections?.Clear();
 		
 		RefreshUI();
 	}
