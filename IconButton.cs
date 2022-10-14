@@ -198,7 +198,7 @@ public class IconButton : Control
         }
         
         // Refresh min sizes
-        RectMinSize = new Vector2(10.0f, 28.0f);
+        /*RectMinSize = new Vector2(10.0f, 28.0f);
         
         if (marginContainer != null)
         {
@@ -210,6 +210,6 @@ public class IconButton : Control
             }
             
             marginContainer.RectSize = RectSize;
-        }
+        }*/
 	}
 }
