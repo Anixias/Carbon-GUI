@@ -111,7 +111,7 @@ public class ImageFieldEditor : FieldEditor
 	{
 		if (field == null) return;
 		
-		var paths = NativeFileDialog.OpenFileDialog("Load Image", Project.DefaultPath, new[] { "*.png" }, "Image Files", false);
+		var paths = NativeFileDialog.OpenFileDialog("Load Image", Project.DefaultPath, new[] { "*.png", "*.jpeg", "*.webp", "*.bmp" }, "Image Files", false);
 		if (paths == null || paths.Length == 0) return;
 		
 		var path = paths[0];
