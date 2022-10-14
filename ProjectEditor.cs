@@ -17,6 +17,7 @@ public class ProjectEditor : HSplitContainer
 	private Project currentProject;
 	private Collection currentCollection;
 	private Object currentObject;
+	private Field currentField;
 	private History<EditorCommand> commands = new History<EditorCommand>();
 	
 	private int lastSavedHashCode;
@@ -174,6 +175,7 @@ public class ProjectEditor : HSplitContainer
 		designList.Connect(nameof(TreeList.ListItemDoubleClicked), this, nameof(OnDesignListItemDoubleClicked));
 		designList.Connect(nameof(TreeList.ListItemMoved), this, nameof(OnDesignListItemMoved));
 		designList.Connect(nameof(TreeList.ListItemOverridingChanged), this, nameof(OnDesignListItemOverridingChanged));
+		designList.Connect(nameof(TreeList.NoItemPressed), this, nameof(OnDesignListNoItemPressed));
 		
 		// Add tools to toolbar
 		tools = new List<IconButton>();
@@ -583,7 +585,23 @@ public class ProjectEditor : HSplitContainer
 		if (!HasProject()) return;
 		if (currentObject == null) return;
 		
-		// @TODO
+		// Select the field, and cause the inspector to appear if it is the originating object
+		var prevField = currentField;
+		var nextField = listItem.MetaData as Field;
+		
+		if (nextField != null && nextField != prevField)
+		{
+			currentField = nextField;
+			
+			prevField?.ListItem?.Deselect();
+			currentField?.ListItem?.Select();
+		}
+	}
+	
+	public void OnDesignListNoItemPressed()
+	{
+		currentField?.ListItem?.Deselect();
+		currentField = null;
 	}
 	
 	public void OnDesignListItemDoubleClicked(TreeListItem listItem)
@@ -1695,6 +1713,9 @@ public class ProjectEditor : HSplitContainer
 	
 	private void UnloadCurrentObject()
 	{
+		currentField?.ListItem?.Deselect();
+		currentField = null;
+		
 		foreach(var field in designFieldList)
 		{
 			if (field == null) continue;
