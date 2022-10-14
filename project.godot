@@ -23,6 +23,10 @@ config/windows_native_icon="res://carbon.ico"
 
 window/dpi/allow_hidpi=true
 
+[gui]
+
+theme/custom="res://Interface.tres"
+
 [importer_defaults]
 
 texture={
@@ -46,6 +50,10 @@ texture={
 "stream": false,
 "svg/scale": 1.0
 }
+
+[mono]
+
+project/assembly_name="Carbon GUI"
 
 [physics]
 
