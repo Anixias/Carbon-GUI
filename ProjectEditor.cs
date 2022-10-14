@@ -106,8 +106,8 @@ public class ProjectEditor : HSplitContainer
 	private IconButton objAddObject;
 	private TreeList objectList;
 	private TextInputBox objectFilter;
-	private Panel toolBar;
-	private HBoxContainer toolList;
+	private PanelContainer toolBar;
+	private HFlowContainer toolList;
 	private VSplitContainer dataWindows;
 	private ScrollContainer workArea;
 	private VBoxContainer fieldList;
@@ -144,8 +144,8 @@ public class ProjectEditor : HSplitContainer
 		objAddObject = GetNode<IconButton>("VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/HBoxContainer/AddObject");
 		objectList = GetNode<TreeList>("VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/Panel/TreeList");
 		objectFilter = GetNode<TextInputBox>("VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/Filter");
-		toolBar = GetNode<Panel>("HSplitContainer/VBoxContainer/ToolBar");
-		toolList = GetNode<HBoxContainer>("HSplitContainer/VBoxContainer/ToolBar/MarginContainer/ToolList");
+		toolBar = GetNode<PanelContainer>("HSplitContainer/VBoxContainer/ToolBar");
+		toolList = GetNode<HFlowContainer>("HSplitContainer/VBoxContainer/ToolBar/MarginContainer/ToolList");
 		workArea = GetNode<ScrollContainer>("HSplitContainer/VBoxContainer/WorkArea");
 		fieldMarginContainer = GetNode<MarginContainer>("HSplitContainer/VBoxContainer/WorkArea/MarginContainer");
 		fieldList = GetNode<VBoxContainer>("HSplitContainer/VBoxContainer/WorkArea/MarginContainer/FieldList");

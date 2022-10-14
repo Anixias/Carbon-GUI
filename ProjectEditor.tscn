@@ -423,7 +423,6 @@ margin_bottom = 60.0
 
 [node name="AddType" parent="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 1 )]
 margin_right = 121.0
-margin_bottom = 24.0
 rect_min_size = Vector2( 90, 24 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -434,7 +433,6 @@ TintIcon = true
 [node name="AddObject" parent="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 1 )]
 margin_left = 125.0
 margin_right = 246.0
-margin_bottom = 24.0
 rect_min_size = Vector2( 102, 24 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -500,7 +498,6 @@ margin_bottom = 60.0
 
 [node name="AddCollection" parent="VSplitContainer/CollectionPanel/MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 1 )]
 margin_right = 246.0
-margin_bottom = 24.0
 rect_min_size = Vector2( 125, 24 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -542,25 +539,27 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 5
 
-[node name="ToolBar" type="Panel" parent="HSplitContainer/VBoxContainer"]
+[node name="ToolBar" type="PanelContainer" parent="HSplitContainer/VBoxContainer"]
 margin_right = 496.0
 margin_bottom = 38.0
 rect_min_size = Vector2( 0, 38 )
+size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/VBoxContainer/ToolBar"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = 1.0
+margin_right = 495.0
+margin_bottom = 37.0
 custom_constants/margin_right = 5
 custom_constants/margin_top = 5
 custom_constants/margin_left = 5
 custom_constants/margin_bottom = 5
 
-[node name="ToolList" type="HBoxContainer" parent="HSplitContainer/VBoxContainer/ToolBar/MarginContainer"]
+[node name="ToolList" type="HFlowContainer" parent="HSplitContainer/VBoxContainer/ToolBar/MarginContainer"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 491.0
-margin_bottom = 33.0
-custom_constants/separation = 5
+margin_right = 489.0
+margin_bottom = 31.0
 
 [node name="WorkArea" type="ScrollContainer" parent="HSplitContainer/VBoxContainer"]
 margin_top = 43.0
@@ -680,13 +679,6 @@ margin_right = 246.0
 margin_bottom = 286.0
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 5 )
-
-[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/DataWindows/InspectorPanel/MarginContainer/VBoxContainer/Panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-follow_focus = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/DataWindows/InspectorPanel/MarginContainer/VBoxContainer/Panel/ScrollContainer"]
 
 [connection signal="Pressed" from="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/HBoxContainer/AddType" to="." method="OnAddTypePressed"]
 [connection signal="Pressed" from="VSplitContainer/ObjectPanel/MarginContainer/VBoxContainer/HBoxContainer/AddObject" to="." method="OnAddObjectPressed"]
