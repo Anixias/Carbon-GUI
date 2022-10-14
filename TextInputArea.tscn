@@ -6,6 +6,7 @@
 margin_right = 40.0
 margin_bottom = 40.0
 drag_and_drop_selection_enabled = false
+smooth_scrolling = true
 wrap_enabled = true
 caret_blink = true
 script = ExtResource( 1 )
