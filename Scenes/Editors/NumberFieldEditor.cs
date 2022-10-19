@@ -1,11 +1,10 @@
 using Godot;
-using System;
 
 public class NumberFieldEditor : FieldEditor
 {
 	private NumberInputBox numberInputBox;
 	private Label label;
-	
+
 	public new NumberField Field
 	{
 		get => field;
@@ -15,7 +14,7 @@ public class NumberFieldEditor : FieldEditor
 			FieldChanged();
 		}
 	}
-	
+
 	public new bool Inherited
 	{
 		get => inherited;
@@ -25,7 +24,7 @@ public class NumberFieldEditor : FieldEditor
 			UpdateState();
 		}
 	}
-	
+
 	public new bool Overriding
 	{
 		get => overriding && inherited;
@@ -35,17 +34,17 @@ public class NumberFieldEditor : FieldEditor
 			UpdateState();
 		}
 	}
-	
+
 	protected new NumberField field;
-	
+
 	public override void _Ready()
 	{
 		numberInputBox = GetNode<NumberInputBox>("VBoxContainer/NumberInputBox");
 		label = GetNode<Label>("VBoxContainer/Label");
-		
+
 		UpdateState();
 	}
-	
+
 	public override void _ExitTree()
 	{
 		if (field != null)
@@ -56,29 +55,29 @@ public class NumberFieldEditor : FieldEditor
 			}
 		}
 	}
-	
+
 	protected override void FieldChanged()
 	{
 		UpdateState();
 	}
-	
+
 	public override void UpdateState()
 	{
 		var editable = (!Inherited || Overriding);
-		
+
 		if (numberInputBox != null)
 		{
 			var value = field?.Data ?? 0d;
-			
+
 			if (numberInputBox.Value != value)
 			{
 				numberInputBox.Value = value;
 			}
-			
+
 			numberInputBox.Editable = editable;
 			numberInputBox.GetLineEdit().SelectingEnabled = editable;
 		}
-		
+
 		if (label != null)
 		{
 			label.Text = field?.Name ?? "";
@@ -86,7 +85,7 @@ public class NumberFieldEditor : FieldEditor
 			label.Modulate = editable ? color : new Color(1.0f, 1.0f, 1.0f, 0.6f);
 		}
 	}
-	
+
 	public void OnValueEdited(double value)
 	{
 		if (field != null)

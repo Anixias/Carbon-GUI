@@ -1,37 +1,36 @@
 using Godot;
-using System;
 
 public class NumberInputBox : SpinBox
 {
 	[Signal]
 	public delegate void ValueEdited(double value);
-	
+
 	[Export]
 	public bool CaretBlink
 	{
 		get => GetLineEdit().CaretBlink;
 		set => GetLineEdit().CaretBlink = value;
 	}
-	
+
 	[Export]
 	public float CaretBlinkSpeed
 	{
 		get => GetLineEdit().CaretBlinkSpeed;
 		set => GetLineEdit().CaretBlinkSpeed = value;
 	}
-	
+
 	public override void _Ready()
 	{
 		var lineEdit = GetLineEdit();
-		
+
 		lineEdit.Connect("text_entered", this, nameof(OnTextEntered));
 		lineEdit.Connect("focus_exited", this, nameof(OnTextFocusExited));
 	}
-	
+
 	public override void _Input(InputEvent @event)
 	{
 		var lineEdit = GetLineEdit();
-		
+
 		if (@event is InputEventMouseButton mbEvent)
 		{
 			if (mbEvent.Pressed)
@@ -40,7 +39,7 @@ public class NumberInputBox : SpinBox
 				{
 					lineEdit.ReleaseFocus();
 					lineEdit.Deselect();
-					
+
 					if (lineEdit.Text == "")
 					{
 						ResetValue();
@@ -48,7 +47,7 @@ public class NumberInputBox : SpinBox
 				}
 			}
 		}
-		
+
 		// Override Ctrl+Y from paste to redo
 		if (@event is InputEventKey keyEvent)
 		{
@@ -65,13 +64,13 @@ public class NumberInputBox : SpinBox
 			}
 		}
 	}
-	
+
 	private void ResetValue()
 	{
 		var lineEdit = GetLineEdit();
 		lineEdit.Text = Value.ToString();
 	}
-	
+
 	private void EnterValue()
 	{
 		if (GetLineEdit().Text == "")
@@ -84,12 +83,12 @@ public class NumberInputBox : SpinBox
 			EmitSignal(nameof(ValueEdited), Value);
 		}
 	}
-	
+
 	public void OnTextEntered(string newText)
 	{
 		EnterValue();
 	}
-	
+
 	public void OnTextFocusExited()
 	{
 		EnterValue();

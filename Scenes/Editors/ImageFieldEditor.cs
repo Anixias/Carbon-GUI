@@ -8,7 +8,7 @@ public class ImageFieldEditor : FieldEditor
 	private TextInputBox textInputBox;
 	private Label label;
 	private IconButton browseButton;
-	
+
 	public new ImageField Field
 	{
 		get => field;
@@ -18,7 +18,7 @@ public class ImageFieldEditor : FieldEditor
 			FieldChanged();
 		}
 	}
-	
+
 	public new bool Inherited
 	{
 		get => inherited;
@@ -28,7 +28,7 @@ public class ImageFieldEditor : FieldEditor
 			UpdateState();
 		}
 	}
-	
+
 	public new bool Overriding
 	{
 		get => overriding && inherited;
@@ -38,9 +38,9 @@ public class ImageFieldEditor : FieldEditor
 			UpdateState();
 		}
 	}
-	
+
 	protected new ImageField field;
-	
+
 	public override void _Ready()
 	{
 		label = GetNode<Label>("VBoxContainer/Label");
@@ -48,10 +48,10 @@ public class ImageFieldEditor : FieldEditor
 		image = GetNode<TextureRect>("%Image");
 		textInputBox = GetNode<TextInputBox>("VBoxContainer/Path/TextInputBox");
 		browseButton = GetNode<Control>("VBoxContainer/Path/BrowseButton") as IconButton;
-		
+
 		UpdateState();
 	}
-	
+
 	public override void _ExitTree()
 	{
 		if (field != null)
@@ -62,22 +62,22 @@ public class ImageFieldEditor : FieldEditor
 			}
 		}
 	}
-	
+
 	protected override void FieldChanged()
 	{
 		UpdateState();
 	}
-	
+
 	public override void UpdateState()
 	{
 		var editable = (!Inherited || Overriding);
-		
+
 		if (textInputBox != null)
 		{
 			textInputBox.Text = field?.Data ?? "";
 			textInputBox.Editable = editable;
 		}
-		
+
 		if (image != null)
 		{
 			if (field?.Image != null)
@@ -93,34 +93,37 @@ public class ImageFieldEditor : FieldEditor
 				image.Texture = null;
 			}
 		}
-		
+
 		if (label != null)
 		{
 			label.Text = field?.Name ?? "";
 			var color = overriding ? new Color(0.11f, 1.0f, 0.61f, 1.0f) : new Color(1.0f, 1.0f, 1.0f, 1.0f);
 			label.Modulate = editable ? color : new Color(1.0f, 1.0f, 1.0f, 0.6f);
 		}
-		
+
 		if (browseButton != null)
 		{
 			browseButton.Enabled = editable;
 		}
 	}
-	
+
 	public void OnBrowseButtonPressed()
 	{
-		if (field == null) return;
-		
+		if (field == null)
+			return;
+
 		var paths = NativeFileDialog.OpenFileDialog("Load Image", Project.DefaultPath, new[] { "*.png", "*.jpeg", "*.webp", "*.bmp" }, "Image Files", false);
-		if (paths == null || paths.Length == 0) return;
-		
+		if (paths == null || paths.Length == 0)
+			return;
+
 		var path = paths[0];
-		if (path == "" || path == null) return;
-		
+		if (path == "" || path == null)
+			return;
+
 		field.Data = path;
 		EmitSignal(nameof(OnDataChanged), this);
 	}
-	
+
 	public void OnTextInputEntered(string newText)
 	{
 		if (field != null)
@@ -129,7 +132,7 @@ public class ImageFieldEditor : FieldEditor
 			EmitSignal(nameof(OnDataChanged), this);
 		}
 	}
-	
+
 	public void OnTextFocusExited()
 	{
 		if (field != null)

@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FuzzyString
 {
 	public static partial class ComparisonMetrics
-	{ 
-		public static bool ApproximatelyEquals(this string source, string target,  ComparisonTolerance tolerance, params ComparisonOptions[] options)
+	{
+		public static bool ApproximatelyEquals(this string source, string target, ComparisonTolerance tolerance, params ComparisonOptions[] options)
 		{
 			List<double> comparisonResults = new List<double>();
-			
+
 			if (!options.Contains(ComparisonOptions.CaseSensitive))
 			{
 				source = source.Capitalize();
 				target = target.Capitalize();
 			}
-			
+
 			// Min: 0    Max: source.Length = target.Length
 			if (options.Contains(ComparisonOptions.UseHammingDistance))
 			{
@@ -26,19 +24,19 @@ namespace FuzzyString
 					comparisonResults.Add(source.HammingDistance(target) / target.Length);
 				}
 			}
-			
+
 			// Min: 0    Max: 1
 			if (options.Contains(ComparisonOptions.UseJaccardDistance))
 			{
 				comparisonResults.Add(source.JaccardDistance(target));
 			}
-			
+
 			// Min: 0    Max: 1
 			if (options.Contains(ComparisonOptions.UseJaroDistance))
 			{
 				comparisonResults.Add(source.JaroDistance(target));
 			}
-			
+
 			// Min: 0    Max: 1
 			if (options.Contains(ComparisonOptions.UseJaroWinklerDistance))
 			{
@@ -88,8 +86,8 @@ namespace FuzzyString
 			{
 				return false;
 			}
-			
-			switch(tolerance)
+
+			switch (tolerance)
 			{
 				default:
 					return false;

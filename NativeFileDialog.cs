@@ -37,119 +37,119 @@ namespace NativeServices
 	{
 		private const string dll32 = "tinyfiledialogs32.dll";
 		private const string dll64 = "tinyfiledialogs64.dll";
-		
-		
+
+
 		[DllImport(dll32, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_beep")]
-			private static extern void Beep_x32();
+		private static extern void Beep_x32();
 		[DllImport(dll64, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_beep")]
-			private static extern void Beep_x64();
-		
-		
-		
+		private static extern void Beep_x64();
+
+
+
 		// cross platform UTF8
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_notifyPopup")]
-			private static extern int NotifyPopup_x32(string aTitle, string aMessage, string aIconType);
+		private static extern int NotifyPopup_x32(string aTitle, string aMessage, string aIconType);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_notifyPopup")]
-			private static extern int NotifyPopup_x64(string aTitle, string aMessage, string aIconType);
-		
+		private static extern int NotifyPopup_x64(string aTitle, string aMessage, string aIconType);
+
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_messageBox")]
-			private static extern int MessageBox_x32(string aTitle, string aMessage, string aDialogType, string aIconType, int aDefaultButton);
+		private static extern int MessageBox_x32(string aTitle, string aMessage, string aDialogType, string aIconType, int aDefaultButton);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_messageBox")]
-			private static extern int MessageBox_x64(string aTitle, string aMessage, string aDialogType, string aIconType, int aDefaultButton);
-		
+		private static extern int MessageBox_x64(string aTitle, string aMessage, string aDialogType, string aIconType, int aDefaultButton);
+
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_inputBox")]
-			private static extern IntPtr InputBox_x32(string aTitle, string aMessage, string aDefaultInput);
+		private static extern IntPtr InputBox_x32(string aTitle, string aMessage, string aDefaultInput);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_inputBox")]
-			private static extern IntPtr InputBox_x64(string aTitle, string aMessage, string aDefaultInput);
-		
+		private static extern IntPtr InputBox_x64(string aTitle, string aMessage, string aDefaultInput);
+
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_saveFileDialog")]
-			private static extern IntPtr SaveFileDialog_x32(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription);
+		private static extern IntPtr SaveFileDialog_x32(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_saveFileDialog")]
-			private static extern IntPtr SaveFileDialog_x64(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription);
-		
+		private static extern IntPtr SaveFileDialog_x64(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription);
+
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_openFileDialog")]
-			private static extern IntPtr OpenFileDialog_x32(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription, int aAllowMultipleSelects);
+		private static extern IntPtr OpenFileDialog_x32(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription, int aAllowMultipleSelects);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_openFileDialog")]
-			private static extern IntPtr OpenFileDialog_x64(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription, int aAllowMultipleSelects);
-		
+		private static extern IntPtr OpenFileDialog_x64(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription, int aAllowMultipleSelects);
+
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_selectFolderDialog")]
-			private static extern IntPtr SelectFolderDialog_x32(string aTitle, string aDefaultPathAndFile);
+		private static extern IntPtr SelectFolderDialog_x32(string aTitle, string aDefaultPathAndFile);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_selectFolderDialog")]
-			private static extern IntPtr SelectFolderDialog_x64(string aTitle, string aDefaultPathAndFile);
-		
+		private static extern IntPtr SelectFolderDialog_x64(string aTitle, string aDefaultPathAndFile);
+
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_colorChooser")]
-			private static extern IntPtr ColorChooser_x32(string aTitle, string aDefaultHexRGB, byte[] aDefaultRGB, byte[] aoResultRGB);
+		private static extern IntPtr ColorChooser_x32(string aTitle, string aDefaultHexRGB, byte[] aDefaultRGB, byte[] aoResultRGB);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_colorChooser")]
-			private static extern IntPtr ColorChooser_x64(string aTitle, string aDefaultHexRGB, byte[] aDefaultRGB, byte[] aoResultRGB);
-		
-		
-		
+		private static extern IntPtr ColorChooser_x64(string aTitle, string aDefaultHexRGB, byte[] aDefaultRGB, byte[] aoResultRGB);
+
+
+
 		// windows only utf16
 		[DllImport(dll32, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_notifyPopupW")]
-			private static extern int NotifyPopupW_x32(string aTitle, string aMessage, string aIconType);
+		private static extern int NotifyPopupW_x32(string aTitle, string aMessage, string aIconType);
 		[DllImport(dll64, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_notifyPopupW")]
-			private static extern int NotifyPopupW_x64(string aTitle, string aMessage, string aIconType);
-		
+		private static extern int NotifyPopupW_x64(string aTitle, string aMessage, string aIconType);
+
 		[DllImport(dll32, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_messageBoxW")]
-			private static extern int MessageBoxW_x32(string aTitle, string aMessage, string aDialogType, string aIconType, int aDefaultButton);
+		private static extern int MessageBoxW_x32(string aTitle, string aMessage, string aDialogType, string aIconType, int aDefaultButton);
 		[DllImport(dll64, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_messageBoxW")]
-			private static extern int MessageBoxW_x64(string aTitle, string aMessage, string aDialogType, string aIconType, int aDefaultButton);
-		
+		private static extern int MessageBoxW_x64(string aTitle, string aMessage, string aDialogType, string aIconType, int aDefaultButton);
+
 		[DllImport(dll32, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_inputBoxW")]
-			private static extern IntPtr InputBoxW_x32(string aTitle, string aMessage, string aDefaultInput);
+		private static extern IntPtr InputBoxW_x32(string aTitle, string aMessage, string aDefaultInput);
 		[DllImport(dll64, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_inputBoxW")]
-			private static extern IntPtr InputBoxW_x64(string aTitle, string aMessage, string aDefaultInput);
-		
+		private static extern IntPtr InputBoxW_x64(string aTitle, string aMessage, string aDefaultInput);
+
 		[DllImport(dll32, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_saveFileDialogW")]
-			private static extern IntPtr SaveFileDialogW_x32(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription);
+		private static extern IntPtr SaveFileDialogW_x32(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription);
 		[DllImport(dll64, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_saveFileDialogW")]
-			private static extern IntPtr SaveFileDialogW_x64(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription);
-		
+		private static extern IntPtr SaveFileDialogW_x64(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription);
+
 		[DllImport(dll32, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_openFileDialogW")]
-			private static extern IntPtr OpenFileDialogW_x32(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription, int aAllowMultipleSelects);
+		private static extern IntPtr OpenFileDialogW_x32(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription, int aAllowMultipleSelects);
 		[DllImport(dll64, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_openFileDialogW")]
-			private static extern IntPtr OpenFileDialogW_x64(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription, int aAllowMultipleSelects);
-		
+		private static extern IntPtr OpenFileDialogW_x64(string aTitle, string aDefaultPathAndFile, int aNumOfFilterPatterns, string[] aFilterPatterns, string aSingleFilterDescription, int aAllowMultipleSelects);
+
 		[DllImport(dll32, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_selectFolderDialogW")]
-			private static extern IntPtr SelectFolderDialogW_x32(string aTitle, string aDefaultPathAndFile);
+		private static extern IntPtr SelectFolderDialogW_x32(string aTitle, string aDefaultPathAndFile);
 		[DllImport(dll64, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_selectFolderDialogW")]
-			private static extern IntPtr SelectFolderDialogW_x64(string aTitle, string aDefaultPathAndFile);
-		
+		private static extern IntPtr SelectFolderDialogW_x64(string aTitle, string aDefaultPathAndFile);
+
 		[DllImport(dll32, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_colorChooserW")]
-			private static extern IntPtr ColorChooserW_x32(string aTitle, string aDefaultHexRGB, byte[] aDefaultRGB, byte[] aoResultRGB);
+		private static extern IntPtr ColorChooserW_x32(string aTitle, string aDefaultHexRGB, byte[] aDefaultRGB, byte[] aoResultRGB);
 		[DllImport(dll64, CharSet = CharSet.Unicode, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_colorChooserW")]
-			private static extern IntPtr ColorChooserW_x64(string aTitle, string aDefaultHexRGB, byte[] aDefaultRGB, byte[] aoResultRGB);
-		
+		private static extern IntPtr ColorChooserW_x64(string aTitle, string aDefaultHexRGB, byte[] aDefaultRGB, byte[] aoResultRGB);
+
 		// cross platform
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_getGlobalChar")]
-			private static extern IntPtr GetGlobalChar_x32(string aCharVariableName);
+		private static extern IntPtr GetGlobalChar_x32(string aCharVariableName);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_getGlobalChar")]
-			private static extern IntPtr GetGlobalChar_x64(string aCharVariableName);
-		
+		private static extern IntPtr GetGlobalChar_x64(string aCharVariableName);
+
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_getGlobalInt")]
-			private static extern int GetGlobalInt_x32(string aIntVariableName);
+		private static extern int GetGlobalInt_x32(string aIntVariableName);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_getGlobalInt")]
-			private static extern int GetGlobalInt_x64(string aIntVariableName);
-		
+		private static extern int GetGlobalInt_x64(string aIntVariableName);
+
 		[DllImport(dll32, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_setGlobalInt")]
-			private static extern int SetGlobalInt_x32(string aIntVariableName, int aValue);
+		private static extern int SetGlobalInt_x32(string aIntVariableName, int aValue);
 		[DllImport(dll64, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl, EntryPoint = "tinyfd_setGlobalInt")]
-			private static extern int SetGlobalInt_x64(string aIntVariableName, int aValue);
-		
+		private static extern int SetGlobalInt_x64(string aIntVariableName, int aValue);
+
 		// ******** a complicated way to access tinyfd's global variables
 		// [DllImport("kernel32.dll", SetLastError = true)] internal static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
 		// [DllImport("kernel32.dll", SetLastError = true)] internal static extern IntPtr LoadLibrary(string lpszLib);
-		
+
 		public const string IconTypeInfo = "Info";
 		public const string IconTypeWarning = "Warning";
 		public const string IconTypeError = "Error";
 		public const string IconTypeQuestion = "Question";
-		
+
 		public const string DialogTypeOK = "ok";
 		public const string DialogTypeOKCancel = "okcancel";
 		public const string DialogTypeYesNo = "yesno";
 		public const string DialogTypeYesNoCancel = "yesnocancel";
-		
+
 		public enum DialogButton
 		{
 			Cancel = 0,
@@ -158,33 +158,33 @@ namespace NativeServices
 			Yes = 1,
 			NoTriplet = 2
 		}
-		
+
 		// Helpers
 		private static string StringFromAnsi(IntPtr ptr) // for UTF-8/char
 		{
 			return Marshal.PtrToStringAnsi(ptr);
 		}
-		
+
 		private static string StringFromUni(IntPtr ptr) // for UTF-16/wchar_t
 		{
 			return Marshal.PtrToStringUni(ptr);
 		}
-		
+
 		private static string GetString(IntPtr ptr)
 		{
 			if (Environment.Is64BitProcess)
 			{
 				return StringFromUni(ptr);
 			}
-			
+
 			return StringFromAnsi(ptr);
 		}
-		
+
 		private static bool IsPointerValid(IntPtr ptr)
 		{
 			return !(ptr == IntPtr.Zero || ptr == null);
 		}
-		
+
 		// --- Custom Naming Conventions (with optional parameters included)
 		public static void Beep()
 		{
@@ -197,7 +197,7 @@ namespace NativeServices
 				Beep_x32();
 			}
 		}
-		
+
 		public static void NotifyPopup(string title, string message, string iconType = IconTypeInfo)
 		{
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -223,7 +223,7 @@ namespace NativeServices
 				}
 			}
 		}
-		
+
 		public static DialogButton MessageBox(string title, string message, string dialogType, string iconType, DialogButton defaultButton = DialogButton.Ok)
 		{
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -249,11 +249,11 @@ namespace NativeServices
 				}
 			}
 		}
-		
+
 		public static string InputBox(string title, string message, string defaultInput)
 		{
 			IntPtr ptr;
-			
+
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
 				if (Environment.Is64BitProcess)
@@ -276,16 +276,16 @@ namespace NativeServices
 					ptr = InputBox_x32(title, message, defaultInput);
 				}
 			}
-			
+
 			if (!IsPointerValid(ptr))
 			{
 				return null;
 			}
-			
+
 			var str = GetString(ptr);
 			return str;
 		}
-		
+
 		public static string SaveFileDialog(string title, string defaultPath, string[] filters = null, string filterDescription = "Files")
 		{
 			var count = 0;
@@ -293,9 +293,9 @@ namespace NativeServices
 			{
 				count = filters.Length;
 			}
-			
+
 			IntPtr ptr;
-			
+
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
 				if (Environment.Is64BitProcess)
@@ -318,16 +318,16 @@ namespace NativeServices
 					ptr = SaveFileDialog_x32(title, defaultPath, count, filters, filterDescription);
 				}
 			}
-			
+
 			if (!IsPointerValid(ptr))
 			{
 				return null;
 			}
-			
+
 			var str = GetString(ptr);
 			return str;
 		}
-		
+
 		public static string[] OpenFileDialog(string title, string defaultPath, string[] filters = null, string filterDescription = "Files", bool allowMultiple = false)
 		{
 			var count = 0;
@@ -335,9 +335,9 @@ namespace NativeServices
 			{
 				count = filters.Length;
 			}
-			
+
 			IntPtr ptr;
-			
+
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
 				if (Environment.Is64BitProcess)
@@ -360,20 +360,20 @@ namespace NativeServices
 					ptr = OpenFileDialog_x32(title, defaultPath, count, filters, filterDescription, allowMultiple ? 2 : 0);
 				}
 			}
-			
+
 			if (!IsPointerValid(ptr))
 			{
 				return null;
 			}
-			
+
 			var str = GetString(ptr);
 			return str.Split('|');
 		}
-		
+
 		public static string SelectFolderDialog(string title, string defaultPath)
 		{
 			IntPtr ptr;
-			
+
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
 				if (Environment.Is64BitProcess)
@@ -396,22 +396,22 @@ namespace NativeServices
 					ptr = SelectFolderDialog_x32(title, defaultPath);
 				}
 			}
-			
+
 			if (!IsPointerValid(ptr))
 			{
 				return null;
 			}
-			
+
 			var str = GetString(ptr);
 			return str;
 		}
-		
+
 		public static byte[] ColorPicker(string title, byte[] defaultColor)
 		{
 			byte[] outputColor = (byte[])defaultColor.Clone();
-			
+
 			IntPtr ptr;
-			
+
 			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
 			{
 				if (Environment.Is64BitProcess)
@@ -434,15 +434,15 @@ namespace NativeServices
 					ptr = ColorChooser_x32(title, null, defaultColor, outputColor);
 				}
 			}
-			
+
 			if (!IsPointerValid(ptr))
 			{
 				return null;
 			}
-			
+
 			//var str = StringFromAnsi(ptr);
 			//return str;
-			
+
 			return outputColor;
 		}
 	}

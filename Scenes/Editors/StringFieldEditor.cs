@@ -1,12 +1,11 @@
 using Godot;
-using System;
 
 public class StringFieldEditor : FieldEditor
 {
 	private TextInputBox textInputBox;
 	private OptionButton optionButton;
 	private Label label;
-	
+
 	public new StringField Field
 	{
 		get => field;
@@ -16,7 +15,7 @@ public class StringFieldEditor : FieldEditor
 			FieldChanged();
 		}
 	}
-	
+
 	public new bool Inherited
 	{
 		get => inherited;
@@ -26,7 +25,7 @@ public class StringFieldEditor : FieldEditor
 			UpdateState();
 		}
 	}
-	
+
 	public new bool Overriding
 	{
 		get => overriding && inherited;
@@ -36,18 +35,18 @@ public class StringFieldEditor : FieldEditor
 			UpdateState();
 		}
 	}
-	
+
 	protected new StringField field;
-	
+
 	public override void _Ready()
 	{
 		textInputBox = GetNode<TextInputBox>("VBoxContainer/TextInputBox");
 		optionButton = GetNode<OptionButton>("VBoxContainer/OptionButton");
 		label = GetNode<Label>("VBoxContainer/Label");
-		
+
 		UpdateState();
 	}
-	
+
 	public override void _ExitTree()
 	{
 		if (field != null)
@@ -58,16 +57,16 @@ public class StringFieldEditor : FieldEditor
 			}
 		}
 	}
-	
+
 	protected override void FieldChanged()
 	{
 		UpdateState();
 	}
-	
+
 	public override void UpdateState()
 	{
 		var editable = (!Inherited || Overriding);
-		
+
 		if (textInputBox != null)
 		{
 			var text = field?.Data ?? "";
@@ -75,28 +74,28 @@ public class StringFieldEditor : FieldEditor
 			{
 				textInputBox.Text = text;
 			}
-			
+
 			textInputBox.Editable = editable;
 			textInputBox.SelectingEnabled = editable;
 			textInputBox.Visible = ((field?.Options.Count ?? 0) == 0);
 		}
-		
+
 		if (optionButton != null)
 		{
 			optionButton.Clear();
-			
+
 			if (field != null)
 			{
-				foreach(var option in field.Options)
+				foreach (var option in field.Options)
 				{
 					optionButton.AddItem(option);
 				}
-				
+
 				optionButton.Disabled = !editable;
 				optionButton.Visible = (field.Options.Count > 0);
 			}
 		}
-		
+
 		if (label != null)
 		{
 			label.Text = field?.Name ?? "";
@@ -104,7 +103,7 @@ public class StringFieldEditor : FieldEditor
 			label.Modulate = editable ? color : new Color(1.0f, 1.0f, 1.0f, 0.6f);
 		}
 	}
-	
+
 	public void OnTextInputEntered(string newText)
 	{
 		if (field != null)
@@ -113,7 +112,7 @@ public class StringFieldEditor : FieldEditor
 			EmitSignal(nameof(OnDataChanged), this);
 		}
 	}
-	
+
 	public void OnTextFocusExited()
 	{
 		if (field != null)

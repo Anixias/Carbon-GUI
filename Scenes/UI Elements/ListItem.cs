@@ -1,24 +1,23 @@
 using Godot;
-using System;
 
 [Tool]
 public class ListItem : Button
 {
 	[Signal]
 	public delegate void ButtonPressed();
-	
+
 	[Signal]
 	public delegate void DoubleClicked(int listIndex);
-	
+
 	[Signal]
 	public delegate void Renamed(int listIndex, string newName);
-	
+
 	[Signal]
 	public delegate void TextInputChanged(int listIndex, string newName);
-	
+
 	[Signal]
 	public delegate void Deleted(int listIndex);
-	
+
 	[Export]
 	public new string Text
 	{
@@ -26,23 +25,23 @@ public class ListItem : Button
 		set
 		{
 			text = value;
-			
+
 			Refresh();
-			
+
 			if (textLabel != null)
 			{
 				textLabel.Text = value;
 			}
-			
+
 			if (textInputBox != null)
 			{
 				textInputBox.Text = value;
 			}
-			
+
 			HintTooltip = value;
 		}
 	}
-	
+
 	[Export]
 	public new Texture Icon
 	{
@@ -50,16 +49,16 @@ public class ListItem : Button
 		set
 		{
 			icon = value;
-			
+
 			Refresh();
-			
+
 			if (iconTextureRect != null)
 			{
 				iconTextureRect.Texture = value;
 			}
 		}
 	}
-	
+
 	[Export]
 	public new bool KeepPressedOutside
 	{
@@ -69,7 +68,7 @@ public class ListItem : Button
 			base.KeepPressedOutside = value;
 		}
 	}
-	
+
 	[Export]
 	public bool TintIcon
 	{
@@ -79,7 +78,7 @@ public class ListItem : Button
 			tintIcon = value;
 		}
 	}
-	
+
 	[Export]
 	public bool Enabled
 	{
@@ -89,7 +88,7 @@ public class ListItem : Button
 			Disabled = !value;
 		}
 	}
-	
+
 	[Export]
 	public bool Selected
 	{
@@ -99,7 +98,7 @@ public class ListItem : Button
 			{
 				return selectPanel.Visible;
 			}
-			
+
 			return false;
 		}
 		set
@@ -110,7 +109,7 @@ public class ListItem : Button
 			}
 		}
 	}
-	
+
 	[Export]
 	public bool CanBeRenamed
 	{
@@ -121,11 +120,11 @@ public class ListItem : Button
 			{
 				popupMenu.SetItemDisabled(0, !value);
 			}
-			
+
 			canBeRenamed = value;
 		}
 	}
-	
+
 	[Export]
 	public bool CanBeDeleted
 	{
@@ -136,34 +135,35 @@ public class ListItem : Button
 			{
 				popupMenu.SetItemDisabled(1, !value);
 			}
-			
+
 			canBeDeleted = value;
 		}
 	}
-	
+
 	public bool Inherited
 	{
 		get => inherited;
 		set
 		{
 			inherited = value;
-			if (!inherited) overriding = false;
-			
+			if (!inherited)
+				overriding = false;
+
 			UpdateGraphics();
 		}
 	}
-	
+
 	public bool Overriding
 	{
 		get => overriding;
 		set
 		{
 			overriding = value && inherited;
-			
+
 			UpdateGraphics();
 		}
 	}
-	
+
 	public bool Dragging
 	{
 		get => dragging;
@@ -173,9 +173,9 @@ public class ListItem : Button
 			dragPanel.Visible = value;
 		}
 	}
-	
+
 	public int ListIndex = -1;
-	
+
 	private string text = "";
 	private Texture icon = null;
 	private bool tintIcon = false;
@@ -186,7 +186,7 @@ public class ListItem : Button
 	private bool queueEdit = false;
 	private bool dragging = false;
 	private bool ensureVisible = false;
-	
+
 	private Label textLabel;
 	private TextureRect iconTextureRect;
 	private MarginContainer marginContainer;
@@ -196,7 +196,7 @@ public class ListItem : Button
 	private Panel selectPanel;
 	private Panel dragPanel;
 	private PopupMenu popupMenu;
-	
+
 	private void Refresh()
 	{
 		if (IsInsideTree())
@@ -207,33 +207,33 @@ public class ListItem : Button
 			hBoxContainer = GetNode<HBoxContainer>("MarginContainer/HBoxContainer");
 			textInputBox = GetNode<LineEdit>("MarginContainer/HBoxContainer/Text/TextInputBox") as TextInputBox;
 			textControl = GetNode<Control>("MarginContainer/HBoxContainer/Text");
-			
+
 			selectPanel = GetNode<Panel>("SelectPanel");
 			dragPanel = GetNode<Panel>("DragPanel");
 			popupMenu = GetNode<PopupMenu>("PopupMenu");
 		}
 	}
-	
+
 	public override void _Ready()
 	{
 		Refresh();
-		
+
 		if (marginContainer == null)
 		{
 			return;
 		}
-		
+
 		textLabel.Text = text;
 		iconTextureRect.Texture = icon;
-		
+
 		if (textInputBox != null)
 		{
 			textInputBox.Text = text;
 			//textInputBox.GrabFocus();
 		}
-		
+
 		UpdateGraphics();
-		
+
 		/*if (!Engine.EditorHint)
 		{
 			// Rename: Shortcut
@@ -264,7 +264,8 @@ public class ListItem : Button
 
 	public override void _GuiInput(InputEvent @event)
 	{
-		if (Engine.EditorHint) return;
+		if (Engine.EditorHint)
+			return;
 
 		Refresh();
 
@@ -300,15 +301,16 @@ public class ListItem : Button
 
 	public override void _Input(InputEvent @event)
 	{
-		if (Engine.EditorHint) return;
-		
+		if (Engine.EditorHint)
+			return;
+
 		Refresh();
-		
+
 		if (marginContainer == null)
 		{
 			return;
 		}
-		
+
 		if (@event is InputEventKey keyEvent)
 		{
 			if (keyEvent.GetScancodeWithModifiers() == (uint)KeyList.F2)
@@ -328,28 +330,29 @@ public class ListItem : Button
 					textInputBox.Visible = false;
 					textLabel.Visible = true;
 				}
-				
+
 				if (dragging)
 				{
 					ForceEndDrag();
 				}
 			}
 		}
-		
+
 		UpdateGraphics();
 	}
-	
+
 	public override void _Process(float delta)
 	{
-		if (Engine.EditorHint) return;
-		
+		if (Engine.EditorHint)
+			return;
+
 		// Refresh min sizes
 		RectMinSize = Vector2.Zero;
-		
+
 		if (textControl != null)
 		{
 			textControl.RectMinSize = new Vector2(128.0f, 24.0f);//Vector2.Zero;
-		
+
 			/*if (textLabel != null)
 			{
 				var rect = textLabel.GetFont("font").GetStringSize(textInputBox.Text);
@@ -360,10 +363,10 @@ public class ListItem : Button
 				
 				textControl.RectMinSize = rect;
 			}*/
-			
+
 			marginContainer.RectSize = Vector2.Zero;
 		}
-		
+
 		if (Visible)
 		{
 			if (marginContainer != null)
@@ -371,47 +374,47 @@ public class ListItem : Button
 				RectMinSize = marginContainer.RectSize;
 			}
 		}
-		
+
 		if (ensureVisible)
 		{
 			ensureVisible = false;
-			
+
 			EnsureVisible();
 		}
-		
+
 		if (queueEdit)
 		{
 			queueEdit = false;
-			
+
 			textInputBox.Visible = true;
 			textLabel.Visible = false;
-			
+
 			ensureVisible = true;
-			
+
 			textInputBox.GrabFocus();
 			textInputBox.SelectAll();
 		}
 	}
-	
+
 	private void ForceEndDrag()
 	{
 		var evRelease = new InputEventMouseButton();
 		evRelease.Pressed = false;
 		evRelease.ButtonIndex = (int)ButtonList.Left;
-		
+
 		var evMotion = new InputEventMouseMotion();
-		
+
 		Input.ParseInputEvent(evRelease);
 		Input.ParseInputEvent(evMotion);
 	}
-	
+
 	private void UpdateGraphics()
 	{
 		MouseDefaultCursorShape = ((!Disabled) ? CursorShape.PointingHand : CursorShape.Arrow);
-		
+
 		var color = GetColor("font_color", "Button");
 		var stylebox = GetStylebox("normal", "Button");
-		
+
 		if (Disabled)
 		{
 			color = GetColor("font_color_disabled", "Button");
@@ -424,14 +427,14 @@ public class ListItem : Button
 				color = GetColor("font_color_hover", "Button");
 				stylebox = GetStylebox("hover", "Button");
 			}
-			
+
 			if (base.Pressed)
 			{
 				if (GetGlobalRect().HasPoint(GetGlobalMousePosition()) || KeepPressedOutside)
 				{
 					color = GetColor("font_color_pressed", "Button");
 					stylebox = GetStylebox("pressed", "Button");
-					
+
 				}
 				else
 				{
@@ -440,33 +443,33 @@ public class ListItem : Button
 				}
 			}
 		}
-		
+
 		if (inherited)
 		{
 			color = GetColor("font_color", "Label");
 			color.a *= 0.4f;
 		}
-		
+
 		if (overriding)
 		{
 			color = new Color(0.11f, 1.0f, 0.61f, 1.0f);
 		}
-		
+
 		if (textLabel != null)
 		{
 			textLabel.Modulate = color;
 		}
-		
+
 		if (tintIcon && iconTextureRect != null)
 		{
 			iconTextureRect.Modulate = color;
 		}
-		
+
 		marginContainer.AddConstantOverride("margin_left", (int)stylebox.GetMargin(Margin.Left));
 		marginContainer.AddConstantOverride("margin_right", (int)stylebox.GetMargin(Margin.Right));
 		marginContainer.AddConstantOverride("margin_top", (int)stylebox.GetMargin(Margin.Top));
 		marginContainer.AddConstantOverride("margin_bottom", (int)stylebox.GetMargin(Margin.Bottom));
-		
+
 		if (HasFont("font", "Button"))
 		{
 			textLabel?.AddFontOverride("font", GetFont("font", "Button"));
@@ -476,83 +479,85 @@ public class ListItem : Button
 			textLabel?.AddFontOverride("font", null);
 		}
 	}
-	
+
 	public void EnsureVisible()
 	{
 		Node current = this;
 		MarginScrollContainer scrollContainer = null;
-		
+
 		while (scrollContainer == null)
 		{
 			current = current.GetParent();
-			if (current == null) break;
-			
+			if (current == null)
+				break;
+
 			if (current is MarginScrollContainer SC)
 			{
 				scrollContainer = SC;
 			}
 		}
-		
+
 		if (scrollContainer != null)
 		{
 			scrollContainer.EnsureControlVisible(marginContainer);
 		}
 	}
-	
+
 	public void DragScroll(Vector2 position)
 	{
 		Node current = this;
 		MarginScrollContainer scrollContainer = null;
-		
+
 		while (scrollContainer == null)
 		{
 			current = current.GetParent();
-			if (current == null) break;
-			
+			if (current == null)
+				break;
+
 			if (current is MarginScrollContainer SC)
 			{
 				scrollContainer = SC;
 			}
 		}
-		
+
 		if (scrollContainer != null)
 		{
 			position += RectGlobalPosition;
 			position -= scrollContainer.RectGlobalPosition;
-			
+
 			scrollContainer.DragScroll(position);
 		}
 	}
-	
+
 	public override object GetDragData(Vector2 position)
 	{
 		SetDragPreview(MakeDragPreview());
-		
+
 		return this;
 	}
-	
+
 	public override bool CanDropData(Vector2 position, object data)
 	{
 		DragScroll(position);
-		
+
 		return false;
 	}
-	
+
 	public override void DropData(Vector2 position, object data)
 	{
-		
+
 	}
-	
+
 	public void OnTextEntered(string newText)
 	{
 		textInputBox.Visible = false;
 		textLabel.Visible = true;
-		
+
 		if (newText != "")
 		{
 			var oText = text;
 			Text = textInputBox.Text;
-			
+
 			if (oText != text)
 			{
 				EmitSignal(nameof(Renamed), ListIndex, text);
@@ -563,22 +568,22 @@ public class ListItem : Button
 			textInputBox.Text = text;
 		}
 	}
-	
+
 	public void OnTextInputChanged(string newText)
 	{
 		EmitSignal(nameof(TextInputChanged), ListIndex, newText);
 	}
-	
+
 	public void OnTextFocusExited()
 	{
 		textInputBox.Visible = false;
 		textLabel.Visible = true;
-		
+
 		if (textInputBox.Text != "")
 		{
 			var oText = text;
 			Text = textInputBox.Text;
-			
+
 			if (oText != text)
 			{
 				EmitSignal(nameof(Renamed), ListIndex, text);
@@ -588,16 +593,16 @@ public class ListItem : Button
 		{
 			textInputBox.Text = text;
 		}
-		
+
 		if (GetFocusOwner() == null)
 		{
 			GrabFocus();
 		}
 	}
-	
+
 	public void OnPopupMenuIndexPressed(int index)
 	{
-		switch(index)
+		switch (index)
 		{
 			default:
 				break;
@@ -609,26 +614,26 @@ public class ListItem : Button
 				break;
 		}
 	}
-	
+
 	public void Edit()
 	{
 		queueEdit = true;
 	}
-	
+
 	public void Select()
 	{
 		selectPanel.Visible = true;
 	}
-	
+
 	public void Deselect()
 	{
 		selectPanel.Visible = false;
 	}
-	
+
 	private Control MakeDragPreview()
 	{
 		ListItem preview = Duplicate((int)DuplicateFlags.UseInstancing) as ListItem;
-		
+
 		return preview;
 	}
 }

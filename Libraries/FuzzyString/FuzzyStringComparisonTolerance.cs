@@ -1,41 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FuzzyString
+﻿namespace FuzzyString
 {
-    public enum ComparisonTolerance
-    {
+	public enum ComparisonTolerance
+	{
 		/// <summary>
 		/// The strings must be an exact match.
 		/// </summary>
 		Exact,
-		
+
 		/// <summary>
 		/// The strings must be extremely similar.
 		/// </summary>
-        Strong,
-		
+		Strong,
+
 		/// <summary>
 		/// The strings must be notably similar.
 		/// </summary>
-        Normal,
-		
+		Normal,
+
 		/// <summary>
 		/// The strings must be marginally similar.
 		/// </summary>
-        Weak,
-		
+		Weak,
+
 		/// <summary>
 		/// The strings must be very different.
 		/// </summary>
-        Distinct,
-		
+		Distinct,
+
 		/// <summary>
 		/// The strings must be extremely different.
 		/// </summary>
 		Unique
-    }
+	}
 }
