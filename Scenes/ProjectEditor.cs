@@ -553,7 +553,7 @@ public class ProjectEditor : HSplitContainer
 		designFilter.Text = "";
 	}
 
-	public void OnDesignListItemDeleted(TreeListItem listItem, TreeListItem oldParent, int oldLocalIndex)
+	public void OnDesignListItemDeleted(TreeListItem listItem, int oldLocalIndex)
 	{
 		if (!HasProject())
 			return;

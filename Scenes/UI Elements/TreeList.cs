@@ -11,7 +11,7 @@ public class TreeList : MarginContainer
 	public delegate void ListItemDoubleClicked(TreeListItem listItem);
 
 	[Signal]
-	public delegate void ListItemDeleted(TreeListItem listItem, TreeListItem oldParent, int oldLocalIndex);
+	public delegate void ListItemDeleted(TreeListItem listItem, int oldLocalIndex);
 
 	[Signal]
 	public delegate void ListItemRenamed(TreeListItem listItem, string newName);
@@ -374,7 +374,7 @@ public class TreeList : MarginContainer
 		var oldLocalIndex = node.GetLocalIndex();
 
 		RemoveListItem(listItem);
-		EmitSignal(nameof(ListItemDeleted), listItem, oldParent, oldLocalIndex);
+		EmitSignal(nameof(ListItemDeleted), listItem, oldLocalIndex);
 	}
 
 	public void OnListItemRenamed(TreeListItem listItem, string newName)
