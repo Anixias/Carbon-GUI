@@ -1666,8 +1666,11 @@ public class ProjectEditor : HSplitContainer
 		{
 			var inherited = (_obj != obj);
 
-			var label = new Label();
-			label.Text = _obj.Name;
+			var label = new Label
+			{
+				Text = _obj.Name
+			};
+
 			fieldList.AddChild(label);
 
 			label.AddFontOverride("font", font);
