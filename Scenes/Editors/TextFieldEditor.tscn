@@ -1,7 +1,7 @@
 [gd_scene load_steps=53 format=2]
 
-[ext_resource path="res://TextFieldEditor.cs" type="Script" id=1]
-[ext_resource path="res://TextInputArea.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Editors/TextFieldEditor.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/UI Elements/TextInputArea.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Fonts/NotoSansJP-Regular.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://Assets/Fonts/NotoSans-Regular.ttf" type="DynamicFontData" id=4]
 [ext_resource path="res://Assets/Fonts/NotoSansTC-Regular.otf" type="DynamicFontData" id=5]

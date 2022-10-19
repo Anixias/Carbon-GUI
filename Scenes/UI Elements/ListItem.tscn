@@ -1,9 +1,9 @@
 [gd_scene load_steps=17 format=2]
 
-[ext_resource path="res://ListItem.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/UI Elements/ListItem.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Fonts/DefaultFont.tres" type="DynamicFont" id=2]
 [ext_resource path="res://Interface.tres" type="Theme" id=3]
-[ext_resource path="res://TextInputBox.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/UI Elements/TextInputBox.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Icons/trash.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Icons/edit-write.png" type="Texture" id=10]
 

@@ -1,8 +1,8 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Assets/Icons/chevron-down.png" type="Texture" id=1]
-[ext_resource path="res://ListItem.tscn" type="PackedScene" id=2]
-[ext_resource path="res://TreeListItem.cs" type="Script" id=3]
+[ext_resource path="res://Scenes/UI Elements/ListItem.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/UI Elements/TreeListItem.cs" type="Script" id=3]
 [ext_resource path="res://Assets/Icons/folder-open.png" type="Texture" id=4]
 [ext_resource path="res://Assets/Icons/folder-closed.png" type="Texture" id=5]
 [ext_resource path="res://Assets/Icons/unlocked.png" type="Texture" id=6]

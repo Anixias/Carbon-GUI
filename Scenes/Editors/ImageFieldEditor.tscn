@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://ImageFieldEditor.cs" type="Script" id=1]
-[ext_resource path="res://TextInputBox.tscn" type="PackedScene" id=2]
-[ext_resource path="res://IconButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Editors/ImageFieldEditor.cs" type="Script" id=1]
+[ext_resource path="res://Scenes/UI Elements/TextInputBox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/UI Elements/IconButton.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Assets/Icons/folder-open.png" type="Texture" id=4]
 
 [sub_resource type="StyleBoxFlat" id=5]

@@ -11,7 +11,7 @@ config_version=4
 [application]
 
 config/name="Carbon GUI"
-run/main_scene="res://Interface.tscn"
+run/main_scene="res://Scenes/Interface.tscn"
 run/low_processor_mode=true
 boot_splash/image="res://Assets/carbon-db-128.png"
 boot_splash/fullsize=false

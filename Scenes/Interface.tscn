@@ -1,10 +1,10 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Interface.tres" type="Theme" id=1]
-[ext_resource path="res://ProjectEditor.tscn" type="PackedScene" id=2]
-[ext_resource path="res://SplashScreen.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Interface.cs" type="Script" id=4]
-[ext_resource path="res://MenuBar.cs" type="Script" id=5]
+[ext_resource path="res://Scenes/ProjectEditor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/SplashScreen.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Interface.cs" type="Script" id=4]
+[ext_resource path="res://Scenes/MenuBar.cs" type="Script" id=5]
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.113725, 0.137255, 0.156863, 1 )
