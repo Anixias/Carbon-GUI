@@ -10,7 +10,7 @@ public class Object
 	private Guid guid;
 	private TreeListItem listItem;
 	private Object parent;
-	private List<Object> children;
+	private readonly List<Object> children;
 	public bool IsRoot;
 	
 	private bool isType;

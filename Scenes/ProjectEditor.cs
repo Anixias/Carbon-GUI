@@ -18,7 +18,7 @@ public class ProjectEditor : HSplitContainer
 	private Collection currentCollection;
 	private Object currentObject;
 	private Field currentField;
-	private History<EditorCommand> commands = new History<EditorCommand>();
+	private readonly History<EditorCommand> commands = new History<EditorCommand>();
 	
 	private int lastSavedHashCode;
 	

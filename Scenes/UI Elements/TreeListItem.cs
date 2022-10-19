@@ -490,7 +490,7 @@ public class TreeListItem : MarginContainer
         }
     }
     
-    private List<Vector2> relationshipPoints = new List<Vector2>();
+    private readonly List<Vector2> relationshipPoints = new List<Vector2>();
     private bool updateRelationshipPoints = false;
     private Control dragPreview;
     
@@ -499,14 +499,14 @@ public class TreeListItem : MarginContainer
     private bool canDragSibling = true;
     private bool collapsed = false;
     private bool filtered = false;
-    private bool hidden = false;
+    private readonly bool hidden = false;
     private object metaData;
     private DragDropLocation dragLocation = DragDropLocation.none;
     private Texture icon = null;
     private Texture iconCollapsed = null;
     private int listIndex = -1;
     private TreeListItem parent = null;
-    private List<TreeListItem> children = new List<TreeListItem>();
+    private readonly List<TreeListItem> children = new List<TreeListItem>();
     private int nestLevel = 0;
     private Texture chevronRight;
     private Texture chevronDown;

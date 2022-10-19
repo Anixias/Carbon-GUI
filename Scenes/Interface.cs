@@ -24,7 +24,7 @@ public class Interface : Control
 	
 	private class SplashScreenState : ApplicationState
 	{
-		private Control splashScreen;
+		private readonly Control splashScreen;
 		
 		public SplashScreenState(Control splashScreen)
 		{

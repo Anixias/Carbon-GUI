@@ -13,8 +13,8 @@ namespace Glint
 		/// <typeparam name="T"></typeparam>
 		public class History<T>
 		{
-			private Stack<T> undoHistory;
-			private Stack<T> redoHistory;
+			private readonly Stack<T> undoHistory;
+			private readonly Stack<T> redoHistory;
 			
 			/// <summary>
 			/// Initializes a new instance of the <see cref="History{T}"/> class that is empty.
@@ -279,10 +279,10 @@ namespace Glint
 				}
 			}
 			
-			private BaseNode root;
+			private readonly BaseNode root;
 			private bool dataDirty = false;
 			private List<Node> data;
-			private Dictionary<T, Node> lookup;
+			private readonly Dictionary<T, Node> lookup;
 			
 			private List<Node> Data { get => dataDirty ? GetNodes() : data; }
 			
