@@ -73,10 +73,12 @@ public class MenuBar : HBoxContainer
 
 	private MenuButton CreateMenuButton(string text, string callback = null)
 	{
-		var menuButton = new MenuButton();
-		menuButton.SwitchOnHover = true;
-		menuButton.Flat = false;
-		menuButton.Text = text;
+		var menuButton = new MenuButton
+		{
+			SwitchOnHover = true,
+			Flat = false,
+			Text = text
+		};
 
 		AddChild(menuButton);
 
@@ -96,9 +98,11 @@ public class MenuBar : HBoxContainer
 		var popup = menuButton.GetPopup();
 		var idx = popup.GetItemCount();
 
-		var sc = new ShortCut();
-		sc.ResourceName = label;
-		sc.Shortcut = new InputEventKey();
+		var sc = new ShortCut
+		{
+			ResourceName = label,
+			Shortcut = new InputEventKey()
+		};
 
 		var SC = ((InputEventKey)sc.Shortcut);
 		SC.Command = cmd;
@@ -164,9 +168,7 @@ public class MenuBar : HBoxContainer
 
 	private void InvokeMenuItem(MenuButton menuButton, int idx)
 	{
-		string methodName = menuButton.GetPopup().GetItemMetadata(idx) as string;
-
-		if (methodName != null)
+		if (menuButton.GetPopup().GetItemMetadata(idx) is string methodName)
 		{
 			object[] parameters = { };
 			Invoke(methodName, parameters);
