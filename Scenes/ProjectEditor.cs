@@ -560,12 +560,11 @@ public class ProjectEditor : HSplitContainer
 		if (currentObject == null)
 			return;
 
-		var field = listItem.MetaData as Field;
-		if (field == null)
-			return;
-
-		PushCommand(new DeleteFieldCommand(this, currentObject, listItem.Icon, field, oldLocalIndex), false);
-		DeleteField(currentObject, field, false);
+		if (listItem.MetaData is Field field)
+		{
+			PushCommand(new DeleteFieldCommand(this, currentObject, listItem.Icon, field, oldLocalIndex), false);
+			DeleteField(currentObject, field, false);
+		}
 	}
 
 	public void OnDesignListItemRenamed(TreeListItem listItem, string newName)
@@ -575,21 +574,19 @@ public class ProjectEditor : HSplitContainer
 		if (currentObject == null)
 			return;
 
-		var field = listItem.MetaData as Field;
-		if (field == null)
+		if (listItem.MetaData is Field field)
 		{
-			var obj = listItem.MetaData as Object;
-			if (obj != null && obj.Name != newName)
+			if (field.Name != newName)
+			{
+				PushCommand(new RenameFieldCommand(this, currentObject, field, field.Name, newName));
+			}
+		}
+		else if (listItem.MetaData is Object obj)
+		{
+			if (obj.Name != newName)
 			{
 				PushCommand(new RenameObjectCommand(this, currentCollection, obj, obj.Name, newName));
 			}
-
-			return;
-		}
-
-		if (field.Name != newName)
-		{
-			PushCommand(new RenameFieldCommand(this, currentObject, field, field.Name, newName));
 		}
 	}
 
@@ -602,14 +599,16 @@ public class ProjectEditor : HSplitContainer
 
 		// Select the field, and cause the inspector to appear if it is the originating object
 		var prevField = currentField;
-		var nextField = listItem.MetaData as Field;
 
-		if (nextField != null && nextField != prevField)
+		if (listItem.MetaData is Field nextField)
 		{
-			currentField = nextField;
+			if (nextField != prevField)
+			{
+				currentField = nextField;
 
-			prevField?.ListItem?.Deselect();
-			currentField?.ListItem?.Select();
+				prevField?.ListItem?.Deselect();
+				currentField?.ListItem?.Select();
+			}
 		}
 	}
 
@@ -636,11 +635,10 @@ public class ProjectEditor : HSplitContainer
 		if (currentObject == null)
 			return;
 
-		var field = listItem.MetaData as Field;
-		if (field == null)
-			return;
-
-		PushCommand(new MoveFieldCommand(this, currentObject, field, oldLocalIndex, newLocalIndex));
+		if (listItem.MetaData is Field field)
+		{
+			PushCommand(new MoveFieldCommand(this, currentObject, field, oldLocalIndex, newLocalIndex));
+		}
 	}
 
 	public void OnDesignListItemOverridingChanged(TreeListItem listItem, bool overriding)
@@ -650,11 +648,10 @@ public class ProjectEditor : HSplitContainer
 		if (currentObject == null)
 			return;
 
-		var field = listItem.MetaData as Field;
-		if (field == null)
-			return;
-
-		PushCommand(new OverrideFieldCommand(this, currentObject, field, overriding));
+		if (listItem.MetaData is Field field)
+		{
+			PushCommand(new OverrideFieldCommand(this, currentObject, field, overriding));
+		}
 	}
 
 	public void OnDesignFilterTextChanged(string newText)
@@ -779,14 +776,13 @@ public class ProjectEditor : HSplitContainer
 
 	public void OnCollectionListItemMoved(TreeListItem listItem, TreeListItem oldParent, int oldLocalIndex, int newLocalIndex)
 	{
-		var collection = listItem.MetaData as Collection;
-		if (collection == null)
-			return;
+		if (listItem.MetaData is Collection collection)
+		{
+			Collections.Remove(collection);
+			Collections.Insert(newLocalIndex, collection);
 
-		Collections.Remove(collection);
-		Collections.Insert(newLocalIndex, collection);
-
-		PushCommand(new MoveCollectionCommand(this, collection, oldLocalIndex, newLocalIndex), false);
+			PushCommand(new MoveCollectionCommand(this, collection, oldLocalIndex, newLocalIndex), false);
+		}
 	}
 
 	public void OnCollectionListItemRenamed(TreeListItem listItem, string newName)
@@ -794,13 +790,12 @@ public class ProjectEditor : HSplitContainer
 		if (!HasProject())
 			return;
 
-		var collection = listItem.MetaData as Collection;
-		if (collection == null)
-			return;
-
-		if (collection.Name != newName)
+		if (listItem.MetaData is Collection collection)
 		{
-			PushCommand(new RenameCollectionCommand(this, collection, collection.Name, newName));
+			if (collection.Name != newName)
+			{
+				PushCommand(new RenameCollectionCommand(this, collection, collection.Name, newName));
+			}
 		}
 	}
 
@@ -809,10 +804,12 @@ public class ProjectEditor : HSplitContainer
 		if (!HasProject())
 			return;
 
-		var collection = listItem.MetaData as Collection;
-		if (collection != null && collection != currentCollection)
+		if (listItem.MetaData is Collection collection)
 		{
-			LoadCollection(collection);
+			if (collection != currentCollection)
+			{
+				LoadCollection(collection);
+			}
 		}
 	}
 
@@ -1230,12 +1227,11 @@ public class ProjectEditor : HSplitContainer
 		if (!HasProject())
 			return;
 
-		var obj = listItem.MetaData as Object;
-		if (obj == null)
-			return;
-
-		PushCommand(new DeleteObjectCommand(this, currentCollection, oldParent.MetaData as Object, oldLocalIndex, obj), false);
-		RemoveObject(currentCollection, obj, false);
+		if (listItem.MetaData is Object obj)
+		{
+			PushCommand(new DeleteObjectCommand(this, currentCollection, oldParent.MetaData as Object, oldLocalIndex, obj), false);
+			RemoveObject(currentCollection, obj, false);
+		}
 
 		RefreshUI();
 	}
@@ -1245,13 +1241,12 @@ public class ProjectEditor : HSplitContainer
 		if (!HasProject())
 			return;
 
-		var obj = listItem.MetaData as Object;
-		if (obj == null)
-			return;
-
-		if (obj.Name != newName)
+		if (listItem.MetaData is Object obj)
 		{
-			PushCommand(new RenameObjectCommand(this, currentCollection, obj, obj.Name, newName));
+			if (obj.Name != newName)
+			{
+				PushCommand(new RenameObjectCommand(this, currentCollection, obj, obj.Name, newName));
+			}
 		}
 	}
 
@@ -1267,8 +1262,7 @@ public class ProjectEditor : HSplitContainer
 		if (currentCollection == null)
 			return;
 
-		var obj = listItem.MetaData as Object;
-		if (obj != null)
+		if (listItem.MetaData is Object obj)
 		{
 			if (obj != currentObject)
 			{
@@ -1285,11 +1279,9 @@ public class ProjectEditor : HSplitContainer
 		if (currentCollection == null)
 			return;
 
-		var obj = listItem.MetaData as Object;
-		if (obj != null)
+		if (listItem.MetaData is Object obj)
 		{
 			LoadObject(obj);
-
 			obj.ListItem?.Edit();
 		}
 	}
@@ -1301,10 +1293,12 @@ public class ProjectEditor : HSplitContainer
 		if (currentCollection == null)
 			return;
 
-		var obj = listItem.MetaData as Object;
-		if (obj != null && !collapsed)
+		if (listItem.MetaData is Object)
 		{
-			FilterObjects();
+			if (!collapsed)
+			{
+				FilterObjects();
+			}
 		}
 	}
 
@@ -1313,14 +1307,13 @@ public class ProjectEditor : HSplitContainer
 		if (currentCollection == null)
 			return;
 
-		var @object = listItem.MetaData as Object;
-		if (@object == null)
-			return;
+		if (listItem.MetaData is Object obj)
+		{
+			var oldParentObj = oldParent.MetaData as Object;
+			var newParentObj = listItem.Parent?.MetaData as Object;
 
-		var oldParentObj = oldParent.MetaData as Object;
-		var newParentObj = listItem.Parent?.MetaData as Object;
-
-		PushCommand(new MoveObjectCommand(this, currentCollection, @object, oldParentObj, oldLocalIndex, newParentObj, newLocalIndex));
+			PushCommand(new MoveObjectCommand(this, currentCollection, obj, oldParentObj, oldLocalIndex, newParentObj, newLocalIndex));
+		}
 	}
 
 	private void EnsureUnique(Object obj, Collection collection = null)
@@ -1456,12 +1449,11 @@ public class ProjectEditor : HSplitContainer
 			if (listItem == null)
 				continue;
 
-			var field = listItem.MetaData as Field;
-			if (field == null)
-				continue;
-
-			var filtered = !(filter == "" || field.Name.ToString().Matches(filter));
-			listItem.Filtered = filtered;
+			if (listItem.MetaData is Field field)
+			{
+				var filtered = !(filter == "" || field.Name.ToString().Matches(filter));
+				listItem.Filtered = filtered;
+			}
 		}
 	}
 
