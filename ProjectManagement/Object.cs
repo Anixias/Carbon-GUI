@@ -293,7 +293,7 @@ public class Object
 
 		foreach (var fieldOverride in fieldOverrides)
 		{
-			var id = fieldOverride.Value.ID.ToString();
+			//var id = fieldOverride.Value.ID.ToString();
 			var inheritId = fieldOverride.Key.ID.ToString();
 			fieldOverrideData.Add(new Dictionary<string, object>()
 			{
