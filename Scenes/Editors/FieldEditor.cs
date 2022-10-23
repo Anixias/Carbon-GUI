@@ -56,6 +56,8 @@ public abstract class FieldEditor : Control
 	}
 
 	public abstract void UpdateState();
+	public abstract void SubmitChanges();
+	public abstract bool HasChanges();
 
 	protected abstract void FieldChanged();
 }

@@ -127,11 +127,21 @@ public class TextFieldEditor : FieldEditor
 
 	public void OnTextInputFocusExited()
 	{
+		SubmitChanges();
+	}
+
+	public override void SubmitChanges()
+	{
 		if (field != null)
 		{
 			field.Data = textInputArea.Text;
 			EmitSignal(nameof(OnDataChanged), this);
 		}
+	}
+
+	public override bool HasChanges()
+	{
+		return (field?.Data != textInputArea.Text);
 	}
 
 	public void OnResized(int offset)

@@ -89,10 +89,20 @@ public class BooleanFieldEditor : FieldEditor
 
 	public void OnToggled(bool check)
 	{
+		SubmitChanges();
+	}
+
+	public override void SubmitChanges()
+	{
 		if (field != null)
 		{
-			field.Data = check;
+			field.Data = checkButton.Pressed;
 			EmitSignal(nameof(OnDataChanged), this);
 		}
+	}
+
+	public override bool HasChanges()
+	{
+		return (field?.Data != checkButton.Pressed);
 	}
 }

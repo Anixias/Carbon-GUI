@@ -88,10 +88,20 @@ public class NumberFieldEditor : FieldEditor
 
 	public void OnValueEdited(double value)
 	{
+		SubmitChanges();
+	}
+
+	public override void SubmitChanges()
+	{
 		if (field != null)
 		{
-			field.Data = value;
+			field.Data = numberInputBox.Value;
 			EmitSignal(nameof(OnDataChanged), this);
 		}
+	}
+
+	public override bool HasChanges()
+	{
+		return (field?.Data != numberInputBox.Value);
 	}
 }

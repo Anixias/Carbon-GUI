@@ -126,19 +126,25 @@ public class ImageFieldEditor : FieldEditor
 
 	public void OnTextInputEntered(string newText)
 	{
-		if (field != null)
-		{
-			field.Data = newText;
-			EmitSignal(nameof(OnDataChanged), this);
-		}
+		SubmitChanges();
 	}
 
 	public void OnTextFocusExited()
+	{
+		SubmitChanges();
+	}
+
+	public override void SubmitChanges()
 	{
 		if (field != null)
 		{
 			field.Data = textInputBox.Text;
 			EmitSignal(nameof(OnDataChanged), this);
 		}
+	}
+
+	public override bool HasChanges()
+	{
+		return (field?.Data != textInputBox.Text);
 	}
 }
