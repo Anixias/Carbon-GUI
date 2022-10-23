@@ -93,7 +93,7 @@ public class Interface : Control
 
 		if (state is ProjectEditorState projectEditorState)
 		{
-			title = projectEditorState.project.path.GetFile() + (projectEditorState.projectEditor.HasUnsavedChanges ? "*" : "") + " - " + title;
+			title = projectEditorState.project.Path.GetFile() + (projectEditorState.projectEditor.HasUnsavedChanges ? "*" : "") + " - " + title;
 		}
 
 		OS.SetWindowTitle(title);

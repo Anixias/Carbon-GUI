@@ -8,7 +8,7 @@ public class Project
 {
 	public static readonly Version version = new Version("0.1");
 	public List<Collection> collections;
-	public string path { get; private set; } = DefaultPath + "project.carbon";
+	public string Path { get; private set; } = DefaultPath + "project.carbon";
 
 	public static readonly string DefaultPath = OS.GetEnvironment("USERPROFILE") + "\\Documents\\";
 
@@ -19,7 +19,7 @@ public class Project
 
 	public bool SaveAs()
 	{
-		var newPath = NativeFileDialog.SaveFileDialog("Save project as...", path, new[] { "*.carbon" }, "Carbon Project");
+		var newPath = NativeFileDialog.SaveFileDialog("Save project as...", Path, new[] { "*.carbon" }, "Carbon Project");
 		if (newPath == null || newPath == "")
 			return false;
 
@@ -31,7 +31,7 @@ public class Project
 			dir.MakeDirRecursive(baseDirectory);
 		}
 
-		path = newPath;
+		Path = newPath;
 		Save(false);
 
 		return true;
@@ -50,13 +50,13 @@ public class Project
 		// First, read the contents in case there is a crash during the save
 		if (saveExistingData)
 		{
-			file.Open(path, File.ModeFlags.Read);
+			file.Open(Path, File.ModeFlags.Read);
 			existingData = file.GetAsText();
 			file.Close();
 		}
 
 		// Re-open the file for writing
-		file.Open(path, File.ModeFlags.Write);
+		file.Open(Path, File.ModeFlags.Write);
 
 		try
 		{
@@ -90,9 +90,9 @@ public class Project
 		var file = new File();
 		if (file.FileExists(newPath))
 		{
-			path = newPath;
+			Path = newPath;
 
-			file.Open(path, File.ModeFlags.Read);
+			file.Open(Path, File.ModeFlags.Read);
 			var fileContents = file.GetAsText();
 			file.Close();
 
