@@ -374,7 +374,7 @@ public class TreeList : MarginContainer
 		var oldLocalIndex = node.GetLocalIndex();
 
 		RemoveListItem(listItem);
-		EmitSignal(nameof(ListItemDeleted), listItem, oldLocalIndex);
+		EmitSignal(nameof(ListItemDeleted), listItem, oldParent, oldLocalIndex);
 	}
 
 	public void OnListItemRenamed(TreeListItem listItem, string newName)
