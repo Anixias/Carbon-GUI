@@ -23,6 +23,10 @@ config/windows_native_icon="res://carbon.ico"
 
 window/dpi/allow_hidpi=true
 
+[editor]
+
+scene_naming=1
+
 [gui]
 
 theme/custom="res://Interface.tres"
