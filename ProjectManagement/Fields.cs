@@ -85,6 +85,11 @@ public abstract class Field
 		return (HasEditor() ? editor : null);
 	}
 
+	public virtual FieldInspector GetInspector()
+	{
+		return (HasInspector() ? inspector : null);
+	}
+
 	private void GenerateID()
 	{
 		if (Name == "")
@@ -95,7 +100,7 @@ public abstract class Field
 
 		TextInfo textInfo = new CultureInfo("en-us", false).TextInfo;
 		var _id = textInfo.ToTitleCase(Name);
-		_id = Char.ToLowerInvariant(_id[0]) + _id.Substring(1);
+		_id = Char.ToLowerInvariant(_id[0]) + _id[1..];
 		_id = _id.Replace("_", string.Empty);
 		_id = _id.Replace(" ", string.Empty);
 
@@ -129,6 +134,33 @@ public abstract class Field
 		editor = null;
 	}
 
+	public virtual void SubmitEditor()
+	{
+		if (HasEditor())
+		{
+			editor?.SubmitChanges();
+		}
+	}
+
+	public virtual bool HasInspector()
+	{
+		return (inspector != null && Godot.Object.IsInstanceValid(inspector));
+	}
+
+	public virtual void UpdateInspector()
+	{
+		if (HasInspector())
+		{
+			inspector.UpdateState();
+		}
+	}
+
+	public virtual void RemoveInspector()
+	{
+		inspector?.QueueFree();
+		inspector = null;
+	}
+
 	protected object data;
 	protected UniqueName name;
 	protected string id;
@@ -136,15 +168,18 @@ public abstract class Field
 	private TreeListItem listItem = null;
 	protected FieldType type = FieldType.None;
 	protected FieldEditor editor;
+	protected FieldInspector inspector;
 	protected List<Field> linkedFields = new List<Field>();
 
 	public abstract FieldEditor CreateEditor(bool inherited);
-	public abstract void SetEditorOverriding(bool overriding);
+	public abstract FieldInspector CreateInspector(bool inherited);
+	public abstract void SetOverriding(bool overriding);
 	public abstract Field Duplicate();
 
 	~Field()
 	{
 		RemoveEditor();
+		RemoveInspector();
 	}
 
 	public void AddLink(Field link)
@@ -170,42 +205,50 @@ public abstract class Field
 		}
 
 		var name = Load<string>("name", "");
-		var id = Guid.Empty;
-		Guid.TryParse(Load<string>("id", ""), out id);
+		Guid.TryParse(Load<string>("id", ""), out Guid id);
 		var loadedData = Load<string>("data", null);
 
 		Field output = null;
 
-		var loadedType = FieldType.None;
-		if (FieldType.TryParse(Load<string>("type", FieldType.None.ToString()), true, out loadedType))
+		if (FieldType.TryParse(Load<string>("type", FieldType.None.ToString()), true, out FieldType loadedType))
 		{
 			switch (loadedType)
 			{
 				default:
 					return null;
 				case FieldType.String:
-					output = new StringField(name, loadedData);
-					output.guid = id;
+					output = new StringField(name, loadedData)
+					{
+						guid = id
+					};
 					break;
 				case FieldType.Text:
-					output = new TextField(name, loadedData);
-					output.guid = id;
+					output = new TextField(name, loadedData)
+					{
+						guid = id
+					};
 					break;
 				case FieldType.Number:
-					var loadedDouble = 0.0;
+					double loadedDouble;
 					Double.TryParse(loadedData, out loadedDouble);
-					output = new NumberField(name, loadedDouble);
-					output.guid = id;
+					output = new NumberField(name, loadedDouble)
+					{
+						guid = id
+					};
 					break;
 				case FieldType.Boolean:
-					var loadedBool = false;
+					bool loadedBool;
 					Boolean.TryParse(loadedData, out loadedBool);
-					output = new BooleanField(name, loadedBool);
-					output.guid = id;
+					output = new BooleanField(name, loadedBool)
+					{
+						guid = id
+					};
 					break;
 				case FieldType.Image:
-					output = new ImageField(name, loadedData);
-					output.guid = id;
+					output = new ImageField(name, loadedData)
+					{
+						guid = id
+					};
 					break;
 			}
 		}
@@ -215,18 +258,20 @@ public abstract class Field
 
 	public Dictionary<string, object> Write()
 	{
-		var data = new Dictionary<string, object>();
-
-		data["name"] = name.ToString();
-		data["id"] = ID.ToString();
-		data["type"] = type.ToString();
-		data["data"] = WriteData();
+		var data = new Dictionary<string, object>
+		{
+			["name"] = name.ToString(),
+			["id"] = ID.ToString(),
+			["type"] = type.ToString(),
+			["data"] = WriteData()
+		};
 
 		return data;
 	}
 
 	public virtual object WriteData()
 	{
+		SubmitEditor();
 		return data.ToString();
 	}
 }
@@ -260,6 +305,7 @@ public class StringField : Field
 
 	public override object WriteData()
 	{
+		SubmitEditor();
 		return Data;
 	}
 
@@ -291,7 +337,7 @@ public class StringField : Field
 	{
 		RemoveEditor();
 
-		var editorScene = ResourceLoader.Load<PackedScene>("res://StringFieldEditor.tscn");
+		var editorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Editors/StringFieldEditor.tscn");
 		var editorInstance = editorScene.Instance<StringFieldEditor>();
 		editorInstance.Field = this;
 		editorInstance.Inherited = inherited;
@@ -300,7 +346,20 @@ public class StringField : Field
 		return editor;
 	}
 
-	public override void SetEditorOverriding(bool overriding)
+	public override FieldInspector CreateInspector(bool inherited)
+	{
+		/*RemoveInspector();
+
+		var inspectorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Inspectors/StringFieldInspector.tscn");
+		var inspectorInstance = inspectorScene.Instance<StringFieldInspector>();
+		inspectorInstance.Field = this;
+		inspectorInstance.Inherited = inherited;
+
+		inspector = inspectorInstance;*/
+		return inspector;
+	}
+
+	public override void SetOverriding(bool overriding)
 	{
 		if (HasEditor())
 		{
@@ -322,11 +381,21 @@ public class StringField : Field
 		editor = null;
 	}
 
+	public override void SubmitEditor()
+	{
+		if (HasEditor())
+		{
+			editor?.SubmitChanges();
+		}
+	}
+
 	public override Field Duplicate()
 	{
-		var field = new StringField(name);
-		field.data = data;
-		field.DataEditedCallback = DataEditedCallback;
+		var field = new StringField(name)
+		{
+			data = data,
+			DataEditedCallback = DataEditedCallback
+		};
 
 		return field;
 	}
@@ -341,6 +410,8 @@ public class StringField : Field
 		{
 			this.data = data.ToString();
 		}
+
+		UpdateEditor();
 	}
 }
 
@@ -373,6 +444,7 @@ public class TextField : Field
 
 	public override object WriteData()
 	{
+		SubmitEditor();
 		return Data;
 	}
 
@@ -400,13 +472,26 @@ public class TextField : Field
 	{
 		RemoveEditor();
 
-		var editorScene = ResourceLoader.Load<PackedScene>("res://TextFieldEditor.tscn");
+		var editorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Editors/TextFieldEditor.tscn");
 		var editorInstance = editorScene.Instance<TextFieldEditor>();
 		editorInstance.Field = this;
 		editorInstance.Inherited = inherited;
 
 		editor = editorInstance;
 		return editor;
+	}
+
+	public override FieldInspector CreateInspector(bool inherited)
+	{
+		/*RemoveInspector();
+
+		var inspectorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Inspectors/TextFieldInspector.tscn");
+		var inspectorInstance = inspectorScene.Instance<TextFieldInspector>();
+		inspectorInstance.Field = this;
+		inspectorInstance.Inherited = inherited;
+
+		inspector = inspectorInstance;*/
+		return inspector;
 	}
 
 	public override void UpdateEditor()
@@ -423,7 +508,15 @@ public class TextField : Field
 		editor = null;
 	}
 
-	public override void SetEditorOverriding(bool overriding)
+	public override void SubmitEditor()
+	{
+		if (HasEditor())
+		{
+			editor?.SubmitChanges();
+		}
+	}
+
+	public override void SetOverriding(bool overriding)
 	{
 		if (HasEditor())
 		{
@@ -433,9 +526,11 @@ public class TextField : Field
 
 	public override Field Duplicate()
 	{
-		var field = new TextField(name);
-		field.data = data;
-		field.DataEditedCallback = DataEditedCallback;
+		var field = new TextField(name)
+		{
+			data = data,
+			DataEditedCallback = DataEditedCallback
+		};
 
 		return field;
 	}
@@ -450,6 +545,8 @@ public class TextField : Field
 		{
 			this.data = data.ToString();
 		}
+
+		UpdateEditor();
 	}
 }
 
@@ -482,6 +579,7 @@ public class NumberField : Field
 
 	public override object WriteData()
 	{
+		SubmitEditor();
 		return Data;
 	}
 
@@ -494,6 +592,7 @@ public class NumberField : Field
 	}
 
 	protected new NumberFieldEditor editor;
+	protected new NumberFieldInspector inspector;
 
 	public override FieldEditor GetEditor()
 	{
@@ -509,7 +608,7 @@ public class NumberField : Field
 	{
 		RemoveEditor();
 
-		var editorScene = ResourceLoader.Load<PackedScene>("res://NumberFieldEditor.tscn");
+		var editorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Editors/NumberFieldEditor.tscn");
 		var editorInstance = editorScene.Instance<NumberFieldEditor>();
 		editorInstance.Field = this;
 		editorInstance.Inherited = inherited;
@@ -532,7 +631,52 @@ public class NumberField : Field
 		editor = null;
 	}
 
-	public override void SetEditorOverriding(bool overriding)
+	public override void SubmitEditor()
+	{
+		if (HasEditor())
+		{
+			editor?.SubmitChanges();
+		}
+	}
+
+	public override FieldInspector CreateInspector(bool inherited)
+	{
+		RemoveInspector();
+
+		var inspectorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Inspectors/NumberFieldInspector.tscn");
+		var inspectorInstance = inspectorScene.Instance<NumberFieldInspector>();
+		inspectorInstance.Field = this;
+		inspectorInstance.Inherited = inherited;
+
+		inspector = inspectorInstance;
+		return inspector;
+	}
+
+	public override FieldInspector GetInspector()
+	{
+		return (HasInspector() ? inspector : null);
+	}
+
+	public override bool HasInspector()
+	{
+		return (inspector != null && Godot.Object.IsInstanceValid(inspector));
+	}
+
+	public override void UpdateInspector()
+	{
+		if (HasInspector())
+		{
+			inspector.UpdateState();
+		}
+	}
+
+	public override void RemoveInspector()
+	{
+		inspector?.QueueFree();
+		inspector = null;
+	}
+
+	public override void SetOverriding(bool overriding)
 	{
 		if (HasEditor())
 		{
@@ -542,9 +686,11 @@ public class NumberField : Field
 
 	public override Field Duplicate()
 	{
-		var field = new NumberField(name);
-		field.data = data;
-		field.DataEditedCallback = DataEditedCallback;
+		var field = new NumberField(name)
+		{
+			data = data,
+			DataEditedCallback = DataEditedCallback
+		};
 
 		return field;
 	}
@@ -554,13 +700,14 @@ public class NumberField : Field
 		if (data is double)
 		{
 			this.data = data;
+			UpdateEditor();
 		}
-		else if (data is string)
+		else if (data is string stringData)
 		{
-			double value;
-			if (Double.TryParse((string)data, out value))
+			if (Double.TryParse(stringData, out double value))
 			{
 				this.data = value;
+				UpdateEditor();
 			}
 		}
 	}
@@ -595,6 +742,7 @@ public class BooleanField : Field
 
 	public override object WriteData()
 	{
+		SubmitEditor();
 		return Data;
 	}
 
@@ -622,13 +770,26 @@ public class BooleanField : Field
 	{
 		RemoveEditor();
 
-		var editorScene = ResourceLoader.Load<PackedScene>("res://BooleanFieldEditor.tscn");
+		var editorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Editors/BooleanFieldEditor.tscn");
 		var editorInstance = editorScene.Instance<BooleanFieldEditor>();
 		editorInstance.Field = this;
 		editorInstance.Inherited = inherited;
 
 		editor = editorInstance;
 		return editor;
+	}
+
+	public override FieldInspector CreateInspector(bool inherited)
+	{
+		/*RemoveInspector();
+
+		var inspectorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Inspectors/BooleanFieldInspector.tscn");
+		var inspectorInstance = inspectorScene.Instance<BooleanFieldInspector>();
+		inspectorInstance.Field = this;
+		inspectorInstance.Inherited = inherited;
+
+		inspector = inspectorInstance;*/
+		return inspector;
 	}
 
 	public override void UpdateEditor()
@@ -645,7 +806,15 @@ public class BooleanField : Field
 		editor = null;
 	}
 
-	public override void SetEditorOverriding(bool overriding)
+	public override void SubmitEditor()
+	{
+		if (HasEditor())
+		{
+			editor?.SubmitChanges();
+		}
+	}
+
+	public override void SetOverriding(bool overriding)
 	{
 		if (HasEditor())
 		{
@@ -655,9 +824,11 @@ public class BooleanField : Field
 
 	public override Field Duplicate()
 	{
-		var field = new BooleanField(name);
-		field.data = data;
-		field.DataEditedCallback = DataEditedCallback;
+		var field = new BooleanField(name)
+		{
+			data = data,
+			DataEditedCallback = DataEditedCallback
+		};
 
 		return field;
 	}
@@ -667,13 +838,14 @@ public class BooleanField : Field
 		if (data is bool)
 		{
 			this.data = data;
+			UpdateEditor();
 		}
-		else if (data is string)
+		else if (data is string stringData)
 		{
-			bool value;
-			if (Boolean.TryParse((string)data, out value))
+			if (Boolean.TryParse(stringData, out bool value))
 			{
 				this.data = value;
+				UpdateEditor();
 			}
 		}
 	}
@@ -794,13 +966,26 @@ public class ImageField : Field
 	{
 		RemoveEditor();
 
-		var editorScene = ResourceLoader.Load<PackedScene>("res://ImageFieldEditor.tscn");
+		var editorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Editors/ImageFieldEditor.tscn");
 		var editorInstance = editorScene.Instance<ImageFieldEditor>();
 		editorInstance.Field = this;
 		editorInstance.Inherited = inherited;
 
 		editor = editorInstance;
 		return editor;
+	}
+
+	public override FieldInspector CreateInspector(bool inherited)
+	{
+		/*RemoveInspector();
+
+		var inspectorScene = ResourceLoader.Load<PackedScene>("res://Scenes/Inspectors/ImageFieldInspector.tscn");
+		var inspectorInstance = inspectorScene.Instance<ImageFieldInspector>();
+		inspectorInstance.Field = this;
+		inspectorInstance.Inherited = inherited;
+
+		inspector = inspectorInstance;*/
+		return inspector;
 	}
 
 	public override void UpdateEditor()
@@ -817,7 +1002,15 @@ public class ImageField : Field
 		editor = null;
 	}
 
-	public override void SetEditorOverriding(bool overriding)
+	public override void SubmitEditor()
+	{
+		if (HasEditor())
+		{
+			editor?.SubmitChanges();
+		}
+	}
+
+	public override void SetOverriding(bool overriding)
 	{
 		if (HasEditor())
 		{
@@ -827,16 +1020,19 @@ public class ImageField : Field
 
 	public override Field Duplicate()
 	{
-		var field = new ImageField(name);
-		field.data = data;
-		field.image = (Image)image?.Duplicate(true);
-		field.DataEditedCallback = DataEditedCallback;
+		var field = new ImageField(name)
+		{
+			data = data,
+			image = (Image)image?.Duplicate(true),
+			DataEditedCallback = DataEditedCallback
+		};
 
 		return field;
 	}
 
 	public override object WriteData()
 	{
+		SubmitEditor();
 		return Data;
 	}
 }
