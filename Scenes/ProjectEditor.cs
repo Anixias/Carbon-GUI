@@ -24,7 +24,35 @@ public class ProjectEditor : HSplitContainer
 
 	public bool HasUnsavedChanges
 	{
-		get => commands.GetHashCode() != lastSavedHashCode;
+		get
+		{
+			if (commands.GetHashCode() != lastSavedHashCode)
+			{
+				return true;
+			}
+
+			// @TODO: Add "pending inspector changes"
+			if (currentObject != null)
+			{
+				foreach (var field in currentObject.fields)
+				{
+					if (field.GetEditor()?.HasChanges() ?? false)
+					{
+						return true;
+					}
+				}
+
+				foreach (var field in currentObject.fieldOverrides.Values)
+				{
+					if (field.GetEditor()?.HasChanges() ?? false)
+					{
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
 	}
 
 	private List<Collection> Collections
