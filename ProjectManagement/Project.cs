@@ -120,34 +120,34 @@ public class Project
 			return defaultValue;
 		}
 
-		var dataVersion = version;
 		try
 		{
+			var dataVersion = version;
 			var loadedVersion = Load<string>("version", null);
 
 			if (loadedVersion != null)
 			{
 				dataVersion = new Version(loadedVersion);
 			}
+
+			// Load collections
+			collections.Clear();
+
+			var collectionData = Load("collections", new Godot.Collections.Array() { }).ToList<object>(null);
+			foreach (var collection in collectionData)
+			{
+				if (collection is Godot.Collections.Dictionary loadedCollectionData)
+				{
+					var loadedCollection = new Collection();
+					loadedCollection.Read(loadedCollectionData.Convert<string, object>());
+
+					collections.Add(loadedCollection);
+				}
+			}
 		}
 		catch (Exception e)
 		{
 			GD.PrintErr(e.Message);
-		}
-
-		// Load collections
-		collections.Clear();
-
-		var collectionData = Load<Godot.Collections.Array>("collections", new Godot.Collections.Array() { }).ToList<object>(null);
-		foreach (var collection in collectionData)
-		{
-			if (collection is Godot.Collections.Dictionary loadedCollectionData)
-			{
-				var loadedCollection = new Collection();
-				loadedCollection.Read(loadedCollectionData.Convert<string, object>());
-
-				collections.Add(loadedCollection);
-			}
 		}
 	}
 
