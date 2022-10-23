@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/UI Elements/NumberInputBox.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/UI Elements/TextInputBox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Inspectors/NumberFieldInspector.cs" type="Script" id=3]
 
 [node name="NumberFieldInspector" type="ScrollContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 margin_right = 1024.0
@@ -36,7 +38,7 @@ margin_left = 505.0
 margin_right = 1006.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
-step = 0.0
+step = 0.001
 allow_greater = true
 allow_lesser = true
 
@@ -53,7 +55,7 @@ margin_top = 32.0
 margin_right = 1006.0
 margin_bottom = 60.0
 size_flags_horizontal = 3
-step = 0.0
+step = 0.001
 value = 100.0
 allow_greater = true
 allow_lesser = true
@@ -98,7 +100,7 @@ margin_right = 1006.0
 margin_bottom = 148.0
 size_flags_horizontal = 3
 max_value = 1.0
-step = 0.0
+step = 0.001
 value = 1.0
 allow_greater = true
 
