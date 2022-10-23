@@ -673,7 +673,8 @@ text = "Inspector"
 align = 1
 valign = 1
 
-[node name="Panel" type="Panel" parent="HSplitContainer/DataWindows/InspectorPanel/MarginContainer/VBoxContainer"]
+[node name="FieldInspectorPanel" type="Panel" parent="HSplitContainer/DataWindows/InspectorPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 margin_top = 36.0
 margin_right = 246.0
 margin_bottom = 286.0

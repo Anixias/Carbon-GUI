@@ -145,6 +145,7 @@ public class ProjectEditor : HSplitContainer
 	private TextInputBox designFilter;
 	private Dictionary<Object, TreeListItem> designListCategories;
 	private List<Field> designFieldList;
+	private Panel fieldInspectorPanel;
 	private Dictionary<Object, Label> fieldObjectLabels;
 
 	private List<IconButton> tools;
@@ -181,6 +182,7 @@ public class ProjectEditor : HSplitContainer
 		dataWindows = GetNode<VSplitContainer>("HSplitContainer/DataWindows");
 		designList = GetNode<TreeList>("HSplitContainer/DataWindows/DesignPanel/MarginContainer/VBoxContainer/Panel/TreeList");
 		designFilter = GetNode<TextInputBox>("HSplitContainer/DataWindows/DesignPanel/MarginContainer/VBoxContainer/Filter");
+		fieldInspectorPanel = GetNode<Panel>("%FieldInspectorPanel");
 
 		workArea.GetVScrollbar().Connect("visibility_changed", this, nameof(OnWorkAreaVScrollbarVisibilityChanged));
 
@@ -503,7 +505,7 @@ public class ProjectEditor : HSplitContainer
 			ReplaceNode(ancestorField.GetEditor(), fieldOverride.CreateEditor(true));
 		}
 
-		fieldOverride.SetEditorOverriding(true);
+		fieldOverride.SetOverriding(true);
 
 		if (obj == currentObject)
 		{
@@ -546,6 +548,7 @@ public class ProjectEditor : HSplitContainer
 		var field = new StringField("String", "", OnFieldDataEdited);
 		PushCommand(new CreateFieldCommand(this, currentObject, toolStringIcon, field));
 		field.ListItem?.Edit();
+		SelectField(field);
 		designFilter.Text = "";
 	}
 
@@ -554,6 +557,7 @@ public class ProjectEditor : HSplitContainer
 		var field = new TextField("Text", "", OnFieldDataEdited);
 		PushCommand(new CreateFieldCommand(this, currentObject, toolTextIcon, field));
 		field.ListItem?.Edit();
+		SelectField(field);
 		designFilter.Text = "";
 	}
 
@@ -562,6 +566,7 @@ public class ProjectEditor : HSplitContainer
 		var field = new NumberField("Number", 0, OnFieldDataEdited);
 		PushCommand(new CreateFieldCommand(this, currentObject, toolNumberIcon, field));
 		field.ListItem?.Edit();
+		SelectField(field);
 		designFilter.Text = "";
 	}
 
@@ -570,6 +575,7 @@ public class ProjectEditor : HSplitContainer
 		var field = new BooleanField("Boolean", false, OnFieldDataEdited);
 		PushCommand(new CreateFieldCommand(this, currentObject, toolBooleanIcon, field));
 		field.ListItem?.Edit();
+		SelectField(field);
 		designFilter.Text = "";
 	}
 
@@ -578,6 +584,7 @@ public class ProjectEditor : HSplitContainer
 		var field = new ImageField("Image", null, null, OnFieldDataEdited);
 		PushCommand(new CreateFieldCommand(this, currentObject, toolImageIcon, field));
 		field.ListItem?.Edit();
+		SelectField(field);
 		designFilter.Text = "";
 	}
 
@@ -626,24 +633,20 @@ public class ProjectEditor : HSplitContainer
 			return;
 
 		// Select the field, and cause the inspector to appear if it is the originating object
-		var prevField = currentField;
-
 		if (listItem.MetaData is Field nextField)
 		{
-			if (nextField != prevField)
-			{
-				currentField = nextField;
-
-				prevField?.ListItem?.Deselect();
-				currentField?.ListItem?.Select();
-			}
+			SelectField(nextField);
 		}
 	}
 
 	public void OnDesignListNoItemPressed()
 	{
-		currentField?.ListItem?.Deselect();
-		currentField = null;
+		if (currentField != null)
+		{
+			currentField.ListItem?.Deselect();
+			currentField.RemoveInspector();
+			currentField = null;
+		}
 	}
 
 	public void OnDesignListItemDoubleClicked(TreeListItem listItem)
@@ -685,6 +688,33 @@ public class ProjectEditor : HSplitContainer
 	public void OnDesignFilterTextChanged(string newText)
 	{
 		FilterFields();
+	}
+
+	private void SelectField(Field nextField)
+	{
+		var prevField = currentField;
+
+		if (nextField != prevField)
+		{
+			currentField = nextField;
+
+			if (prevField != null)
+			{
+				prevField.ListItem?.Deselect();
+				prevField.RemoveInspector();
+			}
+
+			if (currentField != null)
+			{
+				currentField.ListItem?.Select();
+				var inspector = currentField.CreateInspector(currentField.GetEditor()?.Inherited ?? false);
+
+				if (inspector != null)
+				{
+					fieldInspectorPanel.AddChild(inspector);
+				}
+			}
+		}
 	}
 
 	private void ReplaceNode(Node current, Node target)
@@ -1791,7 +1821,7 @@ public class ProjectEditor : HSplitContainer
 				}
 
 				var editor = _field.CreateEditor(inherited);
-				_field.SetEditorOverriding(wasOverride);
+				_field.SetOverriding(wasOverride);
 
 				if (editor != null)
 				{
@@ -1821,6 +1851,7 @@ public class ProjectEditor : HSplitContainer
 				continue;
 
 			field.RemoveEditor();
+			field.RemoveInspector();
 			field.ListItem = null;
 		}
 
