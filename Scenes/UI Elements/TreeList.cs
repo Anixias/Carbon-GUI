@@ -46,7 +46,7 @@ public class TreeList : MarginContainer
 	{
 		scrollContainer = GetNode<MarginScrollContainer>("MarginScrollContainer");
 		vBoxContainer = GetNode<VBoxContainer>("MarginScrollContainer/MarginContainer/VBoxContainer");
-		treeListItemScene = ResourceLoader.Load<PackedScene>("res://TreeListItem.tscn");
+		treeListItemScene = ResourceLoader.Load<PackedScene>("res://Scenes/UI Elements/TreeListItem.tscn");
 
 		scrollContainer.ContainingTreeList = this;
 

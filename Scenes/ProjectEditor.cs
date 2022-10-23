@@ -127,8 +127,8 @@ public class ProjectEditor : HSplitContainer
 		currentCollection = null;
 		currentObject = null;
 
-		treeListItem = ResourceLoader.Load<PackedScene>("res://TreeListItem.tscn");
-		iconButton = ResourceLoader.Load<PackedScene>("res://IconButton.tscn");
+		treeListItem = ResourceLoader.Load<PackedScene>("res://Scenes/UI Elements/TreeListItem.tscn");
+		iconButton = ResourceLoader.Load<PackedScene>("res://Scenes/UI Elements/IconButton.tscn");
 		collectionIcon = ResourceLoader.Load<Texture>("res://Assets/Icons/keyframes.png");
 		typeIcon = ResourceLoader.Load<Texture>("res://Assets/Icons/folder-closed.png");
 		typeOpenIcon = ResourceLoader.Load<Texture>("res://Assets/Icons/folder-open.png");
