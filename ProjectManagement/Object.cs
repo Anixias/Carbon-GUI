@@ -331,6 +331,62 @@ public class Object
 
 		return data;
 	}
+
+	public Dictionary<string, object> Export()
+	{
+		//var data = new Dictionary<string, object>();
+
+		// Get object's ancestry
+		var ancestors = new List<Object>();
+		var objParent = this;
+		while (objParent != null)
+		{
+			ancestors.Add(objParent);
+			objParent = objParent.Parent;
+		}
+
+		ancestors.Reverse();
+
+		// Create a list of fields with correct overrides as well as track types as tags
+		var tagList = new List<string>();
+		var fieldOriginList = new List<Field>();
+		var fieldFinalList = new List<Field>();
+		foreach (var obj in ancestors)
+		{
+			if (!obj.IsRoot && obj != this)
+			{
+				tagList.Add(obj.Name);
+			}
+
+			// Add fields
+			foreach (var field in obj.fields)
+			{
+				fieldOriginList.Add(field);
+				fieldFinalList.Add(field);
+			}
+
+			// Override inherited fields
+			foreach (var fieldOverride in obj.fieldOverrides)
+			{
+				var index = fieldOriginList.FindIndex(f => f == fieldOverride.Key);
+
+				if (index != -1)
+					fieldFinalList[index] = fieldOverride.Value;
+			}
+		}
+
+		// Export fields
+		var fieldData = new Dictionary<string, object>();
+		foreach (var field in fieldFinalList)
+		{
+			fieldData[field.Name] = field.WriteData();
+		}
+
+		//data["tags"] = tagList;
+		//data["data"] = fieldData;
+
+		return fieldData;
+	}
 }
 
 #region Editor Commands
