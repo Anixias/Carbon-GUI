@@ -702,9 +702,14 @@ public class NumberField : Field
 			this.data = data;
 			UpdateEditor();
 		}
-		else if (data is string stringData)
+		else if (data is float single)
 		{
-			if (Double.TryParse(stringData, out double value))
+			this.data = (double)single;
+			UpdateEditor();
+		}
+		else
+		{
+			if (Double.TryParse(data.ToString(), out double value))
 			{
 				this.data = value;
 				UpdateEditor();
