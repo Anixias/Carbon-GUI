@@ -50,9 +50,9 @@ public class Collection
 		ListItem = listItem;
 		objects = new List<Object>();
 
-		this.root = root ?? new Object(null, null, true);
-		objects.Add(this.root);
-		this.root.IsRoot = true;
+		this.root = root ??= new Object(null, null, true);
+		root.IsRoot = true;
+		objects.Add(root);
 
 		if (listItem != null)
 		{
