@@ -78,6 +78,21 @@ public class Object
 		}
 	}
 
+	public List<Object> ChildrenDirect
+	{
+		get
+		{
+			var list = new List<Object>();
+
+			foreach (var child in children)
+			{
+				list.Add(child);
+			}
+
+			return list;
+		}
+	}
+
 	public TreeListItem ListItem
 	{
 		get => listItem;
