@@ -170,4 +170,12 @@ public class Interface : Control
 			projectEditorState.projectEditor.ProjectSaved();
 		}
 	}
+
+	public void OnExportProject()
+	{
+		if (state is ProjectEditorState projectEditorState)
+		{
+			projectEditorState.project.Export();
+		}
+	}
 }
