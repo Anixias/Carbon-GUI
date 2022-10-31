@@ -117,6 +117,7 @@ public class Collection
 				if (loadedObject.Parent == null)
 				{
 					root = loadedObject;
+					root.IsRoot = true;
 				}
 			}
 		}
