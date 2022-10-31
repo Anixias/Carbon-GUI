@@ -139,6 +139,27 @@ public class Collection
 
 		return data;
 	}
+
+	public Dictionary<string, object> Export()
+	{
+		static Dictionary<string, object> ExpandType(Object type)
+		{
+			if (!type.IsType)
+				return null;
+
+			// Export each of its children, recursively expanding types
+			var expansion = new Dictionary<string, object>();
+
+			foreach (var child in type.ChildrenDirect)
+			{
+				expansion[child.Name] = child.IsType ? ExpandType(child) : child.Export();
+			}
+
+			return expansion;
+		}
+
+		return ExpandType(root);
+	}
 }
 
 #region Editor Commands
