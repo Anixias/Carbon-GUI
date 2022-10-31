@@ -16,6 +16,9 @@ public class MenuBar : HBoxContainer
 	public delegate void SaveProjectAs();
 
 	[Signal]
+	public delegate void ExportProject();
+
+	[Signal]
 	public delegate void CloseProject();
 
 	[Signal]
@@ -60,6 +63,9 @@ public class MenuBar : HBoxContainer
 		idx = AddShortcut(mbProject, "Save Project As...", nameof(OnProjectSaveAs), KeyList.S, true, true);
 		itemIndices.Add("Project::SaveAs", idx);
 
+		idx = AddShortcut(mbProject, "Export Project...", nameof(OnProjectExport), KeyList.E, true);
+		itemIndices.Add("Project::Export", idx);
+
 		idx = AddShortcut(mbProject, "Close Project", nameof(OnProjectClose), KeyList.W, true, true);
 		itemIndices.Add("Project::Close", idx);
 
@@ -101,14 +107,14 @@ public class MenuBar : HBoxContainer
 		var sc = new ShortCut
 		{
 			ResourceName = label,
-			Shortcut = new InputEventKey()
+			Shortcut = new InputEventKey
+			{
+				Command = cmd,
+				Shift = shift,
+				Alt = alt,
+				Scancode = (uint)scancode
+			}
 		};
-
-		var SC = ((InputEventKey)sc.Shortcut);
-		SC.Command = cmd;
-		SC.Shift = shift;
-		SC.Alt = alt;
-		SC.Scancode = (uint)scancode;
 
 		popup.AddShortcut(sc);
 		popup.SetItemDisabled(idx, true);
@@ -205,6 +211,11 @@ public class MenuBar : HBoxContainer
 		EmitSignal(nameof(SaveProjectAs));
 	}
 
+	private void OnProjectExport()
+	{
+		EmitSignal(nameof(ExportProject));
+	}
+
 	private void OnProjectClose()
 	{
 		EmitSignal(nameof(CloseProject));
@@ -224,6 +235,7 @@ public class MenuBar : HBoxContainer
 	{
 		SetEnabled(mbProject, "Project::Save", projectOpened);
 		SetEnabled(mbProject, "Project::SaveAs", projectOpened);
+		SetEnabled(mbProject, "Project::Export", projectOpened);
 		SetEnabled(mbProject, "Project::Close", projectOpened);
 	}
 
