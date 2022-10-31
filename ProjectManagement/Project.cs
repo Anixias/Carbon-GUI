@@ -47,7 +47,7 @@ public class Project
 		var file = new File();
 		var existingData = "";
 
-		// First, read the contents in case there is a crash during the save
+		// First, read the contents in case there is an exception during the save
 		if (saveExistingData)
 		{
 			file.Open(Path, File.ModeFlags.Read);
@@ -70,6 +70,37 @@ public class Project
 			{
 				file.StoreString(existingData);
 			}
+		}
+		finally
+		{
+			file.Close();
+		}
+	}
+
+	public void Export()
+	{
+		var exportPath = NativeFileDialog.SaveFileDialog("Export project...", Path, new[] { "*.json" }, "JSON");
+		if (exportPath == null || exportPath == "")
+			return;
+
+		var baseDirectory = exportPath.GetBaseDir();
+
+		var dir = new Directory();
+		if (!dir.DirExists(baseDirectory))
+		{
+			dir.MakeDirRecursive(baseDirectory);
+		}
+
+		var file = new File();
+		file.Open(exportPath, File.ModeFlags.Write);
+
+		try
+		{
+			file.StoreString(JSON.Print(ExportData(), "\t"));
+		}
+		catch (Exception e)
+		{
+			GD.PrintErr(e.Message);
 		}
 		finally
 		{
@@ -163,6 +194,18 @@ public class Project
 
 		data["version"] = version.ToString();
 		data["collections"] = collectionData;
+
+		return data;
+	}
+
+	protected Dictionary<string, object> ExportData()
+	{
+		var data = new Dictionary<string, object>();
+
+		foreach (var collection in collections)
+		{
+			data[collection.Name] = collection.Export();
+		}
 
 		return data;
 	}
