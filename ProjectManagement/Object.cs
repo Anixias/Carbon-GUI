@@ -270,8 +270,7 @@ public class Object
 			{
 				if (fieldOverrideData.ContainsKey("data"))
 				{
-					var id = Guid.Empty;
-					if (Guid.TryParse(inheritedID, out id))
+					if (Guid.TryParse(inheritedID, out Guid id))
 					{
 						// Find original Field
 						var obj = parent;
