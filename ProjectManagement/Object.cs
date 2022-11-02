@@ -45,6 +45,14 @@ public class Object
 
 			return -1;
 		}
+		set
+		{
+			if (parent != null)
+			{
+				parent.children.Remove(this);
+				parent.children.Insert(value, this);
+			}
+		}
 	}
 
 	public int ChildCount
@@ -153,6 +161,21 @@ public class Object
 		if (listItem != null)
 		{
 			listItem.Text = Name;
+		}
+	}
+
+	public void SetParent(Object parent, int localIndex = -1)
+	{
+		this.parent?.children.Remove(this);
+		this.parent = parent;
+
+		if (localIndex < 0)
+		{
+			parent?.children.Add(this);
+		}
+		else
+		{
+			parent?.children.Insert(localIndex, this);
 		}
 	}
 
