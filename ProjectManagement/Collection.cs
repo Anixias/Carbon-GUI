@@ -112,7 +112,6 @@ public class Collection
 				var loadedObject = new Object();
 				loadedObject.Read(this, loadedObjectData.Convert<string, object>(), objectLookup);
 				objectLookup[loadedObject.ID] = loadedObject;
-				objects.Add(loadedObject);
 
 				if (loadedObject.Parent == null)
 				{
@@ -121,6 +120,24 @@ public class Collection
 				}
 			}
 		}
+
+		// Repair object list order
+		void AddObjectSorted(Object @object)
+		{
+			if (@object == null)
+				return;
+
+			// Add the object to the list of objects
+			objects.Add(@object);
+
+			// Add the object's children to the list recursively
+			foreach (var obj in @object.ChildrenDirect)
+			{
+				AddObjectSorted(obj);
+			}
+		}
+
+		AddObjectSorted(root);
 	}
 
 	public Dictionary<string, object> Write()
