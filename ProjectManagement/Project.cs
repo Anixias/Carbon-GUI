@@ -131,6 +131,7 @@ public class Project
 			if (jsonResult.Result is Godot.Collections.Dictionary data)
 			{
 				Read(data.Convert<string, object>());
+				Save();
 			}
 
 			return true;
