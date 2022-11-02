@@ -610,7 +610,6 @@ public class TreeListItem : MarginContainer
 		{
 			dragging = false;
 			DragLocation = DragDropLocation.none;
-			WarpMouse(GetLocalMousePosition());
 			return;
 		}
 
