@@ -204,13 +204,13 @@ public abstract class Field
 			return defaultValue;
 		}
 
-		var name = Load<string>("name", "");
-		Guid.TryParse(Load<string>("id", ""), out Guid id);
+		var name = Load("name", "");
+		Guid.TryParse(Load("id", ""), out Guid id);
 		var loadedData = Load<string>("data", null);
 
 		Field output = null;
 
-		if (FieldType.TryParse(Load<string>("type", FieldType.None.ToString()), true, out FieldType loadedType))
+		if (FieldType.TryParse(Load("type", FieldType.None.ToString()), true, out FieldType loadedType))
 		{
 			switch (loadedType)
 			{
@@ -904,7 +904,7 @@ public class ImageField : Field
 		return (HasEditor() ? editor : null);
 	}
 
-	public ImageField(Glint.UniqueName name, string path = null, Image image = null, DataEdited callback = null)
+	public ImageField(UniqueName name, string path = null, Image image = null, DataEdited callback = null)
 	{
 		this.name = name;
 		this.data = path;

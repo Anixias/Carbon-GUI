@@ -33,7 +33,7 @@ namespace FuzzyString
 
 			for (int i = 0; i < source.Count(); i++)
 			{
-				returnString += source.ElementAt<string>(i);
+				returnString += source.ElementAt(i);
 			}
 			return returnString;
 		}

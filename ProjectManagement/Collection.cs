@@ -96,14 +96,14 @@ public class Collection
 			return defaultValue;
 		}
 
-		name = new UniqueName(Load<string>("name", ""));
-		Guid.TryParse(Load<string>("id", ""), out guid);
+		name = new UniqueName(Load("name", ""));
+		Guid.TryParse(Load("id", ""), out guid);
 
 		// Load objects
 		root = null;
 		objects.Clear();
 
-		var objectData = Load<Godot.Collections.Array>("objects", new Godot.Collections.Array() { }).ToList<object>(null);
+		var objectData = Load("objects", new Godot.Collections.Array() { }).ToList<object>(null);
 		var objectLookup = new Dictionary<Guid, Object>();
 		foreach (var @object in objectData)
 		{

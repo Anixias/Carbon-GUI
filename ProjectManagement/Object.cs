@@ -248,13 +248,12 @@ public class Object
 			return defaultValue;
 		}
 
-		name = new UniqueName(Load<string>("name", ""));
-		Guid.TryParse(Load<string>("id", ""), out guid);
-		isType = Load<bool>("is_type", true);
+		name = new UniqueName(Load("name", ""));
+		Guid.TryParse(Load("id", ""), out guid);
+		isType = Load("is_type", true);
 
 		// Parent
-		var parentID = Guid.Empty;
-		Guid.TryParse(Load<string>("parent", ""), out parentID);
+		Guid.TryParse(Load("parent", ""), out Guid parentID);
 
 		if (objectLookup != null && objectLookup.ContainsKey(parentID))
 		{
@@ -265,7 +264,7 @@ public class Object
 
 		// Fields
 		fields.Clear();
-		var fieldData = Load<GDC.Array>("fields", new GDC.Array() { }).ToList<object>(null);
+		var fieldData = Load("fields", new GDC.Array() { }).ToList<object>(null);
 
 		foreach (var field in fieldData)
 		{
@@ -283,7 +282,7 @@ public class Object
 
 		// Field Overrides
 		fieldOverrides.Clear();
-		var fieldOverrideList = Load<GDC.Array>("field_overrides", new GDC.Array() { }).ToArray<GDC.Dictionary>(new GDC.Dictionary());
+		var fieldOverrideList = Load("field_overrides", new GDC.Array() { }).ToArray(new GDC.Dictionary());
 
 		foreach (var fieldOverrideEntry in fieldOverrideList)
 		{

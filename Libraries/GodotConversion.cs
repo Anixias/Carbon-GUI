@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using GDC = Godot.Collections;
 
 namespace Godot
 {
@@ -6,7 +7,7 @@ namespace Godot
 	{
 		public static class CollectionExtensions
 		{
-			public static Dictionary<K, V> Convert<K, V>(this Godot.Collections.Dictionary dictionary)
+			public static Dictionary<K, V> Convert<K, V>(this GDC.Dictionary dictionary)
 			{
 				var output = new Dictionary<K, V>();
 
@@ -21,7 +22,7 @@ namespace Godot
 				return output;
 			}
 
-			public static Dictionary<K, V> Convert<K, V>(this Godot.Collections.Dictionary<K, V> dictionary)
+			public static Dictionary<K, V> Convert<K, V>(this GDC.Dictionary<K, V> dictionary)
 			{
 				var output = new Dictionary<K, V>();
 
@@ -33,7 +34,7 @@ namespace Godot
 				return output;
 			}
 
-			public static T[] ToArray<T>(this Godot.Collections.Array array, T defaultValue)
+			public static T[] ToArray<T>(this GDC.Array array, T defaultValue)
 			{
 				var output = new T[array.Count];
 
@@ -52,7 +53,7 @@ namespace Godot
 				return output;
 			}
 
-			public static T[] ToArray<T>(this Godot.Collections.Array<T> array)
+			public static T[] ToArray<T>(this GDC.Array<T> array)
 			{
 				var output = new T[array.Count];
 
@@ -64,15 +65,15 @@ namespace Godot
 				return output;
 			}
 
-			public static List<T> ToList<T>(this Godot.Collections.Array array, T defaultValue)
+			public static List<T> ToList<T>(this GDC.Array array, T defaultValue)
 			{
 				var output = new List<T>();
 
 				foreach (var value in array)
 				{
-					if (value is T)
+					if (value is T typedValue)
 					{
-						output.Add((T)value);
+						output.Add(typedValue);
 					}
 					else
 					{
@@ -83,7 +84,7 @@ namespace Godot
 				return output;
 			}
 
-			public static List<T> ToList<T>(this Godot.Collections.Array<T> array)
+			public static List<T> ToList<T>(this GDC.Array<T> array)
 			{
 				var output = new List<T>();
 
