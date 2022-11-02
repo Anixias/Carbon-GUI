@@ -961,39 +961,32 @@ public class ProjectEditor : HSplitContainer
 			objectList.UpdateGraphics();
 		}
 
-		@object.Parent = parent;
 		EnsureUnique(@object);
 
 		if (collection != null)
 		{
 			var idx = -1;
+			var objIndex = -1;
 
 			if (parent != null)
 			{
 				idx = collection.objects.FindIndex(match => match == parent);
-			}
 
-			var objIndex = -1;
-
-			if (idx >= 0)
-			{
-				var currentIndex = idx;
-				var remaining = localIndex + 1;
-
-				while (remaining > 0 && currentIndex < idx + parent.ChildCount && currentIndex < (collection.objects.Count - 1))
+				if (idx >= 0)
 				{
-					var obj = collection.objects[++currentIndex];
-					if (obj.Parent == parent)
+					// Loop through the parent object's direct children until the desired local index is reached
+					objIndex = idx + 1;
+
+					var siblings = parent.ChildrenDirect;
+					var siblingCount = siblings.Count;
+					for (var i = 0; i < siblingCount && i < localIndex; i++)
 					{
-						remaining--;
+						objIndex += 1 + siblings[i].ChildCount;
 					}
 				}
-
-				if (remaining == 0)
-				{
-					objIndex = currentIndex;
-				}
 			}
+
+			@object.SetParent(parent, localIndex);
 
 			if (objIndex >= 0)
 			{
