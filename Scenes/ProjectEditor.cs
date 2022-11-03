@@ -1068,12 +1068,16 @@ public class ProjectEditor : HSplitContainer
 		if (@object == null)
 			return;
 
+		var wasCurrent = currentObject == @object;
 		var oldParent = @object.Parent ?? collection.Root;
 		newParent ??= collection.Root;
-
 		var parentChanged = (oldParent != newParent);
 
-		if (parentChanged)
+		// Remove the object from the collection, then restore it to the given position
+		RemoveObject(collection, @object, true);
+		RestoreObject(collection, newParent, newLocalIndex, @object);
+
+		/*if (parentChanged)
 		{
 			@object.Parent = newParent;
 		}
@@ -1137,7 +1141,7 @@ public class ProjectEditor : HSplitContainer
 				objList.AddRange(@object.Children);
 				collection.objects.AddRange(objList);
 			}
-		}
+		}*/
 
 		if (parentChanged)
 		{
@@ -1179,12 +1183,11 @@ public class ProjectEditor : HSplitContainer
 					@object.fieldOverrides.Remove(field);
 				}
 			}
+		}
 
-			if (@object == currentObject || @object.IsAncestorOf(currentObject))
-			{
-				// Reload currentObject because its ancestry changed
-				LoadObject(currentObject);
-			}
+		if (wasCurrent)
+		{
+			LoadObject(@object);
 		}
 
 		if (objectFilter.Text != "")
