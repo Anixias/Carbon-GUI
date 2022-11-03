@@ -357,8 +357,7 @@ namespace Glint
 
 			public Node Find(T data)
 			{
-				Node output;
-				if (lookup.TryGetValue(data, out output))
+				if (lookup.TryGetValue(data, out Node output))
 				{
 					return output;
 				}
@@ -484,14 +483,8 @@ namespace Glint
 			{
 				parent ??= root;
 
-				string parentText = null;
-				if (parent is Node _nodeParent)
-				{
-					parentText = "" + _nodeParent.Data;
-				}
-
 				// Cannot parent to self
-				if ((node as BaseNode) == parent)
+				if (node == parent)
 					return false;
 
 				// Cannot parent to descendent
@@ -643,12 +636,13 @@ namespace Glint
 
 		public static bool Matches(this string source, string target)
 		{
-			var options = new List<ComparisonOptions>();
-
-			// Choose algorithms to use
-			options.Add(ComparisonOptions.UseOverlapCoefficient);
-			options.Add(ComparisonOptions.UseLongestCommonSubsequence);
-			options.Add(ComparisonOptions.UseLongestCommonSubstring);
+			var options = new List<ComparisonOptions>
+			{
+				// Choose algorithms to use
+				ComparisonOptions.UseOverlapCoefficient,
+				ComparisonOptions.UseLongestCommonSubsequence,
+				ComparisonOptions.UseLongestCommonSubstring
+			};
 
 			// Relative strength
 			var tolerance = ComparisonTolerance.Strong;

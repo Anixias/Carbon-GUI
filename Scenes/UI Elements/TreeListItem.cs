@@ -389,8 +389,6 @@ public class TreeListItem : MarginContainer
 		}
 		set
 		{
-			var oval = Overriding;
-
 			if (listItem != null)
 			{
 				listItem.Overriding = value;
@@ -736,19 +734,24 @@ public class TreeListItem : MarginContainer
 
 	private Control MakeDragPreview()
 	{
-		var preview = new Button();
-		preview.Text = Text;
-		preview.Icon = Icon;
+		var preview = new Button
+		{
+			Text = Text,
+			Icon = Icon,
+			Modulate = new Color(1.0f, 1.0f, 1.0f, 0.65f)
+		};
+
 		preview.AddConstantOverride("hseparation", 6);
 		preview.AddStyleboxOverride("normal", new StyleBoxEmpty());
-		preview.Modulate = new Color(1.0f, 1.0f, 1.0f, 0.65f);
 
 		dragPreview = preview;
 
 		return preview;
 	}
 
+#pragma warning disable IDE1006 // Naming Styles
 	public object get_drag_data_fw(Vector2 position, Control source)
+#pragma warning restore IDE1006 // Naming Styles
 	{
 		if (Inherited)
 			return null;
@@ -760,14 +763,12 @@ public class TreeListItem : MarginContainer
 
 	public override bool CanDropData(Vector2 position, object data)
 	{
-		var output = can_drop_data_fw(position, data, null);
-
-		//DragLocation = DragDropLocation.none;
-
 		return false;
 	}
 
+#pragma warning disable IDE1006 // Naming Styles
 	public bool can_drop_data_fw(Vector2 position, object data, Control source)
+#pragma warning restore IDE1006 // Naming Styles
 	{
 		dragging = false;
 		if (Inherited)
@@ -839,7 +840,9 @@ public class TreeListItem : MarginContainer
 		return false;
 	}
 
+#pragma warning disable IDE1006 // Naming Styles
 	public void drop_data_fw(Vector2 position, object data, Control source)
+#pragma warning restore IDE1006 // Naming Styles
 	{
 		if (containingTreeList == null)
 			return;
@@ -1051,7 +1054,7 @@ public class TreeListItem : MarginContainer
 
 		if (dropArrowContainer != null)
 		{
-			dropArrowContainer.Visible = (parent == null ? canContainItems : true);
+			dropArrowContainer.Visible = parent != null || canContainItems;
 		}
 
 		if (listItem != null)

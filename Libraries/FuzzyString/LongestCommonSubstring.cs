@@ -42,7 +42,7 @@ namespace FuzzyString
 							{
 								lastSubsBegin = thisSubsBegin;
 								stringBuilder.Length = 0; //clear it
-								stringBuilder.Append(source.Substring(lastSubsBegin, (i + 1) - lastSubsBegin));
+								stringBuilder.Append(source[lastSubsBegin..(i + 1)]);
 							}
 						}
 					}

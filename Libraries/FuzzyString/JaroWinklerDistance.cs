@@ -14,8 +14,7 @@ namespace FuzzyString
 
 		public static double JaroWinklerDistanceWithPrefixScale(string source, string target, double p)
 		{
-			double prefixScale = 0.1;
-
+			double prefixScale;
 			if (p > 0.25)
 			{ prefixScale = 0.25; } // The maximu value for distance to not exceed 1
 			else if (p < 0)

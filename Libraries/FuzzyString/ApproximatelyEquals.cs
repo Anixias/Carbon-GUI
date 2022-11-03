@@ -87,23 +87,16 @@ namespace FuzzyString
 				return false;
 			}
 
-			switch (tolerance)
+			return tolerance switch
 			{
-				default:
-					return false;
-				case ComparisonTolerance.Exact:
-					return (comparisonResults.Average() == 0.0);
-				case ComparisonTolerance.Strong:
-					return (comparisonResults.Average() < 0.25);
-				case ComparisonTolerance.Normal:
-					return (comparisonResults.Average() < 0.5);
-				case ComparisonTolerance.Weak:
-					return (comparisonResults.Average() < 0.75);
-				case ComparisonTolerance.Distinct:
-					return (comparisonResults.Average() > 0.5);
-				case ComparisonTolerance.Unique:
-					return (comparisonResults.Average() > 0.7);
-			}
+				ComparisonTolerance.Exact => (comparisonResults.Average() == 0.0),
+				ComparisonTolerance.Strong => (comparisonResults.Average() < 0.25),
+				ComparisonTolerance.Normal => (comparisonResults.Average() < 0.5),
+				ComparisonTolerance.Weak => (comparisonResults.Average() < 0.75),
+				ComparisonTolerance.Distinct => (comparisonResults.Average() > 0.5),
+				ComparisonTolerance.Unique => (comparisonResults.Average() > 0.7),
+				_ => false
+			};
 		}
 	}
 }
