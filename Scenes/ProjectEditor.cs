@@ -1077,72 +1077,6 @@ public class ProjectEditor : HSplitContainer
 		RemoveObject(collection, @object, true);
 		RestoreObject(collection, newParent, newLocalIndex, @object);
 
-		/*if (parentChanged)
-		{
-			@object.Parent = newParent;
-		}
-
-		if (currentCollection == collection)
-		{
-			var parentItem = newParent?.ListItem;
-			parentItem.Collapsed = false;
-			objectList.ReparentListItem(@object.ListItem, parentItem, newLocalIndex, false);
-
-			objectList.UpdateGraphics();
-		}
-
-		if (collection != null)
-		{
-			var oldidx = collection.objects.FindIndex(match => match == @object);
-			var newidx = -1;
-
-			if (newParent != null)
-			{
-				newidx = collection.objects.FindIndex(match => match == newParent);
-			}
-
-			// Remove from original location
-			if (oldidx >= 0)
-			{
-				collection.objects.RemoveRange(oldidx, 1 + @object.ChildCount);
-			}
-
-			var objIndex = -1;
-
-			if (newidx >= 0)
-			{
-				var currentIndex = newidx;
-				var remaining = newLocalIndex + 1;
-
-				while (remaining > 0 && currentIndex < newidx + newParent.ChildCount && currentIndex < (collection.objects.Count - 1))
-				{
-					var obj = collection.objects[++currentIndex];
-					if (obj.Parent == newParent)
-					{
-						remaining--;
-					}
-				}
-
-				if (remaining == 0)
-				{
-					objIndex = currentIndex;
-				}
-			}
-
-			if (objIndex >= 0)
-			{
-				var objList = new List<Object> { @object };
-				objList.AddRange(@object.Children);
-				collection.objects.InsertRange(objIndex, objList);
-			}
-			else
-			{
-				var objList = new List<Object> { @object };
-				objList.AddRange(@object.Children);
-				collection.objects.AddRange(objList);
-			}
-		}*/
-
 		if (parentChanged)
 		{
 			// Restore field overrides
@@ -1179,7 +1113,6 @@ public class ProjectEditor : HSplitContainer
 
 				if (!fieldValid)
 				{
-					//field.RemoveLink(@object.fieldOverrides[field]);
 					@object.fieldOverrides.Remove(field);
 				}
 			}
@@ -1271,7 +1204,6 @@ public class ProjectEditor : HSplitContainer
 
 		if (newText != null)
 		{
-			//ExpandObjects();
 			FilterObjects();
 		}
 	}
@@ -1636,7 +1568,6 @@ public class ProjectEditor : HSplitContainer
 		}
 
 		ExpandObjects();
-		//FilterObjects();
 
 		collection.Root.ListItem.UpdateState();
 		objectList.UpdateGraphics();
@@ -1953,11 +1884,8 @@ public class ProjectEditor : HSplitContainer
 
 	private void RefreshUI()
 	{
-		objAddType.Enabled = (currentCollection != null/* && (currentObject == null || currentObject.IsType)*/);
-		objAddObject.Enabled = (currentCollection != null/* && (currentObject == null || currentObject.IsType)*/);
-
-		//toolBar.Visible = (currentCollection != null && currentObject != null);
-		//dataWindows.Visible = (currentCollection != null && currentObject != null);
+		objAddType.Enabled = currentCollection != null;
+		objAddObject.Enabled = currentCollection != null;
 
 		SetToolsEnabled(currentCollection != null && currentObject != null);
 

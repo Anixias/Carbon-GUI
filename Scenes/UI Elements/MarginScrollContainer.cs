@@ -115,13 +115,6 @@ public class MarginScrollContainer : ScrollContainer
 		}
 	}
 
-	/*public override bool CanDropData(Vector2 position, object data)
-    {
-        DragScroll(position);
-        
-        return false;
-    }*/
-
 	public void OnVScrollBarVisibilityChanged()
 	{
 		if (vScrollBar.Visible)

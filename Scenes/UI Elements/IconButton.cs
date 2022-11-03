@@ -195,20 +195,5 @@ public class IconButton : Control
 		{
 			textLabel.AddFontOverride("font", Theme.DefaultFont);
 		}
-
-		// Refresh min sizes
-		/*RectMinSize = new Vector2(10.0f, 28.0f);
-        
-        if (marginContainer != null)
-        {
-            marginContainer.RectSize = Vector2.Zero;
-        
-            if (Visible)
-            {
-                RectMinSize = marginContainer.RectSize;
-            }
-            
-            marginContainer.RectSize = RectSize;
-        }*/
 	}
 }

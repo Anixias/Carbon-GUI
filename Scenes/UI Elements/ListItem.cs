@@ -229,37 +229,9 @@ public class ListItem : Button
 		if (textInputBox != null)
 		{
 			textInputBox.Text = text;
-			//textInputBox.GrabFocus();
 		}
 
 		UpdateGraphics();
-
-		/*if (!Engine.EditorHint)
-		{
-			// Rename: Shortcut
-			var sc = new ShortCut();
-			sc.Shortcut = new InputEventKey();
-			
-			var SC = ((InputEventKey)sc.Shortcut);
-			SC.Command = false;
-			SC.Shift = false;
-			SC.Alt = false;
-			SC.Scancode = (uint)KeyList.F2;
-			
-			popupMenu.SetItemShortcut(0, sc);
-			
-			// Delete: Shortcut
-			sc = new ShortCut();
-			sc.Shortcut = new InputEventKey();
-			
-			SC = ((InputEventKey)sc.Shortcut);
-			SC.Command = false;
-			SC.Shift = false;
-			SC.Alt = false;
-			SC.Scancode = (uint)KeyList.Delete;
-			
-			popupMenu.SetItemShortcut(1, sc);
-		}*/
 	}
 
 	public override void _GuiInput(InputEvent @event)
@@ -351,19 +323,7 @@ public class ListItem : Button
 
 		if (textControl != null)
 		{
-			textControl.RectMinSize = new Vector2(128.0f, 24.0f);//Vector2.Zero;
-
-			/*if (textLabel != null)
-			{
-				var rect = textLabel.GetFont("font").GetStringSize(textInputBox.Text);
-				var stylebox = textLabel.GetStylebox("normal");
-				
-				rect.x += Mathf.Max(0.0f, stylebox.ContentMarginLeft) + Mathf.Max(0.0f, stylebox.ContentMarginRight);
-				rect.y += Mathf.Max(0.0f, stylebox.ContentMarginTop) + Mathf.Max(0.0f, stylebox.ContentMarginBottom);
-				
-				textControl.RectMinSize = rect;
-			}*/
-
+			textControl.RectMinSize = new Vector2(128.0f, 24.0f);
 			marginContainer.RectSize = Vector2.Zero;
 		}
 
@@ -398,9 +358,11 @@ public class ListItem : Button
 
 	private void ForceEndDrag()
 	{
-		var evRelease = new InputEventMouseButton();
-		evRelease.Pressed = false;
-		evRelease.ButtonIndex = (int)ButtonList.Left;
+		var evRelease = new InputEventMouseButton
+		{
+			Pressed = false,
+			ButtonIndex = (int)ButtonList.Left
+		};
 
 		var evMotion = new InputEventMouseMotion();
 

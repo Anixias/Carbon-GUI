@@ -587,12 +587,6 @@ public class TreeListItem : MarginContainer
 	{
 		UpdateGraphics();
 
-		/*if (updateRelationshipPoints)
-        {
-            updateRelationshipPoints = false;
-            UpdateRelationshipPoints();
-        }*/
-
 		listItem.Dragging = IsInstanceValid(dragPreview);
 
 		if (!Input.IsMouseButtonPressed((int)ButtonList.Left))
@@ -1114,7 +1108,6 @@ public class TreeListItem : MarginContainer
 		}
 
 		updateRelationshipPoints = true;
-		//UpdateRelationshipPoints();
 
 		if (updateParents)
 		{

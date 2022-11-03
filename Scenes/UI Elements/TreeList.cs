@@ -210,9 +210,7 @@ public class TreeList : MarginContainer
 		var oldParent = listItem.Parent;
 		var oldLocalIndex = node.GetLocalIndex();
 
-		int idx;
-
-		if (tree.Move(listItem, destItem, above, out idx))
+		if (tree.Move(listItem, destItem, above, out int idx))
 		{
 			listItem.SetParent(destItem.Parent, idx);
 			HandleItemMovement(listItem, oldParent, oldLocalIndex, idx, emitSignal);
@@ -238,9 +236,11 @@ public class TreeList : MarginContainer
 	private void HandleItemMovement(TreeListItem listItem, TreeListItem oldParent, int oldLocalIndex, int newLocalIndex, bool emitSignal = true)
 	{
 		var oldListIdx = listItem.ListIndex;
-		var tempList = new List<TreeListItem>();
+		var tempList = new List<TreeListItem>
+		{
+			listItem
+		};
 
-		tempList.Add(listItem);
 		vBoxContainer.RemoveChild(listItem);
 
 		foreach (var child in listItem.GetAllChildren())
@@ -305,60 +305,6 @@ public class TreeList : MarginContainer
 		}
 	}
 
-	/*private void RemoveIndex(int listIndex, bool update = true, bool emitSignal = true)
-    {
-        if (listIndex < 0) return;
-        if (listIndex >= tree.Count) return;
-        
-        var treeListItem = tree[listIndex];
-        if (treeListItem == null) return;
-        
-        treeListItem.ContainingTreeList = null;
-        
-        // First remove children in reverse order
-        for(var childIdx = treeListItem.Children.Count - 1; childIdx >= 0; childIdx = treeListItem.Children.Count - 1)
-        {
-            var childItem = treeListItem.Children[childIdx];
-            
-            if (childItem != null)
-            {
-                RemoveIndex(childItem.ListIndex, false, emitSignal);
-            }
-        }
-        
-        listItems.RemoveAt(listIndex);
-        tree.Remove(treeListItem);
-        
-        if (treeListItem.Parent != null)
-        {
-            treeListItem.Parent.Children.Remove(treeListItem);
-            treeListItem.Parent.UpdateState();
-        }
-        
-        vBoxContainer.RemoveChild(treeListItem);
-        treeListItem.QueueFree();
-        
-        for(int idx = 0; idx < listItems.Count; idx++)
-        {
-            listItems[idx].ListIndex = idx;
-        }
-        
-        if (update)
-        {
-            // Update all list item's indices
-            for(var idx = 0; idx < listItems.Count; idx++)
-            {
-                var item = listItems[idx];
-                item.ListIndex = idx;
-            }
-        }
-        
-        if (emitSignal)
-        {
-            EmitSignal(nameof(ListItemDeleted), listIndex);
-        }
-    }*/
-
 	public void Print()
 	{
 		GD.Print(tree);
@@ -384,7 +330,7 @@ public class TreeList : MarginContainer
 
 	public void OnListItemTextInputChanged(TreeListItem listItem, string newName)
 	{
-		//scrollContainer.EnsureControlVisible(vBoxContainer);
+
 	}
 
 	public void OnListItemPressed(TreeListItem listItem)

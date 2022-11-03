@@ -44,7 +44,7 @@ namespace FuzzyString
 
 			for (int i = 0; i < source.Length; i++)
 			{
-				prefixes.Add(source.Substring(0, i));
+				prefixes.Add(source[..i]);
 			}
 
 			return prefixes;

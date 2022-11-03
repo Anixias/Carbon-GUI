@@ -329,7 +329,6 @@ public class Object
 
 		foreach (var fieldOverride in fieldOverrides)
 		{
-			//var id = fieldOverride.Value.ID.ToString();
 			var inheritId = fieldOverride.Key.ID.ToString();
 			fieldOverrideData.Add(new Dictionary<string, object>()
 			{
@@ -356,8 +355,6 @@ public class Object
 
 	public Dictionary<string, object> Export()
 	{
-		//var data = new Dictionary<string, object>();
-
 		// Get object's ancestry
 		var ancestors = new List<Object>();
 		var objParent = this;
@@ -403,9 +400,6 @@ public class Object
 		{
 			fieldData[field.Name] = field.WriteData();
 		}
-
-		//data["tags"] = tagList;
-		//data["data"] = fieldData;
 
 		return fieldData;
 	}
